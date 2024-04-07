@@ -11,9 +11,9 @@
 						<view>
 							{{ userInfo.name }}
 						</view>
-						<view class="info-edit" @tap="openShowAuthPopup">
+						<!-- <view class="info-edit" @tap="openShowAuthPopup">
 							<image src="/static/info-edit.png" mode="scaleToFill" />
-						</view>
+						</view> -->
 					</view>
 					<view class="user-name-type">
 						{{ userInfo.type === 0 ? '普通' : userInfo.type === 1 ? '团长' : '' }}

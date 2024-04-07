@@ -182,9 +182,13 @@ export default {
 		},
 		// 直播间
 		liveBroadcast(){
-			uni.navigateTo({
-				url: "/pages/package-leader/pages/live-broadcast/live-broadcast"
-			})
+			uni.showToast({
+				title: '此功能暂未开放',
+				icon: "none",
+			});
+			// uni.navigateTo({
+			// 	url: "/pages/package-leader/pages/live-broadcast/live-broadcast"
+			// })
 		},
 		// 查询团长信息
 		getLeaderInformation() {

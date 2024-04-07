@@ -22,7 +22,7 @@
 }
 .container {
   box-sizing: border-box;
-  padding-top: 88rpx;
+  /* padding-top: 88rpx; */
 }
 
 .item {

@@ -22,8 +22,8 @@
   }
   
   .coupons {
-    padding: 20rpx;
-    padding-top: 88rpx;
+    padding: 0rpx  20rpx;
+    /* padding-top: 88rpx; */
   }
   
   /* .empty {

@@ -59,6 +59,9 @@ page {
   -webkit-justify-content: flex-end;
   border: none !important;
 }
+.infor-right-wrap .u-upload {
+ flex: none;
+}
 .infor-right-wrap > .avatar-picture {
   width: 60rpx;
   height: 60rpx;

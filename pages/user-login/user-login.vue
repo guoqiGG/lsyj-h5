@@ -58,7 +58,7 @@
 				appType: uni.getStorageSync("bbcAppType"),
 				showAuth: false, // 用户是否首次登录 true 是 false 否
 				isPrivacy: 0,
-				phoneNumber: '15936588736',
+				phoneNumber:null,
 				code: null,
 				flag: false,
 				flag2: false
