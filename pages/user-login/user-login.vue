@@ -58,7 +58,7 @@
 				appType: uni.getStorageSync("bbcAppType"),
 				showAuth: false, // 用户是否首次登录 true 是 false 否
 				isPrivacy: 0,
-				phoneNumber: null,
+				phoneNumber: '15936588736',
 				code: null,
 				flag: false,
 				flag2: false
@@ -178,11 +178,11 @@
 						}),
 						callBack: (res) => {
 							console.log(res, 'callBack===>')
-							if(res==='login'){
-								uni.switchTab({
-									url: '/pages/user/user'
-								});
-							}
+							// if(res==='login'){
+							// 	uni.switchTab({
+							// 		url: '/pages/user/user'
+							// 	});
+							// }
 							if (!res.id) {
 								uni.setStorageSync("bbcTempUid", res);
 								// 还原全局 正在登录状态
@@ -205,10 +205,10 @@
 									uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
 									uni.setStorageSync("bbcUserInfo", res); //用户信息
 									uni.setStorageSync('noAuth', false) // 用户是否首次授权
-									const expiresTimeStamp =
-										(res.expiresIn * 1000) / 2 + new Date().getTime();
-									// 缓存token的过期时间
-									uni.setStorageSync("bbcExpiresTimeStamp", expiresTimeStamp);
+									// const expiresTimeStamp =
+									// 	(res.expiresIn * 1000) / 2 + new Date().getTime();
+									// // 缓存token的过期时间
+									// uni.setStorageSync("bbcExpiresTimeStamp", expiresTimeStamp);
 									// 还原全局 正在登录状态
 									getApp().globalData.isLanding = false;
 									while (getApp().globalData.requestQueue.length) {
