@@ -135,7 +135,23 @@
 			},
 			// 获取验证码
 			getCode() {
-				if (this.phoneNumber && this.flag) {} else {
+				if (this.phoneNumber && this.flag) {
+					const params = {
+						url: '/pub/user/verification/code',
+						method: "POST",
+						data: JSON.stringify({
+							mobile: this.phoneNumber,
+						}),
+						callBack: (res) => {
+							uni.showToast({
+								title: res,
+								icon: "none",
+							});
+						},
+						
+					};
+					http.request(params);
+				} else {
 					uni.showToast({
 						title: '请先输入手机号',
 						icon: "none",
@@ -154,11 +170,11 @@
 			maskBtn() {
 				if (this.isPrivacy === 1 && this.phoneNumber && this.code) {
 					const params = {
-						url: '/pub/user/login/password',
+						url: '/pub/user/login/sms/code',
 						method: "POST",
 						data: JSON.stringify({
 							mobile: this.phoneNumber,
-							pwd: this.code,
+							smsCode: this.code,
 						}),
 						callBack: (res) => {
 							console.log(res, 'callBack===>')

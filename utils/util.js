@@ -4,15 +4,15 @@ const http = require("./http.js");
 // 检查是否授权
 const checkAuthInfo = (fn) => {
   const pages = getCurrentPages();
-  if (uni.getStorageSync("bbcToken")) {
+  // if (uni.getStorageSync("bbcToken")) {
     fn();
     return;
-  }
+  // }
   // 设置登录后的跳转地址
-  setRouteUrlAfterLogin();
-  uni.redirectTo({
-    url: "/pages/user-login/user-login",
-  });
+  // setRouteUrlAfterLogin();
+  // uni.redirectTo({
+  //   url: "/pages/user-login/user-login",
+  // });
 };
 
 /**

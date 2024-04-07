@@ -226,7 +226,6 @@ export default {
 	padding: 26rpx 22rpx;
 	background: #f2f2f2;
 	position: relative;
-
 	.leader-index-background {
 		position: absolute;
 		top: 0;

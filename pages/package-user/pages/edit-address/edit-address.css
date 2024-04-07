@@ -97,11 +97,10 @@ page {
 
 .btn-box .clear.btn {
   margin-top: 40rpx;
-  color: #F81A1A;
+ color: #F81A1A;
 }
 
 /* end 功能按钮 */
-
 .infoText {
   margin-top: 20rpx;
   text-align: center;
@@ -128,7 +127,7 @@ picker-view-column view {
   justify-content: center;
 }
 
-.animation-element-wrapper {
+/* .animation-element-wrapper {
   display: flex;
   position: fixed;
   left: 0;
@@ -149,14 +148,17 @@ picker-view-column view {
 }
 .animation-element /deep/ .uni-picker-view-content>* {
 	height: 70rpx !important;
+} */
+.section  /deep/ .uni-radio .uni-radio-input.uni-radio-input-checked::before {
+	background-color: plum !important;
 }
 
-.animation-button {
+/* .animation-button {
   top: 20rpx;
   width: 290rpx;
   height: 100rpx;
   align-items: center;
-}
+} */
 .placeholder-text{
   color: #999;
 }
@@ -209,3 +211,6 @@ picker-view text {
 .map{
   height:100%
 }
+
+
+

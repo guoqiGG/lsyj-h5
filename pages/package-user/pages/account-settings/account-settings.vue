@@ -32,7 +32,7 @@
       <view class="cloumn-item" @tap.stop="">
         <view class="txt-wrap">手机号码</view>
         <view class="right-img">
-          <view class="phone-number">{{ (userInfo.mobile).toString().replace(/^(.{3})(?:\d+)(.{4})$/, "$1****$2") }}</view>
+          <view class="phone-number" v-if="userInfo.mobile">{{ (userInfo.mobile).toString().replace(/^(.{3})(?:\d+)(.{4})$/, "$1****$2") }}</view>
         </view>
       </view>
     </view>

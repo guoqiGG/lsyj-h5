@@ -3,7 +3,7 @@
 		<view class="item-wrap">
 			<view class="cloumn-item">
 				<view class="txt-wrap">头像</view>
-				<button class="infor-right-wrap" style="background-color: transparent; margin: 0; padding: 0"
+				<view class="infor-right-wrap" style="background-color: transparent; margin: 0; padding: 0;border: none !important;"
 					open-type="chooseAvatar" @chooseavatar="getUploadImg">
 					<image class="avatar-picture" :src="photoFiles
 						? photoFiles
@@ -12,7 +12,7 @@
 							: '/static/head04.png'
 						" mode="scaleToFill" />
 					<image class="right-img" src="/static/arrow-right.png" mode="scaleToFill" />
-				</button>
+				</view>
 			</view>
 		</view>
 		<view class="item-wrap">
@@ -121,6 +121,7 @@ export default {
 		 * 上传图片
 		 */
 		getUploadImg: function (e) {
+			console.log(e,'eeeeeeeee')
 			var tempFilePaths = e.detail.avatarUrl;
 			const params = {
 				url: "/upload/oss",

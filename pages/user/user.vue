@@ -169,7 +169,7 @@
 		<hCompress ref="hCompress" />
 		<!-- 授权登录 -->
 		<view>
-			<u-popup :show="showAuth" closeable="true" @close="closeShowAuthPopup">
+			<u-popup :show="showAuth" :closeable="closeable" @close="closeShowAuthPopup">
 				<view class="con-container">
 					<view class="title"><text>氢春时代 申请</text></view>
 					<view class="desc">
@@ -209,7 +209,8 @@ export default {
 			isLeader: true, // 是否是团长
 			userInfo: {}, // 用户信息
 			isAuthInfo: false, //用户是否登录
-			showAuth: false // 显示授权用户信息
+			showAuth: false ,// 显示授权用户信息
+			closeable:true
 		}
 	},
 	components: {
@@ -394,9 +395,9 @@ export default {
 }
 
 .background {
-	position: fixed;
-	left: 0rpx;
-	top: 0rpx;
+	position: absolute;
+	top: 0;
+	left: 0;
 	width: 100vw;
 	height: 574rpx;
 	z-index: 3;
@@ -404,11 +405,12 @@ export default {
 }
 
 .user {
-	position: fixed;
+	position: absolute;
 	box-sizing: border-box;
 	overflow-x: hidden;
 	padding: 0 20rpx;
 	width: 100vw;
+
 	z-index: 5;
 
 	.user-login {

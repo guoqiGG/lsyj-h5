@@ -3,8 +3,8 @@
     display: flex;
     justify-content: space-around;
     font-size: 32rpx;
-    position: fixed;
-    top: 0;
+/*   position: fixed;
+    top: 0; */
     z-index: 1000;
     width: 100%;
     background: #fff;

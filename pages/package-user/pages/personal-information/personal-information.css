@@ -57,6 +57,7 @@ page {
 .infor-right-wrap {
   justify-content: flex-end;
   -webkit-justify-content: flex-end;
+  border: none !important;
 }
 .infor-right-wrap > .avatar-picture {
   width: 60rpx;

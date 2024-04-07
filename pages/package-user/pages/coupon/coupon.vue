@@ -2,7 +2,6 @@
   <!-- 我的优惠券 -->
   <view class="Mall4j container">
     <view class="h-tabs">
-      <!-- 0待使用 1已使用 2已过期 -->
       <view :class="'h-tab ' + (status == 0 ? 'on' : '')" data-status="0" @tap="changeTab">未使用</view>
       <view :class="'h-tab ' + (status == 1 ? 'on' : '')" data-status="1" @tap="changeTab">使用记录</view>
       <view :class="'h-tab ' + (status == 2 ? 'on' : '')" data-status="2" @tap="changeTab">已过期</view>
@@ -15,7 +14,7 @@
     </view>
 
     <!-- 空列表或加载全部提示 -->
-    <EmptyAllTips v-if="isLoaded" :isEmpty="!couponList.length || couponList == []" :emptyTips="i18n.couponTips"
+   <EmptyAllTips v-if="isLoaded" :isEmpty="!couponList.length || couponList == []" :emptyTips=" '暂无更多内容' "
       :isAll="isAll" />
   </view>
 </template>
@@ -36,7 +35,8 @@ export default {
       current: 1,
       pageSize: 20,
       isLoaded: false,
-      userId: 0
+      userId: 0,
+	  isAll:false,
     }
   },
 
@@ -50,9 +50,9 @@ export default {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    uni.setNavigationBarTitle({
-      title: '我的优惠券'
-    })
+	  uni.setNavigationBarTitle({
+	    title: '我的优惠券'
+	  })
     if (uni.getStorageSync('bbcUserInfo')) {
       this.userId = uni.getStorageSync('bbcUserInfo').id
     }

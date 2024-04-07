@@ -1,7 +1,7 @@
 <template>
   <view class="Mall4j container">
     <!--input列表 -->
-    <view v-if="!isMap" class="input-box">
+    <view  class="input-box">
       <view class="section">
         <text>收件人</text>
         <input placeholder="请输入收件人名字" type="text" maxlength="15" :value="name" @input="onReceiverInput" />
@@ -17,19 +17,19 @@
       </view>
       <view class="section">
         <text>默认地址</text>
-        <radio-group>
+        <radio-group activeColor="#005AFF">
           <label class="radio" data-default="1" @tap="onDefaultAddr">
-            <radio :checked="isDefault == 1" color="#005AFF" />是
+            <radio :checked="isDefault == 1" color="#005AFF" activeColor="#005AFF" />是
           </label>
           <label style="margin-left: 10rpx;" class="radio" data-default="0" @tap="onDefaultAddr">
-            <radio :checked="isDefault == 0" color="#005AFF" />否
+            <radio :checked="isDefault == 0" color="#005AFF" activeColor="#005AFF"/>否
           </label>
         </radio-group>
       </view>
     </view>
     <!-- end input列表 -->
     <!-- 功能按钮 -->
-    <view v-if="!isMap" class="btn-box">
+    <view  class="btn-box">
       <view class="keep btn" @tap="onSaveAddr">
         <text>保存收货地址</text>
       </view>
