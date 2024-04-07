@@ -1,7 +1,9 @@
 <template>
-	<view class="con">
+	<view class="con" style="position: relative;">
 		<image class="login_bg" src="/static/login/login_bg.png" mode="widthFix" />
-		<!-- <image class=""  style="width: 196rpx;height: 196rpx;border-radius: 12rpx; " src="/static/login/logo.png" mode="widthFix" /> -->
+		<image class=""
+			style="width: 196rpx;height: 196rpx;border-radius: 12rpx;position: absolute;left:278rpx;top: 120rpx; "
+			src="/static/login/logo.png" mode="widthFix" />
 		<!-- 微信登录 -->
 		<view class="login-form">
 			<!-- 按钮 -->
@@ -53,14 +55,9 @@
 		},
 		data() {
 			return {
-				code: "",
-				isPrivacy: 0,
 				appType: uni.getStorageSync("bbcAppType"),
-				privacyNumber: "",
 				showAuth: false, // 用户是否首次登录 true 是 false 否
-				name: '',
-				avatar: '',
-
+				isPrivacy: 0,
 				phoneNumber: null,
 				code: null,
 				flag: false,
@@ -73,7 +70,6 @@
 		 * 生命周期函数--监听页面加载
 		 */
 		onLoad: function(options) {
-
 			// 头部导航标题
 			uni.setNavigationBarTitle({
 				title: '用户登录',
@@ -139,9 +135,7 @@
 			},
 			// 获取验证码
 			getCode() {
-				if (this.phoneNumber && this.flag) {
-					console.log(this.phoneNumber, this.code, '获取验证码')
-				} else {
+				if (this.phoneNumber && this.flag) {} else {
 					uni.showToast({
 						title: '请先输入手机号',
 						icon: "none",
@@ -160,45 +154,65 @@
 			maskBtn() {
 				if (this.isPrivacy === 1 && this.phoneNumber && this.code) {
 					console.log(this.isPrivacy, this.phoneNumber, this.code, '立即登录')
-					// uni.request({
-					// 	url: '/api' + '/pub/user/login/password', //  /api要与上面的/api一致
-					// 	method: 'POST',
-					// 	data: JSON.stringify({
-					// 		mobile: this.phoneNumber,
-					// 		pwd: this.code,
-					// 	}),
-					// 	success: (res) => {
-					// 			console.log(res,'res')
-					// 		if (res.statusCode == 200) {
-					// 			console.log(res.data)
-					// 		} else {
-					// 			uni.showToast({
-					// 				title: res.data.ErrorMessage,
-					// 				icon: 'none'
-					// 			})
-					// 		}
-					// 	},
-					// 	fail: (err) => {
-					// 		uni.showToast({
-					// 			title: err.ErrorMessage,
-					// 			icon: 'none'
-					// 		})
-					// 	},
-					// });
-
 					const params = {
-						// url: "/pub/user/login/password",
-					url: '/pub/user/login/password',
+						url: '/pub/user/login/password',
 						method: "POST",
 						data: JSON.stringify({
 							mobile: this.phoneNumber,
 							pwd: this.code,
 						}),
 						callBack: (res) => {
-							console.log(res,'res')
+							console.log(res, 'callBack===>')
+							if (!res.id) {
+								uni.setStorageSync("bbcTempUid", res);
+								// 还原全局 正在登录状态
+								getApp().globalData.isLanding = false;
+								while (getApp().globalData.requestQueue.length) {
+									http.request(getApp().globalData.requestQueue.pop());
+									getApp().globalData.currentReqCounts--;
+								}
+								if (uni.getStorageSync('noAuth')) {
+									this.showAuth = true
+								} else {
+									this.showAuth = false
+								}
+							} else {
+								uni.setStorageSync("bbcTempUid", res.openId);
+								if (res.loginToken) {
+									uni.setStorageSync("bbcIsPrivacy", 1);
+									uni.setStorageSync("bbcHadLogin", true);
+									uni.setStorageSync("bbcToken", res.loginToken);
+									uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
+									uni.setStorageSync("bbcUserInfo", res); //用户信息
+									uni.setStorageSync('noAuth', false) // 用户是否首次授权
+									const expiresTimeStamp =
+										(res.expiresIn * 1000) / 2 + new Date().getTime();
+									// 缓存token的过期时间
+									uni.setStorageSync("bbcExpiresTimeStamp", expiresTimeStamp);
+									// 还原全局 正在登录状态
+									getApp().globalData.isLanding = false;
+									while (getApp().globalData.requestQueue.length) {
+										http.request(getApp().globalData.requestQueue.pop());
+									}
+									// 返回未登录前点击的页面
+									util.previousPage()
+								}
+							}
 						},
-						errCallBack: (err) => {
-							console.log(err,'err')
+						errCallBack: () => {
+							// 还原全局 正在登录状态
+							getApp().globalData.isLanding = false;
+							while (getApp().globalData.requestQueue.length) {
+								http.request(getApp().globalData.requestQueue.pop());
+								getApp().globalData.currentReqCounts--;
+							}
+							uni.removeStorageSync("bbcLoginResult");
+							uni.removeStorageSync("bbcToken");
+							uni.removeStorageSync("bbcHadBindUser");
+							uni.removeStorageSync("bbcCode");
+							uni.removeStorageSync("bbcUserInfo");
+							uni.removeStorageSync("bbcExpiresTimeStamp");
+							uni.removeStorageSync("noAuth");
 						},
 					};
 					http.request(params);
@@ -210,186 +224,16 @@
 				}
 
 			},
-			/**
-			 * 通过微信返回的code登录
-			 * @param {String} code 请求微信返回的 code
-			 */
-			loginByCode(code) {
-				const params = {
-					url: "/pub/user/login/auth",
-					method: "POST",
-					data: JSON.stringify({
-						code: code,
-						loginType: 1
-					}),
-					callBack: (res) => {
-						if (!res.id) {
-							uni.setStorageSync("bbcTempUid", res);
-							// 还原全局 正在登录状态
-							getApp().globalData.isLanding = false;
-							while (getApp().globalData.requestQueue.length) {
-								http.request(getApp().globalData.requestQueue.pop());
-								getApp().globalData.currentReqCounts--;
-							}
-							if (uni.getStorageSync('noAuth')) {
-								this.showAuth = true
-							} else {
-								this.showAuth = false
-							}
-						} else {
-							uni.setStorageSync("bbcTempUid", res.openId);
-							if (res.loginToken) {
-								uni.setStorageSync("bbcIsPrivacy", 1);
-								uni.setStorageSync("bbcHadLogin", true);
-								uni.setStorageSync("bbcToken", res.loginToken);
-								uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
-								uni.setStorageSync("bbcUserInfo", res); //用户信息
-								uni.setStorageSync('noAuth', false) // 用户是否首次授权
-								const expiresTimeStamp =
-									(res.expiresIn * 1000) / 2 + new Date().getTime();
-								// 缓存token的过期时间
-								uni.setStorageSync("bbcExpiresTimeStamp", expiresTimeStamp);
-								// 还原全局 正在登录状态
-								getApp().globalData.isLanding = false;
-								while (getApp().globalData.requestQueue.length) {
-									http.request(getApp().globalData.requestQueue.pop());
-								}
-								// 返回未登录前点击的页面
-								util.previousPage()
-							}
-						}
-					},
-					errCallBack: () => {
-						// 还原全局 正在登录状态
-						getApp().globalData.isLanding = false;
-						while (getApp().globalData.requestQueue.length) {
-							http.request(getApp().globalData.requestQueue.pop());
-							getApp().globalData.currentReqCounts--;
-						}
-						uni.removeStorageSync("bbcLoginResult");
-						uni.removeStorageSync("bbcToken");
-						uni.removeStorageSync("bbcHadBindUser");
-						uni.removeStorageSync("bbcCode");
-						uni.removeStorageSync("bbcUserInfo");
-						uni.removeStorageSync("bbcExpiresTimeStamp");
-						uni.removeStorageSync("noAuth");
-					},
-				};
-				http.request(params);
-			},
-
-
-			/**
-			 * 微信小程序获取手机号一键登录按钮
-			 */
-			getPhoneNumberLogin(e) {
-				// 拒绝了授权
-				if (!e.detail.code) {
-					return;
-				}
-				const params = {
-					url: "/pub/user/login/auth",
-					method: "POST",
-					data: JSON.stringify({
-						code: e.detail.code,
-						loginType: 2,
-						openid: uni.getStorageSync('bbcTempUid'),
-						name: this.name,
-						avatar: this.avatar
-					}),
-					callBack: (res) => {
-						if (res.loginToken) {
-							uni.setStorageSync("bbcIsPrivacy", 1);
-							uni.setStorageSync("bbcHadLogin", true);
-							uni.setStorageSync("bbcToken", res.loginToken);
-							uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
-							uni.setStorageSync("bbcUserInfo", res); //用户信息
-							uni.setStorageSync('noAuth', false) // 用户是否首次授权
-							const expiresTimeStamp =
-								(res.expiresIn * 1000) / 2 + new Date().getTime();
-							// 缓存token的过期时间
-							uni.setStorageSync("bbcExpiresTimeStamp", expiresTimeStamp);
-							// 还原全局 正在登录状态
-							getApp().globalData.isLanding = false;
-							while (getApp().globalData.requestQueue.length) {
-								http.request(getApp().globalData.requestQueue.pop());
-							}
-							// 返回未登录前点击的页面
-							util.previousPage()
-						}
-					},
-					errCallBack: (err) => {
-						console.log(err)
-						this.loginErrHandle(err);
-					},
-				};
-				http.request(params);
-			},
-
-
-
-
-			/**
-			 * 登录异常
-			 */
-			loginErrHandle(err) {
-				if (
-					err.code === 500
-				) {
-					uni.showToast({
-						title: err.msg || "Error",
-						icon: "none",
-					});
-				}
-
-
-			},
-
-			/**
-			 * 回到首页
-			 */
+			// 回到首页
 			toIndex() {
 				util.toHomePage();
 			},
-			/**
-			 * 去服务条款和隐私协议页面
-			 */
+			// 去服务条款和隐私协议页面
 			toTermsOfService(key) {
 				uni.navigateTo({
 					url: "/pages/package-user/pages/terms-page/terms-page?sts=" + key,
 				});
 			},
-			/**
-			 * 头像
-			 */
-			getUploadImg: function(e) {
-				var tempFilePaths = e.detail.avatarUrl;
-				const params = {
-					url: "/upload/oss",
-					filePath: tempFilePaths,
-					name: "file",
-					callBack: (res2) => {
-						this.avatar = res2
-					},
-				};
-				const obj = {
-					src: tempFilePaths,
-					quality: 0.2,
-				};
-				this.$refs.hCompress.compress(obj, e.detail.avatarUrl).then((res) => {
-					params.filePath = res;
-					http.upload(params);
-				});
-			},
-			// 用户昵称
-			getNickNameInt: function(e) {
-				this.name = e.detail.value;
-			},
-			save() {
-				if (this.name.trim() && this.avatar) {
-					this.showAuth = false
-				}
-			}
 		},
 	};
 </script>
