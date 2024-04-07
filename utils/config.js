@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "development") {
 
 // =============== 自定义测试环境 ===============
 if (process.env.VUE_APP_CUSTOM_ENV === "test") {
-  domain = "http://192.168.110.64:8072";
+  domain = "http://192.168.110.69:8072";
 }
 exports.mpAppName = mpAppName;
 exports.domain = domain;

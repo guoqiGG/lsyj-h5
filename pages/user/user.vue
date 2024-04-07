@@ -217,7 +217,6 @@ export default {
 	},
 
 	onShow: function () {
-
 		if (uni.getStorageSync("bbcToken")) {
 			this.isAuthInfo = true;
 			this.userInfo = uni.getStorageSync('bbcUserInfo')

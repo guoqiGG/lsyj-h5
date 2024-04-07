@@ -8,23 +8,24 @@
     "^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
   },
   "pages": [
-    {
-      "path": "pages/index/index",
-      "style": {
-        "backgroundTextStyle": "dark",
-        "enablePullDownRefresh": true,
-        "navigationStyle": "custom",
-        "navigationBarTextStyle": "white"
-      }
-    },
-    {
-      "path": "pages/user-login/user-login",
-      "style": {
-        "navigationBarTitleText": "用户登录",
-        "navigationBarBackgroundColor": "#025BFF",
-        "navigationBarTextStyle": "white"
-      }
-    },
+	  {
+	    "path": "pages/user-login/user-login",
+	    "style": {
+	      "navigationBarTitleText": "用户登录",
+	      "navigationBarBackgroundColor": "#025BFF",
+	      "navigationBarTextStyle": "white"
+	    }
+	  },
+	  {
+	    "path": "pages/user/user",
+	    "style": {
+	      "navigationBarTitleText": "个人中心",
+	      "navigationBarBackgroundColor": "#025BFF",
+	      "navigationBarTextStyle": "white"
+	    }
+	  },
+
+    
     {
       "path": "pages/category/category",
       "style": {
@@ -34,14 +35,15 @@
         "enablePullDownRefresh": false
       }
     },
-    {
-      "path": "pages/user/user",
-      "style": {
-        "navigationBarTitleText": "个人中心",
-        "navigationBarBackgroundColor": "#025BFF",
-        "navigationBarTextStyle": "white"
-      }
-    }
+ {
+   "path": "pages/index/index",
+   "style": {
+     "backgroundTextStyle": "dark",
+     "enablePullDownRefresh": true,
+     "navigationStyle": "custom",
+     "navigationBarTextStyle": "white"
+   }
+ }
     // ,
     // {
     //   "path": "pages/discover/discover",

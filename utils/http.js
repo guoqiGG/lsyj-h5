@@ -20,9 +20,11 @@ function request(params) {
   } else if (Object.prototype.toString.call(params.data) == "[object Number]") {
     params.data = params.data + "";
   }
-
+	console.log(params,'params================')
+ const BaseHost = '/api'
   uni.request({
-    url: (params.domain ? params.domain : config.domain) + params.url,
+    // url: (params.domain ? params.domain : config.domain) + params.url,
+	  url:BaseHost + params.url,
     // 接口请求地址
     data: params.data,
     header: {
@@ -96,7 +98,7 @@ function request(params) {
           });
         }
         if (params.errCallBack) {
-          params.errCallBack(responseData);
+          params.errCallBack(responseData,'params.errCallBack==========');
         }
         return;
       }
