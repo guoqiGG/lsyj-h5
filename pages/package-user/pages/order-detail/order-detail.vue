@@ -7,37 +7,37 @@
 		<view class="order-detail-status">
 			<view class="order-detail-status-content">
 				<view class="status-img-box">
-					<image v-if="orderDetail.orderStatus>1&&orderDetail.orderStatus!=5" class="status-img"
+					<image v-if="orderDetail.orderStatus&&orderDetail.orderStatus>1&&orderDetail.orderStatus!=5" class="status-img"
 						src="/pages/package-user/static/order-detail-status.png" mode=""></image>
 					<image v-else class="status-img" src="/pages/package-user/static/order-detail-status2.png" mode="">
 					</image>
 				</view>
 				<view class="status-text"
-					:class="orderDetail.orderStatus>1&&orderDetail.orderStatus!=5?'isSelectColor':''">
+					:class="orderDetail.orderStatus&&orderDetail.orderStatus>1&&orderDetail.orderStatus!=5?'isSelectColor':''">
 					买家付款
 				</view>
 			</view>
 			<view class="order-detail-status-content">
 				<view class="status-img-box">
-					<image v-if="orderDetail.orderStatus>2&&orderDetail.orderStatus!=5" class="status-img"
+					<image v-if="orderDetail.orderStatus&&orderDetail.orderStatus>2&&orderDetail.orderStatus!=5" class="status-img"
 						src="/pages/package-user/static/order-detail-status.png" mode=""></image>
 					<image v-else class="status-img" src="/pages/package-user/static/order-detail-status2.png" mode="">
 					</image>
 				</view>
 				<view class="status-text"
-					:class="orderDetail.orderStatus>2&&orderDetail.orderStatus!=5?'isSelectColor':''">
+					:class="orderDetail.orderStatus&&orderDetail.orderStatus>2&&orderDetail.orderStatus!=5?'isSelectColor':''">
 					商品发货
 				</view>
 			</view>
 			<view class="order-detail-status-content">
 				<view class="status-img-box">
-					<image v-if="orderDetail.orderStatus>3&&orderDetail.orderStatus!=5" class="status-img"
+					<image v-if="orderDetail.orderStatus&&orderDetail.orderStatus>3&&orderDetail.orderStatus!=5" class="status-img"
 						src="/pages/package-user/static/order-detail-status.png" mode=""></image>
 					<image v-else class="status-img" src="/pages/package-user/static/order-detail-status2.png" mode="">
 					</image>
 				</view>
 				<view class="status-text"
-					:class="orderDetail.orderStatus>3&&orderDetail.orderStatus!=5?'isSelectColor':''">
+					:class="orderDetail.orderStatus&&orderDetail.orderStatus>3&&orderDetail.orderStatus!=5?'isSelectColor':''">
 					交易完成
 				</view>
 			</view>
@@ -60,11 +60,11 @@
 
 		<!-- 产品 -->
 		<view class="product">
-			<view class="product_icon">
-				<image style="width: 100%;height: 100%;" :src="orderDetail.orderGoods[0].thumbail" mode=""></image>
+			<view class="product_icon" v-if="orderDetail.orderGoods&&orderDetail.orderGoods.length>0">
+				<image  style="width: 100%;height: 100%;" :src="orderDetail.orderGoods[0].thumbail" mode=""></image>
 			</view>
-			<view class="right">
-				<view class="name">
+			<view class="right" v-if="orderDetail.orderGoods&&orderDetail.orderGoods.length>0">
+				<view class="name" >
 					{{orderDetail.orderGoods[0].title}}
 				</view>
 				<view class="price_box">
@@ -73,12 +73,12 @@
 						<text style="color: #979797;margin-left: 20rpx;">{{orderDetail.goodsCount}}件</text>
 					</view>
 					<view class="btn" @click="applyRefund(orderDetail.orderId)"
-						v-if="orderDetail.orderStatus==2&&orderDetail.isCanApplyRefund==1">
+						v-if="orderDetail.orderStatus&&orderDetail.orderStatus==2&&orderDetail.isCanApplyRefund==1">
 						<!-- isCanApplyRefund==1可以申请0,不可申请 -->
 						申请退款
 					</view>
 					<view class="btn" @click="receive(orderDetail.orderId)"
-						v-if="orderDetail.orderStatus==3">
+						v-if="orderDetail.orderStatus&&orderDetail.orderStatus==3">
 						确认收货
 					</view>
 				
@@ -125,7 +125,7 @@
 			</view>
 		</view>
 		<view class="refundBtn" @click="applyRefund(orderDetail.orderId)"
-		v-if="orderDetail.orderStatus==2&&orderDetail.isCanApplyRefund==1"
+		v-if="orderDetail.orderStatus&&orderDetail.orderStatus==2&&orderDetail.isCanApplyRefund==1"
 			>
 			<view class="btn">
 				整单退款
@@ -133,7 +133,7 @@
 			
 		</view>
 		<view class="refundBtn" @click="receive(orderDetail.orderId)"
-		v-if="orderDetail.orderStatus==3"
+		v-if="orderDetail.orderStatus&&orderDetail.orderStatus==3"
 			>
 			<view class="btn">
 				确认收货
@@ -152,7 +152,7 @@
 			return {
 				orderId: null, //订单id
 				loginToken: null,
-				orderDetail: null,
+				orderDetail: {},
 			}
 		},
 		onLoad(option) {

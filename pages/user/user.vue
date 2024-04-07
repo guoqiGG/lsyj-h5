@@ -225,6 +225,9 @@ export default {
 			this.getDefaultAddress()
 		} else {
 			this.isAuthInfo = false;
+			uni.redirectTo({
+			  url: "/pages/user-login/user-login",
+			});
 		}
 	},
 	methods: {

@@ -40,7 +40,7 @@ const previousPage = () => {
 
   if (pages.length === 1) {
     uni.reLaunch({
-      url: routeUrlAfterLogin || "/pages/index/index",
+      url: routeUrlAfterLogin || "/pages/user/user",
     });
     uni.removeStorageSync("bbcRouteUrlAfterLogin");
     return;
@@ -48,7 +48,8 @@ const previousPage = () => {
 
   const prevPage = pages[pages.length - 2];
   if (!prevPage) {
-    util.toHomePage();
+    // util.toHomePage();
+	 uni.switchTab({ url: "/pages/index/index" });
     return;
   }
 

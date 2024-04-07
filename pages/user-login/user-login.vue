@@ -178,11 +178,6 @@ export default {
 					}),
 					callBack: (res) => {
 						console.log(res, 'callBack===>')
-						// if(res==='login'){
-						// 	uni.switchTab({
-						// 		url: '/pages/user/user'
-						// 	});
-						// }
 						if (!res.id) {
 							uni.setStorageSync("bbcTempUid", res);
 							// 还原全局 正在登录状态
