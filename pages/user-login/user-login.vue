@@ -153,7 +153,6 @@
 			// 立即登录
 			maskBtn() {
 				if (this.isPrivacy === 1 && this.phoneNumber && this.code) {
-					console.log(this.isPrivacy, this.phoneNumber, this.code, '立即登录')
 					const params = {
 						url: '/pub/user/login/password',
 						method: "POST",
@@ -163,6 +162,11 @@
 						}),
 						callBack: (res) => {
 							console.log(res, 'callBack===>')
+							if(res==='login'){
+								uni.switchTab({
+									url: '/pages/user/user'
+								});
+							}
 							if (!res.id) {
 								uni.setStorageSync("bbcTempUid", res);
 								// 还原全局 正在登录状态
