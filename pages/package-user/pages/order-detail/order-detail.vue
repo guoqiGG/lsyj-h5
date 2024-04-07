@@ -179,6 +179,7 @@
 					},
 					callBack: (res) => {
 						this.orderDetail = res
+						console.log(this.orderDetail)
 					},
 				}
 				http.request(params);

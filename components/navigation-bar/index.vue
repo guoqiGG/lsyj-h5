@@ -111,7 +111,7 @@ export default {
     }
   },
   mounted() {
-    this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
+    // this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
   },
   methods: {
     $turnPage(x, y) {

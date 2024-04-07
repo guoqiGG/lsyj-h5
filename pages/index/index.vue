@@ -2,10 +2,8 @@
 	<view class="main">
 		<view class="top">
 			<!-- 导航&公告 -->
-			<!-- #ifndef H5-->
 			<navigationBar v-if="navigationBarIsShow" bg-color="bg-gradual-pink" :show-back="false"
 				:navigation-bar-style="tabConfig" :is-left="false" :is-bg-img="isBgImg" :title="title" />
-			<!-- #endif -->
 			<view :class="['news-swiper']">
 				<!-- 消息播放 -->
 				<view style="
@@ -14,9 +12,9 @@
             height: 280rpx;
             background: #005aff;
           ">
-					<view class="message-play">
+					<view class="message-play" style="margin-top: 50rpx;">
 						<image src="/static/horn.png" class="hornpng" />
-						<view class="scroll-news-content" :style="'transform: translateX(' + move + 'px);'">
+						<view class="scroll-news-content">
 							<view class="news-content">
 								<view class="news-text">走进氢春态，省钱成常态！进入直播间，福利不间断！</view>
 							</view>

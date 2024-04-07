@@ -1,7 +1,7 @@
 <template>
   <view class="Mall4j prod-items" @tap="toProdPage">
     <view class="hot-imagecont">
-      <image v-if="item.thumbail" :src="srcToShow" class="hotsaleimg" mode="aspectFit" @error="handlePicError" />
+      <image v-if="item.thumbail" :src="srcToShow" class="hotsaleimg"  @error="handlePicError" />
       <image v-else src="/static/def.png" mode="aspectFit" class="hotsaleimg" />
     </view>
     <view class="hot-text">
@@ -35,7 +35,8 @@ export default {
   data() {
     return {
       isPicError: false,
-      sub: 10
+      sub: 10,
+      showCancelCollect:false
     }
   },
 

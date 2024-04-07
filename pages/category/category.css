@@ -174,7 +174,7 @@ uni-page-wrapper {
 .rightcontent {
   width: 75%;
   /*  #ifndef  MP-WEIXIN  */
-  padding-bottom: 100rpx;
+  padding-bottom: 200rpx;
   /*  #endif  */
   box-sizing: border-box;
   background-color: #f5f5f5;
