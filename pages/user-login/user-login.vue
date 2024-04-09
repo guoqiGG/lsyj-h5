@@ -40,6 +40,7 @@
 	</view>
 </template>
 
+
 <script>
 	const http = require("@/utils/http");
 	const util = require("@/utils/util.js");
@@ -103,54 +104,10 @@
 			uni.setNavigationBarTitle({
 				title: '用户登录'
 			});
-			// if (getApp().globalData.isLanding) return;
-			// // 改变全局中登录
-			// const globalData = getApp().globalData;
-			// globalData.isLanding = true;
-			// wx.login({
-			// 	success: (res) => {
-			// 		// 用code 请求登录
-			// 		this.loginByCode(res.code);
-			// 	},
-			// });
-		},
-		methods: {
-			// getWeChatCode() {
-			// 	//用于退出登录回来不会再调一次授权登录
-			// 	uni.setStorageSync('wechat_login_tag', 'true');
-			// 	const appID = 'wxa2a6315d32072c7e'; //公众号appID
-			// 	// http://192.168.110.24:8080/#/pages/user-login/user-login
-			// 	const callBack = 'http://h5.hnliyue.cn:8088/#/pages/user-login/user-login'; //回调地址 就是你的完整地址登录页
 
-			// 	//通过微信官方接口获取code之后，会重新刷新设置的回调地址【redirect_uri】
-			// 	window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
-			// 		appID + '&redirect_uri=' + encodeURIComponent(callBack) +
-			// 		'&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
-			// },
-			// // 重定向回来本页面检查有没有code
-			// checkWeChatCode() {
-			//     let code = this.getUrlCode('code');
-			//     if(code) {
-			//         this.handleToLogin(code)
-			//     }
-			// },
-			// // 正则匹配请求地址中的参数函数
-			// getUrlCode(name) {
-			//     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) ||[, ''])[1].replace(/\+/g, '%20')) || null
-			// },
-			// handleToLogin(code) {
-			// 	console.log(code,'handleToLogin')
-			//     loginIn({
-			//         code,
-			//     }).then(res => {
-			//         console.log('登录成功')
-			//         uni.redirectTo({
-			//             url: '/pages/index/index'
-			//         })
-			//     })
-			// },
-			
-			
+		},
+		
+		methods: {
 			phoneChange(e) {
 				const reg = /^1\d{10}$/
 				if (reg.test(e)) {

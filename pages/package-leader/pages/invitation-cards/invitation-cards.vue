@@ -51,9 +51,14 @@ export default {
         getInvitationCode() {
             // 请求小程序菊花码
             const params = {
-                url: '/pub/leader/qr/code?scene=' + this.leaderInfo.id,
-                method: 'GET',
-                responseType: 'arraybuffer',
+                // url: '/pub/leader/qr/code?scene=' + this.leaderInfo.id,
+				url: "/api/h5/user/leader/binding",
+                method: 'POST',
+				responseType: 'arraybuffer',
+				data: {
+					sign: 'qcsd',
+					data: JSON.stringify({scene: this.leaderInfo.id}),
+				},
                 callBack: (res) => {
                     this.shareWxCode = 'data:image/jpg;base64,' + wx.arrayBufferToBase64(res)
                 }
