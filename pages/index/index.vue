@@ -92,6 +92,8 @@
 <script>
 import navigationBar from '@/components/navigation-bar/index.vue'
 import { mpAppName } from '@/utils/config';
+	// 引入wxjs
+	import wx from "weixin-js-sdk";
 const util = require("@/utils/util.js");
 const http = require("@/utils/http.js");
 export default {
@@ -181,6 +183,10 @@ export default {
 			imageUrl: '/static/logo.png'
 		}
 	},
+	created() {
+		// 调用分享的事件
+		this.getShareInfo();
+	},
 
 	data() {
 		return {
@@ -223,6 +229,54 @@ export default {
 		console.log('Banner 广告关闭')
 	},
 	methods: {
+		getShareInfo() {
+			console.log('获取url链接')
+			//获取url链接（如果有#需要这么获取）
+			var url = encodeURIComponent(window.location.href.split("#")[0]);
+			console.log('获取url链接', url)
+			//获取url链接（如果没有#需要这么获取）
+			// var url = encodeURIComponent(window.location.href);
+			const params = {
+				url: '/wx/h5/getSing?url=' + url,
+				method: "GET",
+				callBack: (res) => {
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有 api 的返回值会在客户端 alert 出来，若要查看传入的参数，可以在 pc 端打开，参数信息会通过 log 打出，仅在 pc 端时才会打印。
+						appId: res.appId, // 必填，公众号的唯一标识
+						timestamp: parseInt(res.timestamp), // 必填，生成签名的时间戳
+						nonceStr: res.nonceStr, // 必填，生成签名的随机串
+						signature: res.signature, // 必填，签名
+						jsApiList: [
+							"updateAppMessageShareData",
+							"updateTimelineShareData"
+						] // 必填，需要使用的 JS 接口列表
+					});
+					
+					wx.ready(() => {
+						var shareData = {
+							title: "氢春时代",
+							desc: "2024年04月09日",
+							link: window.location.href,
+							imgUrl: "http://qingchuntaijava1.oss-cn-beijing.aliyuncs.com/2023/12/43d35a023a344097854affcaecb664bf.jpg"
+						};
+						//自定义“分享给朋友”及“分享到QQ”按钮的分享内容
+						wx.updateAppMessageShareData(shareData);
+						//自定义“分享到朋友圈”及“分享到 QQ 空间”按钮的分享内容（1.4.0）
+						wx.updateTimelineShareData(shareData);
+					});
+					//错误了会走 这里
+					wx.error(function(res) {
+						console.log("微信分享错误信息", res);
+					});
+		
+				},
+		
+			};
+			http.request(params);
+		},
+		
+		
+		
 		// 跳转到青春豆兑换专区
 		goConvert() {
 			util.checkAuthInfo(() => {

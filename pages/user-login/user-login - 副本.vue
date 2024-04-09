@@ -53,6 +53,10 @@
 	} from "assert";
 	// 引入wxjs
 	import wx from "weixin-js-sdk";
+	const jweixin = require('jweixin-module')
+	import sha1 from 'sha1'
+	import randomString from '@/utils/randomString.js'
+
 	export default {
 		props: {},
 		components: {
@@ -70,10 +74,7 @@
 				// codeText:null,
 			};
 		},
-		created() {
-			// 调用分享的事件
-			// this.getShareInfo();
-		},
+
 
 		/**
 		 * 生命周期函数--监听页面加载
@@ -111,8 +112,146 @@
 			});
 
 		},
-
+		created() {
+			// 调用分享的事件
+			// this.getShareInfo();
+		},
+		 onLaunch() {
+			 // 调用分享的事件
+		        this.weiXinShareFn()
+		 },
 		methods: {
+			// getWeChatCode() {
+			// 	//用于退出登录回来不会再调一次授权登录
+			// 	uni.setStorageSync('wechat_login_tag', 'true');
+			// 	const appID = 'wxa2a6315d32072c7e'; //公众号appID
+			// 	// http://192.168.110.24:8080/#/pages/user-login/user-login
+			// 	const callBack = 'http://h5.hnliyue.cn:8088/#/pages/user-login/user-login'; //回调地址 就是你的完整地址登录页
+
+			// 	//通过微信官方接口获取code之后，会重新刷新设置的回调地址【redirect_uri】
+			// 	window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' +
+			// 		appID + '&redirect_uri=' + encodeURIComponent(callBack) +
+			// 		'&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect'
+			// },
+			// // 重定向回来本页面检查有没有code
+			// checkWeChatCode() {
+			//     let code = this.getUrlCode('code');
+			//     if(code) {
+			//         this.handleToLogin(code)
+			//     }
+			// },
+			// // 正则匹配请求地址中的参数函数
+			// getUrlCode(name) {
+			//     return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.href) ||[, ''])[1].replace(/\+/g, '%20')) || null
+			// },
+			// handleToLogin(code) {
+			// 	console.log(code,'handleToLogin')
+			//     loginIn({
+			//         code,
+			//     }).then(res => {
+			//         console.log('登录成功')
+			//         uni.redirectTo({
+			//             url: '/pages/index/index'
+			//         })
+			//     })
+			// },
+			weiXinShareFn() {
+				// 获取url
+				const linkUrl = window.location.href.split('#')[0]
+				const u = navigator.userAgent
+				const isWeixin = u.toLowerCase().indexOf('micromessenger') !== -1
+				// 判断当前是否在微信浏览器内
+				if (isWeixin) {
+					// 这里需要请求后端配置的接口
+					uni.request({
+						url: 'http://xxxxxx',
+						method: 'GET',
+						data: {
+							code: 'cws_gzh'
+						},
+						success: res => {
+							//返回jsapi码
+							const ticket = res.data.ticket || ''
+							//时间戳
+							const timestamp = Math.round(new Date().getTime() / 1000).toString()
+							//随机字符串
+							const nonceStr = randomString()
+							//签名算法(微信给的格式)
+							const jsons =
+								`jsapi_ticket=${ticket}&noncestr=${nonceStr}&timestamp=${timestamp}&url=${linkUrl}`
+							// 把签名转为sha算法
+							const signature = sha1(jsons)
+							wx.config({
+								debug: false, // 调试模式
+								appId: 'wx0d0f2b9c6b30d93e', // 公众平台申请的id
+								timestamp, // 时间戳
+								nonceStr, // 随机字符串
+								signature, // 签名
+								jsApiList: [ // 申请需要使用的api
+									'updateAppMessageShareData',
+									'updateTimelineShareData'
+								]
+							})
+
+							wx.ready(() => {
+								const shareData = {
+									title: '每日新闻', // 标题
+									desc: '2022年12月20日21:47:55每日新闻', //详情
+									link: linkUrl, // h5链接
+									imgUrl: 'https://blogobs.88688.team/blog/l-logo-y.jpg' // 图片链接 只能是网络连接
+								}
+								//分享给朋友
+								wx.updateAppMessageShareData(shareData)
+								//分享到朋友圈
+								wx.updateTimelineShareData(shareData)
+							});
+							//错误了会走 这里
+							wx.error(function(res) {
+								console.log("微信分享错误信息", res);
+							});
+						}
+					})
+				}
+			},
+
+
+
+			getShareInfo() {
+				//获取url链接（如果有#需要这么获取）
+				var url = encodeURIComponent(window.location.href.split("#")[0]);
+				//获取url链接（如果没有#需要这么获取）
+				// var url = encodeURIComponent(window.location.href);
+
+				getSing(url).then(res => {
+					wx.config({
+						debug: false, // 开启调试模式,调用的所有 api 的返回值会在客户端 alert 出来，若要查看传入的参数，可以在 pc 端打开，参数信息会通过 log 打出，仅在 pc 端时才会打印。
+						appId: res.data.appId, // 必填，公众号的唯一标识
+						timestamp: parseInt(res.data.timestamp), // 必填，生成签名的时间戳
+						nonceStr: res.data.nonceStr, // 必填，生成签名的随机串
+						signature: res.data.signature, // 必填，签名
+						jsApiList: [
+							"updateAppMessageShareData",
+							"updateTimelineShareData"
+						] // 必填，需要使用的 JS 接口列表
+					});
+					wx.ready(() => {
+						var shareData = {
+							title: "每日新闻",
+							desc: "2022年12月20日21:47:55每日新闻",
+							link: window.location.href,
+							imgUrl: "https://blogobs.88688.team/blog/l-logo-y.jpg"
+						};
+						//自定义“分享给朋友”及“分享到QQ”按钮的分享内容
+						wx.updateAppMessageShareData(shareData);
+						//自定义“分享到朋友圈”及“分享到 QQ 空间”按钮的分享内容（1.4.0）
+						wx.updateTimelineShareData(shareData);
+					});
+					//错误了会走 这里
+					wx.error(function(res) {
+						console.log("微信分享错误信息", res);
+					});
+				});
+			},
 
 			phoneChange(e) {
 				const reg = /^1\d{10}$/
