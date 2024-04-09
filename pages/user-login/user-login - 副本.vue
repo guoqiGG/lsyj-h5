@@ -216,7 +216,6 @@
 
 
 
-			getShareInfo() {
 				//获取url链接（如果有#需要这么获取）
 				var url = encodeURIComponent(window.location.href.split("#")[0]);
 				//获取url链接（如果没有#需要这么获取）

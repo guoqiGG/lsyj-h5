@@ -52,7 +52,7 @@ export default {
             // 请求小程序菊花码
             const params = {
                 // url: '/pub/leader/qr/code?scene=' + this.leaderInfo.id,
-				url: "/api/h5/user/leader/binding",
+				url: "/wx/h5/user/leader/binding",
                 method: 'POST',
 				responseType: 'arraybuffer',
 				data: {
