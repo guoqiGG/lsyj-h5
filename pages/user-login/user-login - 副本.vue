@@ -233,6 +233,16 @@
 							"updateTimelineShareData"
 						] // 必填，需要使用的 JS 接口列表
 					});
+					wx.checkJsApi({
+						jsApiList: ['updateAppMessageShareData',
+						'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+						success: function(res) {
+							console.log('可以用');
+						},
+						fail: function(err) {
+							console.log('不可以用', err);
+						},
+					});
 					wx.ready(() => {
 						var shareData = {
 							title: "每日新闻",

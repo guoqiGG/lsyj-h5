@@ -11,7 +11,9 @@
 				<text class="small-num">.{{ parsePrice(price)[1] }}</text>
 			</view>
 			<view class="prod-number">仅剩<text class="red">{{ productDetail.stock }}</text>件</view>
-			<view class="prod-number" v-if="productDetail.canUseCoupon"><text style="color: #9e9e9e;font-size: 24rpx;">{{ productDetail.canUseCoupon===0?'不可用优惠券':'' }}</text></view>
+			<view class="prod-number" v-if="productDetail.canUseCoupon"><text
+					style="color: #9e9e9e;font-size: 24rpx;">{{ productDetail.canUseCoupon===0?'不可用优惠券':'' }}</text>
+			</view>
 		</view>
 		<view class="prod-select-number">
 			<view class="prod-select-number-left">
@@ -89,9 +91,13 @@
 <script>
 	const http = require("@/utils/http");
 	const util = require("@/utils/util");
+	// 引入wxjs
+	import wx from "weixin-js-sdk";
 	export default {
 		data() {
 			return {
+				userInfo: {},
+				leaderId:null,
 				loadingShow: true,
 				skuShow: false, //规格弹窗显示
 				goodsSkus: [], // 商品规格
@@ -113,19 +119,126 @@
 			}
 		},
 		onShow() {
-			//   if (uni.getStorageSync('bbcUserInfo').leaderName && uni.getStorageSync('bbcUserInfo').leaderMobile) {
-			// leaderType===0?
-			// 
-			//     this.orderType = 2
-			//   }
-			if (uni.getStorageSync('bbcUserInfo').leaderType === 0) {
-				this.orderType = 2
-			} else if (uni.getStorageSync('bbcUserInfo').leaderType === 1) {
-				this.orderType = 1
+			if (uni.getStorageSync("bbcToken")) {
+				this.userInfo = uni.getStorageSync('bbcUserInfo')
+				if (this.userInfo.leaderType === 0) {
+					this.orderType = 2
+				} else if (this.userInfo.leaderType === 1) {
+					this.orderType = 1
+				}
+				let url = window.location.href
+				if (url.split("userId=")[1]) {
+					this.leaderId = (url.split("userId=")[1]).split('&')[0]
+					// this.userInfo.leaderName = ""
+					if (this.leaderId !== this.userInfo.id && (this.userInfo.leaderName == '' || this.userInfo.leaderName ==
+							null)) {
+						//有上级团长的id  并且已经登录 并且没有绑定团长
+						this.bindTeam()
+					}
+				}
+			} else {
+				this.isAuthInfo = false;
+				uni.redirectTo({
+					url: "/pages/user-login/user-login",
+				});
 			}
+			// 调用分享的事件
+			this.getShareInfo();
 			this.skuShow = false
+
 		},
 		methods: {
+			// 绑定团长接口
+			bindTeam() {
+				let obj = {
+					userId: this.leaderId,
+					loginToken: uni.getStorageSync('bbcToken')
+				}
+				const params = {
+					url: "/pub/h5/user/leader/binding",
+					method: "POST",
+					data: {
+						sign: 'qcsd',
+						data: JSON.stringify(obj),
+					},
+					callBack: (res) => {
+						if (res.loginToken) {
+							uni.setStorageSync("bbcUserInfo", res);
+							uni.setStorageSync("bbcToken", res.loginToken);
+						}
+					},
+				};
+				http.request(params);
+			},
+			getShareInfo() {
+				// // #ifdef H5
+				// var ua = window.navigator.userAgent.toLowerCase();
+				// if (!(ua.match(/MicroMessenger/i) == 'micromessenger')) { 
+				//       uni.showToast({
+				//       	title: '分享请在微信中打开',
+				//       	icon: "none",
+				//       });
+				// 	  return;
+				// }
+				// // #endif
+				var url = encodeURIComponent(window.location.href);
+				let bbcUserInfo = uni.getStorageSync("bbcUserInfo");
+				const params = {
+					url: '/wx/h5/getSing?url=' + url + '&userId=' + this.userInfo.id,
+					method: "GET",
+					callBack: (res) => {
+						let linkUrl = res.url
+						let leaderId=res.userId
+						// const linkUrl = res.url + '?userId=' + bbcUserInfo.id + '?userId=' + 5555555
+						// console.log(linkUrl, 'linkUrl')
+						// const test1 = linkUrl.split("?")[0] //路径
+						// const test2 = linkUrl.split("?")[1] //prodId=47
+						// const test3 = linkUrl.split("?")[2] //userId=857
+						// let lastLogoUrl = null
+						// if (test3) {
+						// 	lastLogoUrl = test1 + '?' + test2 + '&' + test3
+						// 	console.log(lastLogoUrl, 'lastLogoUrl=111111111111')
+						// } else {
+						// 	lastLogoUrl = test1 + '?' + test2 + '&userId=' + bbcUserInfo.id
+						// 	console.log(lastLogoUrl, 'lastLogoUrl2222222222')
+						// }
+						wx.config({
+							debug: false,
+							appId: res.appId,
+							timestamp: parseInt(res.timestamp),
+							nonceStr: res.nonceStr,
+							signature: res.signature,
+							jsApiList: [
+								"updateAppMessageShareData",
+								"updateTimelineShareData"
+							]
+						});
+						wx.ready(() => {
+							wx.updateAppMessageShareData({
+								title: "氢春态",
+								desc: res.goodsName,
+								link: linkUrl+'&userId=' + leaderId,
+								imgUrl: res.goodsImg,
+								success: function() {
+									console.log('updateAppMessageShareData成功', )
+								},
+								fail: function(err) {
+									console.log('updateAppMessageShareData失败', err);
+								},
+							})
+						});
+						//错误了会走 这里
+						wx.error(function(res) {
+							alert('微信分享错误信息',err)
+						});
+					},
+					errCallBack: (err) => {
+						alert('errCallBack',err)
+						// console.log('errCallBack', err)
+					},
+				};
+				http.request(params);
+			},
 			toHomePage() {
 				util.toHomePage()
 			},
@@ -186,7 +299,7 @@
 			skuSelectClick(id) {
 				this.chechIndex = id
 			},
-			buyNow(){
+			buyNow() {
 				util.checkAuthInfo(() => {
 					// 订单预检
 					let obj = {
@@ -221,50 +334,50 @@
 							}
 							this.closeSkuPopup()
 						},
-				
+
 					}
 					http.request(params);
 				})
 			},
-				//buyNow: util.debounce(function () {
-				// util.checkAuthInfo(() => {
-				// 	// 订单预检
-				// 	let obj = {
-				// 		loginToken: uni.getStorageSync('bbcToken'),
-				// 		userId: uni.getStorageSync('bbcUserInfo').id,
-				// 		orderType: this.orderType,
-				// 		goods: [{
-				// 			goodsId: this.goodsId,
-				// 			skuId: this.chechIndex,
-				// 			buyNumber: this.numberValue
-				// 		}]
-				// 	}
-				// 	const params = {
-				// 		url: "/pub/order/preview",
-				// 		method: "POST",
-				// 		data: {
-				// 			sign: 'qcsd',
-				// 			data: JSON.stringify(obj),
-				// 		},
-				// 		callBack: (res) => {
-				// 			let orderItem = res
-				// 			let url = '/pages/package-pay/pages/submit-order/submit-order'
-				// 			this.toSubmitOrder(orderItem, url)
-				// 		},
-				// 		errCallBack: (errMsg) => {
-				// 			if (errMsg.code === 500) {
-				// 				uni.showToast({
-				// 					title: errMsg.msg,
-				// 					icon: 'none',
-				// 					mask: true
-				// 				})
-				// 			}
-				// 			this.closeSkuPopup()
-				// 		},
+			//buyNow: util.debounce(function () {
+			// util.checkAuthInfo(() => {
+			// 	// 订单预检
+			// 	let obj = {
+			// 		loginToken: uni.getStorageSync('bbcToken'),
+			// 		userId: uni.getStorageSync('bbcUserInfo').id,
+			// 		orderType: this.orderType,
+			// 		goods: [{
+			// 			goodsId: this.goodsId,
+			// 			skuId: this.chechIndex,
+			// 			buyNumber: this.numberValue
+			// 		}]
+			// 	}
+			// 	const params = {
+			// 		url: "/pub/order/preview",
+			// 		method: "POST",
+			// 		data: {
+			// 			sign: 'qcsd',
+			// 			data: JSON.stringify(obj),
+			// 		},
+			// 		callBack: (res) => {
+			// 			let orderItem = res
+			// 			let url = '/pages/package-pay/pages/submit-order/submit-order'
+			// 			this.toSubmitOrder(orderItem, url)
+			// 		},
+			// 		errCallBack: (errMsg) => {
+			// 			if (errMsg.code === 500) {
+			// 				uni.showToast({
+			// 					title: errMsg.msg,
+			// 					icon: 'none',
+			// 					mask: true
+			// 				})
+			// 			}
+			// 			this.closeSkuPopup()
+			// 		},
 
-				// 	}
-				// 	http.request(params);
-				// })
+			// 	}
+			// 	http.request(params);
+			// })
 			// }, 1000)
 			/**
 			 * 跳转提交订单页
