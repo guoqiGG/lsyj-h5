@@ -136,14 +136,17 @@
 						this.bindTeam()
 					}
 				}
+				// 调用分享的事件
+				this.getShareInfo();
 			} else {
 				this.isAuthInfo = false;
 				uni.redirectTo({
 					url: "/pages/user-login/user-login",
 				});
+				// 调用分享的事件
+				this.getShareInfo();
 			}
-			// 调用分享的事件
-			this.getShareInfo();
+			
 			this.skuShow = false
 
 		},
@@ -187,21 +190,15 @@
 					url: '/wx/h5/getSing?url=' + url + '&userId=' + this.userInfo.id,
 					method: "GET",
 					callBack: (res) => {
-						let linkUrl = res.url
+						let middleUrl=res.url
+						let linkUrl=null
+						if(middleUrl.split("&")[0]){
+							linkUrl = middleUrl.split("&")[0]
+						}else{
+							linkUrl = res.url
+						}
 						let leaderId=res.userId
-						// const linkUrl = res.url + '?userId=' + bbcUserInfo.id + '?userId=' + 5555555
-						// console.log(linkUrl, 'linkUrl')
-						// const test1 = linkUrl.split("?")[0] //路径
-						// const test2 = linkUrl.split("?")[1] //prodId=47
-						// const test3 = linkUrl.split("?")[2] //userId=857
-						// let lastLogoUrl = null
-						// if (test3) {
-						// 	lastLogoUrl = test1 + '?' + test2 + '&' + test3
-						// 	console.log(lastLogoUrl, 'lastLogoUrl=111111111111')
-						// } else {
-						// 	lastLogoUrl = test1 + '?' + test2 + '&userId=' + bbcUserInfo.id
-						// 	console.log(lastLogoUrl, 'lastLogoUrl2222222222')
-						// }
+				
 						wx.config({
 							debug: false,
 							appId: res.appId,
@@ -219,22 +216,16 @@
 								desc: res.goodsName,
 								link: linkUrl+'&userId=' + leaderId,
 								imgUrl: res.goodsImg,
-								success: function() {
-									console.log('updateAppMessageShareData成功', )
-								},
-								fail: function(err) {
-									console.log('updateAppMessageShareData失败', err);
-								},
+								
 							})
 						});
 						//错误了会走 这里
 						wx.error(function(res) {
-							alert('微信分享错误信息',err)
+							// alert('微信分享错误信息',err)
 						});
 					},
 					errCallBack: (err) => {
-						alert('errCallBack',err)
-						// console.log('errCallBack', err)
+						// alert('errCallBack',err)
 					},
 				};
 				http.request(params);

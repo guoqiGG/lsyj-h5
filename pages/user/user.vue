@@ -207,7 +207,7 @@
 	export default {
 		data() {
 			return {
-				leaderId:null,
+				leaderId: null,
 				isLeader: true, // 是否是团长
 				userInfo: {}, // 用户信息
 				isAuthInfo: false, //用户是否登录
@@ -218,24 +218,25 @@
 		components: {
 			hCompress,
 		},
-		// created() {
-		// 	// 调用分享的事件
-		// 	this.getShareInfo();
-		// },
+
 		onShow() {
 			if (uni.getStorageSync("bbcToken")) {
 				this.isAuthInfo = true;
 				this.userInfo = uni.getStorageSync('bbcUserInfo')
 				let url = window.location.href
 				if (url.split("userId=")[1]) {
-					this.leaderId= (url.split("userId=")[1]).split('&')[0]
-					// this.userInfo.leaderName = ""
-					if (this.leaderId !== this.userInfo.id && (this.userInfo.leaderName == '' || this.userInfo.leaderName ==
+					this.leaderId = (url.split("userId=")[1]).split('#')[0]
+					this.userInfo.leaderName = ""
+					if (this.leaderId !== this.userInfo.id && (this.userInfo.leaderName == '' || this.userInfo
+							.leaderName ==
 							null)) {
 						//有团长的id并且已经登录&&并且没有绑定团长
 						this.bindTeam()
+						
 					}
 				}
+				// 调用分享的事件
+				this.getShareInfo();
 				this.getUserInfo()
 				this.getDefaultAddress()
 			} else {
@@ -243,9 +244,10 @@
 				uni.redirectTo({
 					url: "/pages/user-login/user-login",
 				});
+				// 调用分享的事件
+				this.getShareInfo();
 			}
-			// 调用分享的事件
-			this.getShareInfo();
+
 
 		},
 		methods: {
@@ -286,45 +288,49 @@
 				var url = encodeURIComponent(window.location.href.split("#")[0]);
 				let bbcUserInfo = uni.getStorageSync("bbcUserInfo");
 				const params = {
-					url: '/wx/h5/getSing?url=' + url+'pages/user/user'  + '&userId='  +this.userInfo.id,
+					url: '/wx/h5/getSing?url=' + url + '&userId=' + this.userInfo.id,
 					method: "GET",
 					callBack: (res) => {
-						let linkUrl = res.url
-						let leaderId=res.userId
+						let middleUrl=res.url
+						let linkUrl=null
+						if(middleUrl.split("?")[0]){
+							linkUrl = middleUrl.split("?")[0]
+						}else{
+							linkUrl = res.url
+						}
+						let leaderId = res.userId
 						wx.config({
-							debug: false, // 开启调试模式,调用的所有 api 的返回值会在客户端 alert 出来，若要查看传入的参数，可以在 pc 端打开，参数信息会通过 log 打出，仅在 pc 端时才会打印。
+							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 							appId: res.appId, // 必填，公众号的唯一标识
-							timestamp: parseInt(res.timestamp), // 必填，生成签名的时间戳
+							timestamp: res.timestamp, // 必填，生成签名的时间戳
 							nonceStr: res.nonceStr, // 必填，生成签名的随机串
-							signature: res.signature, // 必填，签名
-							jsApiList: [
-								"updateAppMessageShareData",
-								"updateTimelineShareData"
-							] // 必填，需要使用的 JS 接口列表
+							signature: res.signature, // 必填，签名，见附录1
+							jsApiList: ["updateAppMessageShareData", "updateTimelineShareData", 
+							], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2,
+							openTagList: ['wx-open-launch-weapp']
 						});
+						
 						wx.ready(() => {
 							wx.updateAppMessageShareData({
 								title: "氢春态",
 								desc: "欢迎来到氢春态",
-								link: linkUrl+'?userId=' + leaderId,
+								link: linkUrl + '?userId=' + leaderId,
 								imgUrl: "https://qingchuntaijava1.oss-cn-beijing.aliyuncs.com/3531fd5d3d034964bd1c365db16a8421.png",
 								success: function() {
-									console.log('updateAppMessageShareData成功', )
+									// alert('updateAppMessageShareData成功', )
 								},
 								fail: function(err) {
-									console.log('updateAppMessageShareData失败', err);
+									// alert('updateAppMessageShareData失败', err);
 								},
 							})
-
 						});
 						//错误了会走 这里
 						wx.error(function(res) {
-							alert('微信分享错误信息',err)
+							// alert('微信分享错误信息', err)
 						});
 					},
 					errCallBack: (err) => {
-						alert('errCallBack',err)
-						// console.log('errCallBack', err)
+						// alert('errCallBack', err)
 					},
 				};
 				http.request(params);

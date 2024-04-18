@@ -44,6 +44,12 @@ export default {
 		// 当前是否已显示登录失效弹窗
 		showLoginExpired: false,
 	},
+	mounted(){
+	    uni.setStorage({
+	        key: 'WxCodeUrl',
+	        data:location.href
+	    });
+	},
 	methods: {
 		/**
 	* 微信小程序检查升级

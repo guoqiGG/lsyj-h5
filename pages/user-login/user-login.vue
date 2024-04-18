@@ -70,10 +70,6 @@
 				// codeText:null,
 			};
 		},
-		created() {
-			// 调用分享的事件
-			// this.getShareInfo();
-		},
 
 		/**
 		 * 生命周期函数--监听页面加载
@@ -109,10 +105,67 @@
 			uni.setNavigationBarTitle({
 				title: '用户登录'
 			});
+			// 调用分享的事件
+			// this.getShareInfo();
 
 		},
 
 		methods: {
+			getShareInfo() {
+				// // #ifdef H5
+				// var ua = window.navigator.userAgent.toLowerCase();
+				// if (!(ua.match(/MicroMessenger/i) == 'micromessenger')) { 
+				// 	uni.showToast({
+				// 		title: '分享请在微信中打开',
+				// 		icon: "none",
+				// 	});
+				//       return;
+				// }
+				// // #endif
+				var url = encodeURIComponent(window.location.href.split("#")[0]);
+				let bbcUserInfo = uni.getStorageSync("bbcUserInfo");
+				const params = {
+					url: '/wx/h5/getSing?url=' + url + '&userId=' + this.userInfo.id,
+					method: "GET",
+					callBack: (res) => {
+						let linkUrl = res.url
+						let leaderId = res.userId
+						wx.config({
+							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							appId: res.appId, // 必填，公众号的唯一标识
+							timestamp: res.timestamp, // 必填，生成签名的时间戳
+							nonceStr: res.nonceStr, // 必填，生成签名的随机串
+							signature: res.signature, // 必填，签名，见附录1
+							jsApiList: ["updateAppMessageShareData", "updateTimelineShareData", 
+							], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2,
+							openTagList: ['wx-open-launch-weapp']
+						});
+						wx.ready(() => {
+							wx.updateAppMessageShareData({
+								title: "氢春态",
+								desc: "欢迎来到氢春态",
+								link: linkUrl + '?userId=' + leaderId,
+								imgUrl: "https://qingchuntaijava1.oss-cn-beijing.aliyuncs.com/3531fd5d3d034964bd1c365db16a8421.png",
+								success: function() {
+									// alert('updateAppMessageShareData成功', )
+								},
+								fail: function(err) {
+									// alert('updateAppMessageShareData失败', err);
+								},
+							})
+						});
+						//错误了会走 这里
+						wx.error(function(res) {
+							// alert('微信分享错误信息', err)
+						});
+					},
+					errCallBack: (err) => {
+						// alert('errCallBack', err)
+					},
+				};
+				http.request(params);
+			},
+			
 
 			phoneChange(e) {
 				const reg = /^1\d{10}$/
