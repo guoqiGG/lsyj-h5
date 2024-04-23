@@ -28,10 +28,11 @@
 .item {
   position: relative;
   box-sizing: border-box;
-  margin: 20rpx 30rpx 0rpx;
+  /* margin: 20rpx 30rpx 0rpx; */
+ margin-bottom: 20rpx;
   background: #fff;
   padding: 30rpx 20rpx;
-  border-radius: 5rpx;
+  border-radius: 5rpx 0rpx 0rpx 5rpx;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -71,14 +72,14 @@
   width: 350rpx;
 }
 .use {
-  height: 195rpx;
+  height: 210rpx;
   width: 180rpx;
   position: absolute;
   background: #C53032;
   color: #ffffff;
   right: 0;
   font-size: 36rpx;
-  border-radius: 7rpx;
+  /* border-radius: 7rpx; */
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   line-height: 200rpx;
@@ -87,4 +88,7 @@
 
 .used{
     background: #979797; 
+}
+/deep/ .button-group--right{
+	margin-bottom: 19rpx !important;
 }

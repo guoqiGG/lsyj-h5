@@ -262,8 +262,30 @@
 
 			},
 			numberInput() {
-				this.numberValue = Number(this.numberValue)
-				this.totalPrice = (this.price * this.numberValue)
+				if (isNaN(this.numberValue)) { //判断值是不是数字
+					this.$nextTick(() => {
+						this.numberValue = 1
+						this.totalPrice = (this.price * this.numberValue)
+					})
+				} else if (this.numberValue == "") { //这是当只有1位的时候，删除这个会进入这个判断，如果没有该判断，当只有一位的时候就不能删除
+					this.$nextTick(() => {
+						this.numberValue = 1
+						this.totalPrice = (this.price * this.numberValue)
+					})
+				} else if (this.numberValue == 0) { //判断值是不是1
+					this.$nextTick(() => {
+						this.numberValue = 1
+						this.totalPrice = (this.price * this.numberValue)
+					})
+				} else if (this.numberValue.indexOf(".") != -1) { //判断有没有输入小数点
+					this.$nextTick(() => {
+						this.numberValue=Math.floor(this.numberValue);
+						this.totalPrice = (this.price * this.numberValue)
+						
+					})
+				}else{
+					this.totalPrice = (this.price * this.numberValue)
+				}
 
 			},
 			getProductDetail() {
