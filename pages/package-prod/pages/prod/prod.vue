@@ -136,18 +136,16 @@
 						this.bindTeam()
 					}
 				}
-				// 调用分享的事件
-				this.getShareInfo();
 			} else {
 				this.isAuthInfo = false;
 				uni.redirectTo({
 					url: "/pages/user-login/user-login",
 				});
-				// 调用分享的事件
-				this.getShareInfo();
+				
 			}
-			
 			this.skuShow = false
+			// 调用分享的事件
+			this.getShareInfo();
 
 		},
 		methods: {
@@ -169,63 +167,6 @@
 							uni.setStorageSync("bbcUserInfo", res);
 							uni.setStorageSync("bbcToken", res.loginToken);
 						}
-					},
-				};
-				http.request(params);
-			},
-			getShareInfo() {
-				// // #ifdef H5
-				// var ua = window.navigator.userAgent.toLowerCase();
-				// if (!(ua.match(/MicroMessenger/i) == 'micromessenger')) { 
-				//       uni.showToast({
-				//       	title: '分享请在微信中打开',
-				//       	icon: "none",
-				//       });
-				// 	  return;
-				// }
-				// // #endif
-				var url = encodeURIComponent(window.location.href);
-				let bbcUserInfo = uni.getStorageSync("bbcUserInfo");
-				const params = {
-					url: '/wx/h5/getSing?url=' + url + '&userId=' + this.userInfo.id,
-					method: "GET",
-					callBack: (res) => {
-						let middleUrl=res.url
-						let linkUrl=null
-						if(middleUrl.split("&")[0]){
-							linkUrl = middleUrl.split("&")[0]
-						}else{
-							linkUrl = res.url
-						}
-						let leaderId=res.userId
-				
-						wx.config({
-							debug: false,
-							appId: res.appId,
-							timestamp: parseInt(res.timestamp),
-							nonceStr: res.nonceStr,
-							signature: res.signature,
-							jsApiList: [
-								"updateAppMessageShareData",
-								"updateTimelineShareData"
-							]
-						});
-						wx.ready(() => {
-							wx.updateAppMessageShareData({
-								title: "氢春态",
-								desc: res.goodsName,
-								link: linkUrl+'&userId=' + leaderId,
-								imgUrl: res.goodsImg,
-								
-							})
-						});
-						//错误了会走 这里
-						wx.error(function(res) {
-							// alert('微信分享错误信息',err)
-						});
-					},
-					errCallBack: (err) => {
-						// alert('errCallBack',err)
 					},
 				};
 				http.request(params);

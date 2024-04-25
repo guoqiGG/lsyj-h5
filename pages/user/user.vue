@@ -39,7 +39,8 @@
 					<view class="order-wrap" @click="goOrderList(1)">
 						<view class="order-img" style="position: relative;">
 							<image src="/static/user/pay.png" mode=""></image>
-						<u-badge  :offset="[-10, -20]" type="error" bgColor="rgb(197,48,50)" :absolute="true" color="#ffffff" max="99" :value="orderNum.pendingPaymentNum"></u-badge>
+							<u-badge :offset="[-10, -20]" type="error" bgColor="rgb(197,48,50)" :absolute="true"
+								color="#ffffff" max="99" :value="orderNum.pendingPaymentNum"></u-badge>
 						</view>
 						<view class="order-text">
 							待付款
@@ -48,7 +49,8 @@
 					<view class="order-wrap" @click="goOrderList(2)">
 						<view class="order-img" style="position: relative;">
 							<image src="/static/user/order-deliver.png" mode=""></image>
-						<u-badge  :offset="[-10, -20]" type="error" bgColor="rgb(197,48,50)" :absolute="true" color="#ffffff" max="99" :value="orderNum.pendingDeliveryNum"></u-badge>
+							<u-badge :offset="[-10, -20]" type="error" bgColor="rgb(197,48,50)" :absolute="true"
+								color="#ffffff" max="99" :value="orderNum.pendingDeliveryNum"></u-badge>
 						</view>
 						<view class="order-text">
 							待发货
@@ -57,7 +59,8 @@
 					<view class="order-wrap" @click="goOrderList(3)">
 						<view class="order-img" style="position: relative;">
 							<image src="/static/user/order-receiving.png" mode=""></image>
-						<u-badge  :offset="[-10, -20]" type="error" bgColor="rgb(197,48,50)" :absolute="true" color="#ffffff" max="99" :value="orderNum.deliveryNum"></u-badge>
+							<u-badge :offset="[-10, -20]" type="error" bgColor="rgb(197,48,50)" :absolute="true"
+								color="#ffffff" max="99" :value="orderNum.deliveryNum"></u-badge>
 						</view>
 						<view class="order-text">
 							待收货
@@ -216,10 +219,10 @@
 				isAuthInfo: false, //用户是否登录
 				showAuth: false, // 显示授权用户信息
 				closeable: true,
-				orderNum:{
-					pendingPaymentNum:null,
-					pendingDeliveryNum:null,
-					deliveryNum:null,
+				orderNum: {
+					pendingPaymentNum: null,
+					pendingDeliveryNum: null,
+					deliveryNum: null,
 				},
 			}
 		},
@@ -240,11 +243,10 @@
 							null)) {
 						//有团长的id并且已经登录&&并且没有绑定团长
 						this.bindTeam()
-						
+
 					}
 				}
-				// 调用分享的事件
-				this.getShareInfo();
+
 				this.getUserInfo()
 				this.getDefaultAddress()
 				this.getOrderNum()
@@ -253,26 +255,27 @@
 				uni.redirectTo({
 					url: "/pages/user-login/user-login",
 				});
-				// 调用分享的事件
-				this.getShareInfo();
+
 			}
-
-
+			// 调用分享的事件
+			// this.getShareInfo();
 		},
 		methods: {
 			// 获取订单消息数量
 			getOrderNum() {
 				const params = {
-					url: "/pub/user/order/num" ,
+					url: "/pub/user/order/num",
 					method: "POST",
 					data: {
 						sign: 'qcsd',
-						data: JSON.stringify({loginToken:uni.getStorageSync('bbcToken')}),
+						data: JSON.stringify({
+							loginToken: uni.getStorageSync('bbcToken')
+						}),
 					},
-					
+
 					callBack: (res) => {
-						this.orderNum=res
-						console.log(res,'res==========>')
+						this.orderNum = res
+						console.log(res, 'res==========>')
 					},
 				};
 				http.request(params);
@@ -297,67 +300,6 @@
 						}
 					},
 
-				};
-				http.request(params);
-			},
-			getShareInfo() {
-				// // #ifdef H5
-				// var ua = window.navigator.userAgent.toLowerCase();
-				// if (!(ua.match(/MicroMessenger/i) == 'micromessenger')) { 
-				// 	uni.showToast({
-				// 		title: '分享请在微信中打开',
-				// 		icon: "none",
-				// 	});
-				//       return;
-				// }
-				// // #endif
-				var url = encodeURIComponent(window.location.href.split("#")[0]);
-				let bbcUserInfo = uni.getStorageSync("bbcUserInfo");
-				const params = {
-					url: '/wx/h5/getSing?url=' + url + '&userId=' + this.userInfo.id,
-					method: "GET",
-					callBack: (res) => {
-						let middleUrl=res.url
-						let linkUrl=null
-						if(middleUrl.split("?")[0]){
-							linkUrl = middleUrl.split("?")[0]
-						}else{
-							linkUrl = res.url
-						}
-						let leaderId = res.userId
-						wx.config({
-							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-							appId: res.appId, // 必填，公众号的唯一标识
-							timestamp: res.timestamp, // 必填，生成签名的时间戳
-							nonceStr: res.nonceStr, // 必填，生成签名的随机串
-							signature: res.signature, // 必填，签名，见附录1
-							jsApiList: ["updateAppMessageShareData", "updateTimelineShareData", 
-							], // 必填，需要使用的JS接口列表，所有JS接口列表见附录2,
-							openTagList: ['wx-open-launch-weapp']
-						});
-						
-						wx.ready(() => {
-							wx.updateAppMessageShareData({
-								title: "氢春态",
-								desc: "欢迎来到氢春态",
-								link: linkUrl + '?userId=' + leaderId,
-								imgUrl: "https://qingchuntaijava1.oss-cn-beijing.aliyuncs.com/3531fd5d3d034964bd1c365db16a8421.png",
-								success: function() {
-									// alert('updateAppMessageShareData成功', )
-								},
-								fail: function(err) {
-									// alert('updateAppMessageShareData失败', err);
-								},
-							})
-						});
-						//错误了会走 这里
-						wx.error(function(res) {
-							// alert('微信分享错误信息', err)
-						});
-					},
-					errCallBack: (err) => {
-						// alert('errCallBack', err)
-					},
 				};
 				http.request(params);
 			},
