@@ -76,13 +76,15 @@
 			</view>
 			<view class="sponsored-ad">
 				<view class="sponsored-ad-title">
-					赞助广告
+					看直播
 				</view>
 				<view class="sponsored-ad-content-box">
-					<!-- <view class="sponsored-ad-content"> -->
-					<ad unit-id="adunit-a27196394237e84f" bindload="adLoad" binderror="adError" bindclose="adClose">
-					</ad>
-					<!-- </view> -->
+					<view class="sponsored-ad-content" @tap="toLiveAddress">
+						<!-- <ad unit-id="adunit-a27196394237e84f" bindload="adLoad" binderror="adError" bindclose="adClose">
+					</ad> -->
+						<image src="/static/zhibo.png" style="width: 100%; height:100%;" alt="" />
+					</view>
+
 				</view>
 			</view>
 		</view>
@@ -92,8 +94,8 @@
 <script>
 import navigationBar from '@/components/navigation-bar/index.vue'
 import { mpAppName } from '@/utils/config';
-	// 引入wxjs
-	import wx from "weixin-js-sdk";
+// 引入wxjs
+import wx from "weixin-js-sdk";
 const util = require("@/utils/util.js");
 const http = require("@/utils/http.js");
 export default {
@@ -237,9 +239,9 @@ export default {
 			var url = encodeURIComponent(window.location.href.split("#")[0]);
 			//获取url链接（如果没有#需要这么获取）
 			// var url = encodeURIComponent(window.location.href);
-			let bbcUserInfo=uni.getStorageSync("bbcUserInfo");
+			let bbcUserInfo = uni.getStorageSync("bbcUserInfo");
 			const params = {
-				url: '/wx/h5/getSing?url=' + url+'&userId='+bbcUserInfo.id,
+				url: '/wx/h5/getSing?url=' + url + '&userId=' + bbcUserInfo.id,
 				method: "GET",
 				callBack: (res) => {
 					wx.config({
@@ -253,16 +255,16 @@ export default {
 							"updateTimelineShareData"
 						] // 必填，需要使用的 JS 接口列表
 					});
-					 wx.checkJsApi({
-					      jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
-					      success: function (res) {
-					        console.log('可以用');
-					      },
-						  fail: function (err) {
-					        console.log('不可以用',err);
-					      },
-					    });
-			
+					wx.checkJsApi({
+						jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+						success: function (res) {
+							console.log('可以用');
+						},
+						fail: function (err) {
+							console.log('不可以用', err);
+						},
+					});
+
 					wx.ready(() => {
 						// var shareData = {
 						// 	title: "氢春时代",
@@ -270,35 +272,35 @@ export default {
 						// 	link: "http://h5.hnspsd.com",
 						// 	imgUrl: "http://qingchuntaijava1.oss-cn-beijing.aliyuncs.com/2023/12/43d35a023a344097854affcaecb664bf.jpg"
 						// };
-						 wx.updateAppMessageShareData({ 
-						   title: "氢春时代",
-						   	desc: "2024年04月09日",
+						wx.updateAppMessageShareData({
+							title: "氢春时代",
+							desc: "2024年04月09日",
 							// link: "http://h5.hnspsd.com",
-						   link:'http://h5.hnspsd.com?userId='+bbcUserInfo.id,
-						   	imgUrl: "http://qingchuntaijava1.oss-cn-beijing.aliyuncs.com/2023/12/43d35a023a344097854affcaecb664bf.jpg",
-						    success: function () {
-						      alert('updateAppMessageShareData成功',)
-						    },
-							fail: function (err) {
-								 alert('updateAppMessageShareData失败',)
-							  // console.log('updateAppMessageShareData失败',err);
+							link: 'http://h5.hnspsd.com?userId=' + bbcUserInfo.id,
+							imgUrl: "http://qingchuntaijava1.oss-cn-beijing.aliyuncs.com/2023/12/43d35a023a344097854affcaecb664bf.jpg",
+							success: function () {
+								alert('updateAppMessageShareData成功',)
 							},
-						  })
+							fail: function (err) {
+								alert('updateAppMessageShareData失败',)
+								// console.log('updateAppMessageShareData失败',err);
+							},
+						})
 						//自定义“分享给朋友”及“分享到QQ”按钮的分享内容
 						// wx.updateAppMessageShareData(shareData);
 						//自定义“分享到朋友圈”及“分享到 QQ 空间”按钮的分享内容（1.4.0）
 						// wx.updateTimelineShareData(shareData);
 					});
 					//错误了会走 这里
-					wx.error(function(res) {
-						alert('微信分享错误信息',err)
+					wx.error(function (res) {
+						alert('微信分享错误信息', err)
 					});
-		
+
 				},
 				errCallBack: () => {
 					alert('errCallBack',)
 				},
-		
+
 			};
 			http.request(params);
 		},
@@ -316,6 +318,28 @@ export default {
 				uni.navigateTo({
 					url: '/pages/package-member-integral/pages/member-center/member-center'
 				})
+			})
+		},
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				const params = {
+					url: '/huan/tuo/user/courseId',
+					data: JSON.stringify({ userId: uni.getStorageSync("bbcUserInfo").id }),
+					callBack: (res) => {
+						if (res) {
+							// #ifdef H5 
+							window.location.href = res
+							// #endif
+						}
+					},
+					errCallBack: () => {
+						alert('errCallBack',)
+					},
+
+				};
+				http.request(params);
+
 			})
 		}
 	},
@@ -596,7 +620,7 @@ swiper .banner-item .img-box img {
 		width: 662rpx;
 		height: 296rpx;
 		border-radius: 8rpx;
-		background: #D8D8D8;
+		//background: #D8D8D8;
 	}
 }
 </style>
