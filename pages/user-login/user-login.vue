@@ -13,13 +13,12 @@
 				<text class="line"></text>
 				<u--input placeholder="请输入手机号" border="none" v-model="phoneNumber" @blur="phoneChange"></u--input>
 			</view>
-			<view class="input" style="margin-top: 40rpx;">
+			<!-- <view class="input" style="margin-top: 40rpx;">
 				<image class="phone_icon" src="/static/login/code_icon.png" mode="widthFix" />
 				<text class="line"></text>
 				<u--input placeholder="请输入验证码" border="none" v-model="code" @blur="codeChange"></u--input>
-				<!-- <text v-if="codeText" class="code" :class="flag ? 'color' : ''" @click="getCode">{{codeText}}</text> -->
 				<text class="code" :class="flag ? 'color' : ''" @click="getCode">获取验证码</text>
-			</view>
+			</view> -->
 			<!-- 服务条款 -->
 			<view class="item statement">
 				<label class="statement-label" @tap.stop="handlePrivacyClick">
@@ -32,7 +31,7 @@
 					</view>
 				</label>
 			</view>
-			<button class="authorized-btn" @tap="maskBtn" :class="flag2 ? 'loginColor' : ''">
+			<button class="authorized-btn" @tap="maskBtn" :class="phoneNumber ? 'loginColor' : ''">
 				立即登录
 			</button>
 			<!-- <button class="wechat-logo" @click="getWeChatCode">微信授权登录</button> -->
@@ -64,7 +63,7 @@
 				showAuth: false, // 用户是否首次登录 true 是 false 否
 				isPrivacy: 0,
 				phoneNumber: null,
-				code: null,
+				code: 112233,
 				flag: false,
 				flag2: false,
 				// codeText:null,

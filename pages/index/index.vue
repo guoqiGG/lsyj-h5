@@ -326,6 +326,7 @@ export default {
 				const params = {
 					url: '/huan/tuo/user/courseId',
 					data: JSON.stringify({ userId: uni.getStorageSync("bbcUserInfo").id }),
+					// data: JSON.stringify({ userId: 22 }),
 					callBack: (res) => {
 						if (res) {
 							// #ifdef H5 

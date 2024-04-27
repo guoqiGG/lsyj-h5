@@ -22,10 +22,6 @@
 			<scroll-view scroll-y="true" class="rightcontent">
 				<block v-for="(item, key) in prodList" :key="key">
 					<prod :item="item" />
-					<prod :item="item" />
-					<prod :item="item" />
-					<prod :item="item" />
-					<prod :item="item" />
 					<view style="width: 100%;height:30rpx;"></view>
 				</block>
 				
@@ -90,7 +86,6 @@ export default {
 		/**
 	* 分类点击事件，获取子分类 */
 		onMenuTab: function (e) {
-
 			var index = e.currentTarget.dataset.index // 
 			this.getProdList(this.categoryList[index].categoryId)
 			this.categoryImg = this.categoryList[index].categoryPic
@@ -99,6 +94,9 @@ export default {
 		// 获取分类下的商品列表
 		getProdList(categoryId) {
 			this.categoryId = categoryId
+			if(!this.categoryId){
+				return
+			}
 			this.isLoaded = false
 			let data = {
 				categoryId: this.categoryId,
@@ -106,6 +104,7 @@ export default {
 				pageSize: 40,
 				loginToken: uni.getStorageSync('bbcToken')
 			}
+
 			const params = {
 				url: '/pub/goods/list',
 				method: 'POST',
@@ -118,6 +117,7 @@ export default {
 					this.prodList = res
 				}
 			}
+	
 			http.request(params)
 		},
 		/**
