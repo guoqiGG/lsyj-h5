@@ -63,7 +63,7 @@
 				showAuth: false, // 用户是否首次登录 true 是 false 否
 				isPrivacy: 0,
 				phoneNumber: null,
-				code: 112233,
+				code: 1994,
 				flag: false,
 				flag2: false,
 				// codeText:null,
