@@ -2,8 +2,8 @@
 	<view class="main">
 		<view class="top">
 			<!-- 导航&公告 -->
-			<navigationBar v-if="navigationBarIsShow" bg-color="bg-gradual-pink" :show-back="false"
-				:navigation-bar-style="tabConfig" :is-left="false" :is-bg-img="isBgImg" :title="title" />
+			<!-- <navigationBar v-if="navigationBarIsShow" bg-color="bg-gradual-pink" :show-back="false"
+				:navigation-bar-style="tabConfig" :is-left="false" :is-bg-img="isBgImg" :title="title" /> -->
 			<view :class="['news-swiper']">
 				<!-- 消息播放 -->
 				<view style="
@@ -12,7 +12,7 @@
             height: 280rpx;
             background: #005aff;
           ">
-					<view class="message-play" style="margin-top: 50rpx;">
+					<view class="message-play" style="margin-top: 20rpx;">
 						<image src="/static/horn.png" class="hornpng" />
 						<view class="scroll-news-content">
 							<view class="news-content">
@@ -75,11 +75,11 @@
 				</view>
 			</view>
 			<view class="sponsored-ad">
-				<view class="sponsored-ad-title">
+				<view class="sponsored-ad-title" @tap="toLiveAddress">
 					看直播
 				</view>
-				<view class="sponsored-ad-content-box">
-					<view class="sponsored-ad-content" @tap="toLiveAddress">
+				<view class="sponsored-ad-content-box" @tap="toLiveAddress">
+					<view class="sponsored-ad-content">
 						<!-- <ad unit-id="adunit-a27196394237e84f" bindload="adLoad" binderror="adError" bindclose="adClose">
 					</ad> -->
 						<image src="/static/zhibo.png" style="width: 100%; height:100%;" alt="" />
@@ -467,26 +467,26 @@ export default {
 
 swiper {
 	width: calc(100% - 40rpx);
-	height: 320rpx;
+	height: 250rpx;
 	margin: 0 20rpx;
-	margin-top: -195rpx;
+	margin-top: -350rpx;
 	border-radius: 8rpx;
 	overflow: hidden;
 }
 
 swiper .banner-item {
 	width: 100%;
-	height: 320rpx;
+	height: 250rpx;
 }
 
 swiper .banner-item .img-box {
 	width: 100%;
-	height: 320rpx;
+	height: 250rpx;
 }
 
 swiper .banner-item .img-box img {
 	width: 100%;
-	height: 320rpx;
+	height: 250rpx;
 }
 
 .middle {
@@ -497,9 +497,8 @@ swiper .banner-item .img-box img {
 
 	.convert {
 		background: linear-gradient(270deg, #BCD73A 0%, #43C944 96%);
-		;
 		width: 346rpx;
-		height: 294rpx;
+		height: 200rpx;
 		border-radius: 8rpx;
 		box-sizing: border-box;
 		padding: 14rpx 22rpx;
@@ -517,11 +516,10 @@ swiper .banner-item .img-box img {
 		.convert-go-pic {
 			display: flex;
 			justify-content: space-between;
-			width: 320rpx;
-			height: 196rpx;
+			height: 100rpx;
 
 			.convert-go {
-				margin-top: 114rpx;
+				margin-top: 30rpx;
 				width: 112rpx;
 				height: 62rpx;
 				background: #fff;
@@ -533,8 +531,8 @@ swiper .banner-item .img-box img {
 
 			.convert-pic {
 				box-sizing: border-box;
-				width: 196rpx;
-				height: 196rpx;
+				width: 100rpx;
+				height: 100rpx;
 
 				image {
 					width: 100%;
@@ -547,7 +545,7 @@ swiper .banner-item .img-box img {
 	.singIn {
 		background: linear-gradient(270deg, #F1C33C 0%, #FE8206 100%);
 		width: 346rpx;
-		height: 294rpx;
+		height: 200rpx;
 		border-radius: 8rpx;
 		box-sizing: border-box;
 		padding: 14rpx 22rpx;
@@ -565,11 +563,10 @@ swiper .banner-item .img-box img {
 		.singIn-go-pic {
 			display: flex;
 			justify-content: space-between;
-			width: 320rpx;
 			height: 196rpx;
 
 			.singIn-go {
-				margin-top: 114rpx;
+				margin-top: 30rpx;
 				width: 112rpx;
 				height: 62rpx;
 				background: #fff;
@@ -581,8 +578,8 @@ swiper .banner-item .img-box img {
 
 			.singIn-pic {
 				box-sizing: border-box;
-				width: 196rpx;
-				height: 196rpx;
+				width: 100rpx;
+				height: 100rpx;
 
 				image {
 					width: 120%;

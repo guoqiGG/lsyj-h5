@@ -27,6 +27,7 @@
 		{
 			"path": "pages/index/index",
 			"style": {
+				"navigationBarTitleText": "氢春时代",
 				"backgroundTextStyle": "dark",
 				"enablePullDownRefresh": true,
 				"navigationStyle": "custom",
@@ -337,7 +338,12 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"titleNView": false //禁用原生导航栏  
+		}
 	},
+	
+
 	"uniIdRouter": {}
 }

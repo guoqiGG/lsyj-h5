@@ -11,9 +11,9 @@
 						<view>
 							{{ userInfo.name }}
 						</view>
-						<!-- <view class="info-edit" @tap="openShowAuthPopup">
+						<view class="info-edit" @click="weixinAuthLogin(appId)">
 							<image src="/static/info-edit.png" mode="scaleToFill" />
-						</view> -->
+						</view>
 					</view>
 					<view class="user-name-type">
 						{{ userInfo.type === 0 ? '普通' : userInfo.type === 1 ? '团长' : '' }}
@@ -224,6 +224,7 @@ export default {
 				pendingDeliveryNum: null,
 				deliveryNum: null,
 			},
+			appId: null
 		}
 	},
 	components: {
@@ -259,8 +260,53 @@ export default {
 		}
 		// 调用分享的事件
 		// this.getShareInfo();
+		this.getWexinPublicAccount()
+		if (window.location.href.includes('code')) {
+			const code = this.getQueryParam(window.location.href, 'code')
+			console.log(code)
+			this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code)
+		}
 	},
 	methods: {
+		weixinAuthLogin(appId) {
+			let redirect_uri = encodeURIComponent('https://h5.hnliyue.cn/#/pages/user/user')
+			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+		},
+
+		getQueryParam(url, param) {
+			// 创建一个URL对象
+			const urlObj = new URL(url);
+			// 使用URLSearchParams获取指定的查询参数
+			return urlObj.searchParams.get(param);
+		},
+		// 获取公众号appId
+		getWexinPublicAccount() {
+			const params = {
+				url: '/admin/get/setting?name=GONG_ZHONGHAO_APPID&pageNo=1&pageSize=10',
+				method: "GET",
+				callBack: (res) => {
+					this.appId = res.list[0].value
+				},
+			};
+			http.request(params);
+		},
+		// 获取用户头像昵称
+		getUserPublicAccountOpenId(userId, code) {
+			const params = {
+				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1`,
+				method: "GET",
+				callBack: (res) => {
+					if (res.nickname && res.headimgurl) {
+						this.openShowAuthPopup() 
+						this.userInfo.name=res.nickname
+						this.userInfo.avatar=res.headimgurl
+					}else{
+						return
+					}
+				},
+			};
+			http.request(params);
+		},
 		// 获取订单消息数量
 		getOrderNum() {
 			const params = {
@@ -422,6 +468,32 @@ export default {
 			};
 			http.request(params);
 		},
+		// 公众号修改用户信息
+		publicAccountSave(name, avatar) {
+			let obj = {
+				userId: this.userInfo.id,
+				avatar: avatar,
+				name: name,
+				loginToken: uni.getStorageSync('bbcToken')
+			}
+			const params = {
+				url: "/pub/user/update",
+				method: "POST",
+				data: {
+					sign: 'qcsd',
+					data: JSON.stringify(obj),
+				},
+				callBack: (res) => {
+					if (res.loginToken) {
+						uni.setStorageSync('bbcToken', res.loginToken)
+					}
+					uni.switchTab({ url: '/pages/user/user' })
+				},
+				errCallBack: (res) => {
+				}
+			};
+			http.request(params);
+		},
 		// 用户默认地址
 		getDefaultAddress() {
 			const params = {
@@ -468,9 +540,9 @@ export default {
 }
 
 @media screen and (max-height: 699px) {
-  .main{
-	min-height: calc(100vh + 100rpx);
-  }
+	.main {
+		min-height: calc(100vh + 100rpx);
+	}
 }
 
 .background {
@@ -492,9 +564,9 @@ export default {
 	min-height: 100vh;
 	width: 100vw;
 	z-index: 5;
-	
+
 	background: transparent;
-	
+
 
 	.user-login {
 		box-sizing: border-box;
@@ -712,6 +784,7 @@ export default {
 		background: #FFFFFF;
 		box-sizing: border-box;
 		padding: 18rpx 19rpx;
+
 		.service-tool-title {
 			font-size: 38rpx;
 		}
