@@ -5,9 +5,9 @@
       <view class="my-integral">
         <view class="number-box">
           <view class="text">我的青春豆</view>
-          <view class="number">0</view>
+          <view class="number">{{ userInfo.score ? userInfo.score : 0 }}</view>
         </view>
-        <view class="det" @tap="navigateTo('integral-detail')">明细
+        <view class="det" @tap="toIntegralDetailsPage">明细
         </view>
       </view>
     </view>
@@ -20,7 +20,7 @@
           <!-- <goodsitem :prod="prod" /> -->
         </block>
       </view>
-      <!-- <view v-if="!scoreProdList.length" class="empty">暂无数据</view> -->
+      <!-- <view v-if="!scoreProdList.length" class="empty"> 暂无数据 </view> -->
       <!-- 空列表或加载全部提示 -->
       <EmptyAllTips v-if="true" :isEmpty="!scoreProdList.length" :isAll="scoreProdList.length > 10 && loadAll" />
     </view>
@@ -44,6 +44,7 @@ export default {
       pages: "",
       loadAll: false, // 已加载全部
       isLoaded: false,
+      userInfo: {}
     };
   },
   /**
@@ -65,8 +66,7 @@ export default {
     uni.setNavigationBarTitle({
       title: '青春豆中心',
     });
-    // 获取当前青春豆信息
-    // this.getScoreInfo();
+    this.userInfo = uni.getStorageSync('bbcUserInfo')
   },
 
   /**
@@ -97,43 +97,11 @@ export default {
       });
     }
   },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () { },
   methods: {
-    /**
-     * 跳转
-     */
-    navigateTo(path) {
-      // uni.navigateTo({
-      //   url: `/package-member-integral/pages/${path}/${path}`,
-      // });
-      uni.showToast({
-        title: '功能暂未开放',
-        icon: 'none',
-        mask: true
-      })
+    // 跳转到氢春豆明细
+    toIntegralDetailsPage() {
+      uni.navigateTo({ url: '/pages/package-member-integral/pages/integral-details/integral-details' })
     },
-
-    /**
-     * 获取当前青春豆信息
-     */
-    getScoreInfo() {
-      const params = {
-        url: "/p/score/scoreInfo",
-        method: "GET",
-        data: {},
-        callBack: (res) => {
-          this.setData({
-            scoreInfo: res,
-          });
-        },
-      };
-      http.request(params);
-    },
-
     /**
      * 获取青春豆商品列表
      */

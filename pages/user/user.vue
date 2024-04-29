@@ -11,9 +11,9 @@
 						<view>
 							{{ userInfo.name }}
 						</view>
-						<view class="info-edit" @click="weixinAuthLogin(appId)">
+						<!-- <view class="info-edit" @click="weixinAuthLogin(appId)">
 							<image src="/static/info-edit.png" mode="scaleToFill" />
-						</view>
+						</view> -->
 					</view>
 					<view class="user-name-type">
 						{{ userInfo.type === 0 ? '普通' : userInfo.type === 1 ? '团长' : '' }}
@@ -260,12 +260,17 @@ export default {
 		}
 		// 调用分享的事件
 		// this.getShareInfo();
-		this.getWexinPublicAccount()
-		if (window.location.href.includes('code')) {
-			const code = this.getQueryParam(window.location.href, 'code')
-			console.log(code)
-			this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code)
-		}
+		// if (!uni.getStorageSync('puclicAppId')) {
+		// 	this.getWexinPublicAccount()
+		// } else {
+		// 	this.appId = uni.getStorageSync('puclicAppId')
+		// 	console.log(this.appId)
+		// }
+		// if (window.location.href.includes('code')) {
+		// 	const code = this.getQueryParam(window.location.href, 'code')
+		// 	console.log(code)
+		// 	this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code)
+		// }
 	},
 	methods: {
 		weixinAuthLogin(appId) {
@@ -285,7 +290,7 @@ export default {
 				url: '/admin/get/setting?name=GONG_ZHONGHAO_APPID&pageNo=1&pageSize=10',
 				method: "GET",
 				callBack: (res) => {
-					this.appId = res.list[0].value
+					uni.setStorageSync('puclicAppId', res.list[0].value)
 				},
 			};
 			http.request(params);
@@ -297,10 +302,10 @@ export default {
 				method: "GET",
 				callBack: (res) => {
 					if (res.nickname && res.headimgurl) {
-						this.openShowAuthPopup() 
-						this.userInfo.name=res.nickname
-						this.userInfo.avatar=res.headimgurl
-					}else{
+						this.openShowAuthPopup()
+						this.userInfo.name = res.nickname
+						this.userInfo.avatar = res.headimgurl
+					} else {
 						return
 					}
 				},

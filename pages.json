@@ -165,7 +165,15 @@
 						"navigationBarBackgroundColor": "#025BFF",
 						"navigationBarTextStyle": "white"
 					}
-				}
+				},
+				{
+					"path": "pages/get-coupons/get-coupons",
+					"style": {
+					  "navigationBarTitleText": "领取优惠券",
+					  "navigationBarBackgroundColor": "#025BFF",
+					  "navigationBarTextStyle": "white"
+					}
+				  }
 			]
 		},
 		{
@@ -288,7 +296,23 @@
 						"navigationBarTitleText": "青春豆中心",
 						"enablePullDownRefresh": false
 					}
-				}
+				},
+				{
+					"path": "pages/watch-records/watch-records",
+					"style": {
+					  "navigationBarTitleText": "观看记录",
+					  "navigationBarBackgroundColor": "#025BFF",
+					  "navigationBarTextStyle": "white"
+					}
+				  },
+				  {
+					"path": "pages/integral-details/integral-details",
+					"style": {
+					  "navigationBarTitleText": "氢春豆明细",
+					  "navigationBarBackgroundColor": "#025BFF",
+					  "navigationBarTextStyle": "white"
+					}
+				  }
 			]
 		},
 
