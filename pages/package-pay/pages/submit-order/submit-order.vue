@@ -1,7 +1,5 @@
 <template>
 	<view class="submit-order">
-		<view class="submit-order-background">
-		</view>
 		<view class="submit-order-index">
 			<view v-if="!express" class="submit-order-index-express">
 				<view class="submit-order-index-express-title">
@@ -451,29 +449,13 @@
 
 <style lang="scss" scoped>
 	.submit-order {
-		width: 100vw;
-		height: 100vh;
-		overflow-x: hidden;
-		overflow-y: hidden;
-
 		background: #f2f2f2;
 		position: relative;
-
-		.submit-order-background {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 760rpx;
-			background: linear-gradient(180deg, #025BFF 0%, #F2F2F2 90%);
-			z-index: 2;
-		}
+		padding-bottom: 168rpx;
+		overflow-y: scroll;
+		background: linear-gradient(180deg, #025BFF 0%, #F2F2F2 50%);
 
 		.submit-order-index {
-			position: absolute;
-			top: 0;
-			left: 0;
-			z-index: 3;
 			box-sizing: border-box;
 			padding: 40rpx 20rpx;
 

@@ -7,11 +7,11 @@
                         <view class="text">账户青春豆（个）</view>
                         <view class="bean-con">
                             <image src="/static/bean.png" />
-                            <view class="bean-num">{{userInfo.score?userInfo:0}}</view>
+                            <view class="bean-num">{{ userInfo.score ? userInfo : 0 }}</view>
                         </view>
                     </view>
                     <view class="right">
-                       去兑换
+                        去兑换
                     </view>
                 </view>
             </view>
@@ -19,7 +19,7 @@
             <view class="item" v-for="(item, index) in dataList" v-key="index">
                 <view class="item-left">
                     <view class="type">{{ item.scoreName }}</view>
-                    <view class="time">{{item.createTime}}</view>
+                    <view class="time">{{ item.createTime }}</view>
                 </view>
                 <view v-if="item.type === 3"><text class="red">-</text><text class="red">{{ item.score }}</text></view>
                 <view v-else><text class="green">+</text><text class="green">{{ item.score }}</text></view>
@@ -75,8 +75,7 @@ export default {
                 method: "POST",
                 data: {
                     sign: 'qcsd',
-                    // data: JSON.stringify({ pageSize: this.size, pageNo: this.current, userId: uni.getStorageSync('bbcUserInfo').id, loginToken: uni.getStorageSync('bbcToken'), categoryId: 1 }),
-                    data: JSON.stringify({ pageSize: this.size, pageNo: this.current, userId: 71872, loginToken: uni.getStorageSync('bbcToken'), categoryId: 1 }),
+                    data: JSON.stringify({ pageSize: this.size, pageNo: this.current, userId: uni.getStorageSync('bbcUserInfo').id, loginToken: uni.getStorageSync('bbcToken'), categoryId: 1 }),
                 },
                 callBack: (res) => {
                     this.isLoaded = true;

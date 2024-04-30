@@ -1,7 +1,7 @@
-page {
-  width: 100%;
-  height: 100%;
+.container{
   background: #e6e6e6;
+  padding-bottom: 200rpx; 
+  overflow-y: scroll;
 }
 .image-con {
   width: 100%;
