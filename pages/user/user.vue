@@ -166,11 +166,8 @@
 							地址管理
 						</view>
 					</view>
-
 				</view>
-
 			</view>
-
 		</view>
 		<hCompress ref="hCompress" />
 		<!-- 授权登录 -->
@@ -657,14 +654,12 @@ export default {
 			justify-content: space-between;
 
 			.order-title-left {
-				width: 144rpx;
 				line-height: 48rpx;
 				font-size: 34rpx;
 				color: #101010;
 			}
 
 			.order-title-right {
-				width: 144rpx;
 				line-height: 48rpx;
 				font-size: 28rpx;
 				color: #979797;
@@ -716,6 +711,7 @@ export default {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+		padding: 20rpx 0;
 
 		.receving-address-text {
 			box-sizing: border-box;

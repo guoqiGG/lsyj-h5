@@ -8,10 +8,10 @@
 		<view class="login-form">
 			<!-- 按钮 -->
 			<view class="happy">欢迎登录~</view>
-			<view class="input">
-				<image class="phone_icon" src="/static/login/phone_icon.png" mode="widthFix" />
-				<text class="line"></text>
-				<u--input placeholder="请输入手机号" border="none" v-model="phoneNumber" @blur="phoneChange"></u--input>
+			<view class="input-con">
+				<image class="phone_icons" src="/static/login/phone_icon.png" />
+				<input class="phone-number" placeholder="请输入手机号" border="none" v-model="phoneNumber"
+					@blur="phoneChange"></input>
 			</view>
 			<!-- <view class="input" style="margin-top: 40rpx;">
 				<image class="phone_icon" src="/static/login/code_icon.png" mode="widthFix" />
@@ -364,6 +364,107 @@ export default {
 	},
 };
 </script>
-<style>
-@import "./user-login.css";
+<style lang="scss">
+page {
+	background: #e6eefe;
+	height: 100%;
+	position: relative;
+  }
+  
+  .con {
+	background: #e6eefe;
+	/* background: linear-gradient(180deg, #bfd6ff 0%, rgba(238, 238, 238, 0) 100%); */
+  }
+  
+  .login_bg {
+	width: 100%;
+	height: 100%;
+  }
+  
+  .login-form {
+	width: 90%;
+	margin: -200rpx auto;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);	
+	.happy {
+	  font-family: PingFang SC, PingFang SC;
+	  font-weight: 400;
+	  font-size: 40rpx;
+	  color: #101010;
+	  line-height: 48rpx;
+	  margin-bottom: 40rpx;
+	}
+  
+	.input-con {
+	  width: 100%;
+	  height: 92rpx;
+	  background: #ffffff;
+	  display: flex;
+	  flex-direction: row;
+	  align-items: center;
+	  border-radius: 20rpx;
+  
+	  .phone_icons {
+		width: 52rpx;
+		height: 52rpx;
+		margin-left: 18rpx;
+	  }
+	  .phone-number {
+		margin-left: 20rpx;
+	  }
+	  .code {
+		font-weight: 400;
+		font-size: 30rpx;
+		color: #979797;
+	  }
+	  .color {
+		color: #025bff;
+	  }
+	}
+  }
+  
+  .authorized-btn {
+	width: 100%;
+	height: 88rpx;
+	line-height: 88rpx;
+	margin: 0 auto;
+	text-align: center;
+	background-color: #cecece;
+	border: 1rpx solid #cecece;
+	color: #fff;
+	border-radius: 14rpx;
+	font-size: 32rpx;
+	margin-top: 60rpx;
+	border-radius: 98rpx;
+	font-weight: normal;
+	letter-spacing: 0rpx;
+	opacity: 1;
+	/* box-shadow: 0rpx 8rpx 20rpx 0rpx rgba(140, 180, 255, 0.83); */
+  }
+  .loginColor {
+	background-color: #005aff;
+	border: 1rpx solid #005aff;
+  }
+  /* 条款声明 */
+  .statement {
+	margin-top: 20rpx;
+	font-size: 26rpx;
+	line-height: 2em;
+	color: #999999;
+  }
+  
+  .statement-label {
+	display: flex;
+  }
+  
+  .statement text {
+	color: #005aff;
+	cursor: pointer;
+  }
+  
+  /deep/.uni-checkbox .uni-checkbox-input {
+	background-color: #e6eefe;
+  }
+  
 </style>
