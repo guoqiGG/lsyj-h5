@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="image-con">
 			<image class="image" :src="productDetail.thumbail" mode="aspectFit" @error="handlePicError" />
 		</view>
@@ -12,7 +13,7 @@
 			</view>
 			<view class="prod-number">仅剩<text class="red">{{ productDetail.stock }}</text>件</view>
 			<view class="prod-number" v-if="productDetail.canUseCoupon"><text
-					style="color: #9e9e9e;font-size: 24rpx;">{{ productDetail.canUseCoupon===0?'不可用优惠券':'' }}</text>
+					style="color: #9e9e9e;font-size: 24rpx;">{{ productDetail.canUseCoupon === 0 ? '不可用优惠券' : '' }}</text>
 			</view>
 		</view>
 		<view class="prod-select-number">
@@ -89,275 +90,298 @@
 	</view>
 </template>
 <script>
-	const http = require("@/utils/http");
-	const util = require("@/utils/util");
-	// 引入wxjs
-	import wx from "weixin-js-sdk";
-	export default {
-		data() {
-			return {
-				userInfo: {},
-				leaderId:null,
-				loadingShow: true,
-				skuShow: false, //规格弹窗显示
-				goodsSkus: [], // 商品规格
-				numberValue: 1, // 选择件数默认为 1
-				goodsId: null, //商品id
-				productDetail: {},
-				price: null, // 总价格
-				// smallPrice: null, // 小数价格
-				totalPrice: null, //总价格
-				// totalSmallPrice: null,//总的小数
-				chechIndex: 0, //选中商品规格 默认第一个
-				orderType: 1, // 1-配送单，2-自提单   leaderType 0-有店 1-无店
+const http = require("@/utils/http");
+const util = require("@/utils/util");
+// 引入wxjs
+import wx from "weixin-js-sdk";
+export default {
+	data() {
+		return {
+			userInfo: {},
+			leaderId: null,
+			loadingShow: true,
+			skuShow: false, //规格弹窗显示
+			goodsSkus: [], // 商品规格
+			numberValue: 1, // 选择件数默认为 1
+			goodsId: null, //商品id
+			productDetail: {},
+			price: null, // 总价格
+			// smallPrice: null, // 小数价格
+			totalPrice: null, //总价格
+			// totalSmallPrice: null,//总的小数
+			chechIndex: 0, //选中商品规格 默认第一个
+			orderType: 1, // 1-配送单，2-自提单   leaderType 0-有店 1-无店
+		}
+	},
+	onLoad(option) {
+		if (option.prodId) {
+			this.goodsId = option.prodId
+			this.getProductDetail()
+		}
+	},
+	onShow() {
+		if (uni.getStorageSync("bbcToken")) {
+			this.userInfo = uni.getStorageSync('bbcUserInfo')
+			if (this.userInfo.leaderType === 0) {
+				this.orderType = 2
+			} else if (this.userInfo.leaderType === 1) {
+				this.orderType = 1
 			}
-		},
-		onLoad(option) {
-			if (option.prodId) {
-				this.goodsId = option.prodId
-				this.getProductDetail()
-			}
-		},
-		onShow() {
-			if (uni.getStorageSync("bbcToken")) {
-				this.userInfo = uni.getStorageSync('bbcUserInfo')
-				if (this.userInfo.leaderType === 0) {
-					this.orderType = 2
-				} else if (this.userInfo.leaderType === 1) {
-					this.orderType = 1
+			let url = window.location.href
+			if (url.split("userId=")[1]) {
+				this.leaderId = (url.split("userId=")[1]).split('&')[0]
+				// this.userInfo.leaderName = ""
+				if (this.leaderId !== this.userInfo.id && (this.userInfo.leaderName == '' || this.userInfo.leaderName ==
+					null)) {
+					//有上级团长的id  并且已经登录 并且没有绑定团长
+					this.bindTeam()
 				}
-				let url = window.location.href
-				if (url.split("userId=")[1]) {
-					this.leaderId = (url.split("userId=")[1]).split('&')[0]
-					// this.userInfo.leaderName = ""
-					if (this.leaderId !== this.userInfo.id && (this.userInfo.leaderName == '' || this.userInfo.leaderName ==
-							null)) {
-						//有上级团长的id  并且已经登录 并且没有绑定团长
-						this.bindTeam()
+			}
+		} else {
+			this.isAuthInfo = false;
+			uni.redirectTo({
+				url: "/pages/user-login/user-login",
+			});
+
+		}
+		this.skuShow = false
+		// 调用分享的事件
+		this.getShareInfo();
+
+	},
+	methods: {
+		// 绑定团长接口
+		bindTeam() {
+			let obj = {
+				userId: this.leaderId,
+				loginToken: uni.getStorageSync('bbcToken')
+			}
+			const params = {
+				url: "/pub/h5/user/leader/binding",
+				method: "POST",
+				data: {
+					sign: 'qcsd',
+					data: JSON.stringify(obj),
+				},
+				callBack: (res) => {
+					if (res.loginToken) {
+						uni.setStorageSync("bbcUserInfo", res);
+						uni.setStorageSync("bbcToken", res.loginToken);
 					}
-				}
-			} else {
-				this.isAuthInfo = false;
-				uni.redirectTo({
-					url: "/pages/user-login/user-login",
-				});
-				
-			}
+				},
+			};
+			http.request(params);
+		},
+		toHomePage() {
+			util.toHomePage()
+		},
+		/**
+		 * 图片加载失败时，现实默认图片
+		 */
+		handlePicError() {
+			this.categoryImg = '../../static/def.png'
+		},
+		// 打开规格弹窗
+		openSkuPopup() {
+			this.skuShow = true
+		},
+		// 关闭规格弹窗
+		closeSkuPopup() {
 			this.skuShow = false
-			// 调用分享的事件
-			this.getShareInfo();
+		},
+		// 减少数量
+		numberValueMinus() {
+			this.numberValue = Number(this.numberValue)
+			this.numberValue = this.numberValue <= 1 ? 1 : this.numberValue - 1
+			this.totalPrice = (this.price * this.numberValue)
 
 		},
-		methods: {
-			// 绑定团长接口
-			bindTeam() {
+		// 增加商品数量
+		numberValueAdd() {
+			this.numberValue = Number(this.numberValue)
+			this.numberValue = this.numberValue + 1
+			this.totalPrice = (this.price * this.numberValue)
+
+		},
+		numberInput() {
+			if (isNaN(this.numberValue)) { //判断值是不是数字
+				this.$nextTick(() => {
+					this.numberValue = 1
+					this.totalPrice = (this.price * this.numberValue)
+				})
+			} else if (this.numberValue == "") { //这是当只有1位的时候，删除这个会进入这个判断，如果没有该判断，当只有一位的时候就不能删除
+				this.$nextTick(() => {
+					this.numberValue = 1
+					this.totalPrice = (this.price * this.numberValue)
+				})
+			} else if (this.numberValue == 0) { //判断值是不是1
+				this.$nextTick(() => {
+					this.numberValue = 1
+					this.totalPrice = (this.price * this.numberValue)
+				})
+			} else if (this.numberValue.indexOf(".") != -1) { //判断有没有输入小数点
+				this.$nextTick(() => {
+					this.numberValue = Math.floor(this.numberValue);
+					this.totalPrice = (this.price * this.numberValue)
+
+				})
+			} else {
+				this.totalPrice = (this.price * this.numberValue)
+			}
+
+		},
+		getProductDetail() {
+			let obj = {
+				goodsId: this.goodsId
+			}
+			const params = {
+				url: "/pub/goods/detail",
+				method: "POST",
+				data: {
+					sign: 'qcsd',
+					data: JSON.stringify(obj),
+				},
+				callBack: (res) => {
+					this.productDetail = res
+					this.price = this.totalPrice = res.goodsSkus[0].price
+					// this.totalPrice = this.price
+					this.goodsSkus = res.goodsSkus
+					this.chechIndex = res.goodsSkus[0].id
+				},
+			}
+			http.request(params);
+		},
+		skuSelectClick(id) {
+			this.chechIndex = id
+		},
+		buyNow() {
+			util.checkAuthInfo(() => {
+				// 订单预检
 				let obj = {
-					userId: this.leaderId,
-					loginToken: uni.getStorageSync('bbcToken')
+					loginToken: uni.getStorageSync('bbcToken'),
+					userId: uni.getStorageSync('bbcUserInfo').id,
+					orderType: this.orderType,
+					goods: [{
+						goodsId: this.goodsId,
+						skuId: this.chechIndex,
+						buyNumber: this.numberValue
+					}]
 				}
 				const params = {
-					url: "/pub/h5/user/leader/binding",
+					url: "/pub/order/preview",
 					method: "POST",
 					data: {
 						sign: 'qcsd',
 						data: JSON.stringify(obj),
 					},
 					callBack: (res) => {
-						if (res.loginToken) {
-							uni.setStorageSync("bbcUserInfo", res);
-							uni.setStorageSync("bbcToken", res.loginToken);
+						let orderItem = res
+						let url = '/pages/package-pay/pages/submit-order/submit-order'
+						this.toSubmitOrder(orderItem, url)
+					},
+					errCallBack: (errMsg) => {
+						if (errMsg.code === 500) {
+							uni.showToast({
+								title: errMsg.msg,
+								icon: 'none',
+								mask: true
+							})
+						}
+						this.closeSkuPopup()
+					},
+
+				}
+				http.request(params);
+			})
+		},
+		//buyNow: util.debounce(function () {
+		// util.checkAuthInfo(() => {
+		// 	// 订单预检
+		// 	let obj = {
+		// 		loginToken: uni.getStorageSync('bbcToken'),
+		// 		userId: uni.getStorageSync('bbcUserInfo').id,
+		// 		orderType: this.orderType,
+		// 		goods: [{
+		// 			goodsId: this.goodsId,
+		// 			skuId: this.chechIndex,
+		// 			buyNumber: this.numberValue
+		// 		}]
+		// 	}
+		// 	const params = {
+		// 		url: "/pub/order/preview",
+		// 		method: "POST",
+		// 		data: {
+		// 			sign: 'qcsd',
+		// 			data: JSON.stringify(obj),
+		// 		},
+		// 		callBack: (res) => {
+		// 			let orderItem = res
+		// 			let url = '/pages/package-pay/pages/submit-order/submit-order'
+		// 			this.toSubmitOrder(orderItem, url)
+		// 		},
+		// 		errCallBack: (errMsg) => {
+		// 			if (errMsg.code === 500) {
+		// 				uni.showToast({
+		// 					title: errMsg.msg,
+		// 					icon: 'none',
+		// 					mask: true
+		// 				})
+		// 			}
+		// 			this.closeSkuPopup()
+		// 		},
+
+		// 	}
+		// 	http.request(params);
+		// })
+		// }, 1000)
+		/**
+		 * 跳转提交订单页
+		 */
+		toSubmitOrder(orderItem, url) {
+			uni.setStorageSync("bbcOrderItem", Object.assign({}, orderItem));
+			uni.navigateTo({
+				url,
+			});
+		},
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				const params = {
+					url: '/huan/tuo/user/courseId',
+					data: JSON.stringify({ userId: uni.getStorageSync("bbcUserInfo").id }),
+					// data: JSON.stringify({ userId: 22 }),
+					callBack: (res) => {
+						if (res) {
+							// #ifdef H5 
+							window.location.href = res
+							// #endif
 						}
 					},
+					errCallBack: () => {
+						alert('errCallBack',)
+					},
+
 				};
 				http.request(params);
-			},
-			toHomePage() {
-				util.toHomePage()
-			},
-			/**
-			 * 图片加载失败时，现实默认图片
-			 */
-			handlePicError() {
-				this.categoryImg = '../../static/def.png'
-			},
-			// 打开规格弹窗
-			openSkuPopup() {
-				this.skuShow = true
-			},
-			// 关闭规格弹窗
-			closeSkuPopup() {
-				this.skuShow = false
-			},
-			// 减少数量
-			numberValueMinus() {
-				this.numberValue = Number(this.numberValue)
-				this.numberValue = this.numberValue <= 1 ? 1 : this.numberValue - 1
-				this.totalPrice = (this.price * this.numberValue)
 
+			})
+		}
+	},
+	onShareAppMessage: function (res) {
+		return {
+			title: this.productDetail.name,
+			path: '/pages/package-prod/pages/prod/prod?prodId=' + this.goodsId,
+			imageUrl: this.productDetail.thumbail,
+			success: function (res) {
+				// 转发成功
 			},
-			// 增加商品数量
-			numberValueAdd() {
-				this.numberValue = Number(this.numberValue)
-				this.numberValue = this.numberValue + 1
-				this.totalPrice = (this.price * this.numberValue)
-
-			},
-			numberInput() {
-				if (isNaN(this.numberValue)) { //判断值是不是数字
-					this.$nextTick(() => {
-						this.numberValue = 1
-						this.totalPrice = (this.price * this.numberValue)
-					})
-				} else if (this.numberValue == "") { //这是当只有1位的时候，删除这个会进入这个判断，如果没有该判断，当只有一位的时候就不能删除
-					this.$nextTick(() => {
-						this.numberValue = 1
-						this.totalPrice = (this.price * this.numberValue)
-					})
-				} else if (this.numberValue == 0) { //判断值是不是1
-					this.$nextTick(() => {
-						this.numberValue = 1
-						this.totalPrice = (this.price * this.numberValue)
-					})
-				} else if (this.numberValue.indexOf(".") != -1) { //判断有没有输入小数点
-					this.$nextTick(() => {
-						this.numberValue=Math.floor(this.numberValue);
-						this.totalPrice = (this.price * this.numberValue)
-						
-					})
-				}else{
-					this.totalPrice = (this.price * this.numberValue)
-				}
-
-			},
-			getProductDetail() {
-				let obj = {
-					goodsId: this.goodsId
-				}
-				const params = {
-					url: "/pub/goods/detail",
-					method: "POST",
-					data: {
-						sign: 'qcsd',
-						data: JSON.stringify(obj),
-					},
-					callBack: (res) => {
-						this.productDetail = res
-						this.price = this.totalPrice = res.goodsSkus[0].price
-						// this.totalPrice = this.price
-						this.goodsSkus = res.goodsSkus
-						this.chechIndex = res.goodsSkus[0].id
-					},
-				}
-				http.request(params);
-			},
-			skuSelectClick(id) {
-				this.chechIndex = id
-			},
-			buyNow() {
-				util.checkAuthInfo(() => {
-					// 订单预检
-					let obj = {
-						loginToken: uni.getStorageSync('bbcToken'),
-						userId: uni.getStorageSync('bbcUserInfo').id,
-						orderType: this.orderType,
-						goods: [{
-							goodsId: this.goodsId,
-							skuId: this.chechIndex,
-							buyNumber: this.numberValue
-						}]
-					}
-					const params = {
-						url: "/pub/order/preview",
-						method: "POST",
-						data: {
-							sign: 'qcsd',
-							data: JSON.stringify(obj),
-						},
-						callBack: (res) => {
-							let orderItem = res
-							let url = '/pages/package-pay/pages/submit-order/submit-order'
-							this.toSubmitOrder(orderItem, url)
-						},
-						errCallBack: (errMsg) => {
-							if (errMsg.code === 500) {
-								uni.showToast({
-									title: errMsg.msg,
-									icon: 'none',
-									mask: true
-								})
-							}
-							this.closeSkuPopup()
-						},
-
-					}
-					http.request(params);
-				})
-			},
-			//buyNow: util.debounce(function () {
-			// util.checkAuthInfo(() => {
-			// 	// 订单预检
-			// 	let obj = {
-			// 		loginToken: uni.getStorageSync('bbcToken'),
-			// 		userId: uni.getStorageSync('bbcUserInfo').id,
-			// 		orderType: this.orderType,
-			// 		goods: [{
-			// 			goodsId: this.goodsId,
-			// 			skuId: this.chechIndex,
-			// 			buyNumber: this.numberValue
-			// 		}]
-			// 	}
-			// 	const params = {
-			// 		url: "/pub/order/preview",
-			// 		method: "POST",
-			// 		data: {
-			// 			sign: 'qcsd',
-			// 			data: JSON.stringify(obj),
-			// 		},
-			// 		callBack: (res) => {
-			// 			let orderItem = res
-			// 			let url = '/pages/package-pay/pages/submit-order/submit-order'
-			// 			this.toSubmitOrder(orderItem, url)
-			// 		},
-			// 		errCallBack: (errMsg) => {
-			// 			if (errMsg.code === 500) {
-			// 				uni.showToast({
-			// 					title: errMsg.msg,
-			// 					icon: 'none',
-			// 					mask: true
-			// 				})
-			// 			}
-			// 			this.closeSkuPopup()
-			// 		},
-
-			// 	}
-			// 	http.request(params);
-			// })
-			// }, 1000)
-			/**
-			 * 跳转提交订单页
-			 */
-			toSubmitOrder(orderItem, url) {
-				uni.setStorageSync("bbcOrderItem", Object.assign({}, orderItem));
-				uni.navigateTo({
-					url,
-				});
-			}
-		},
-		onShareAppMessage: function(res) {
-			return {
-				title: this.productDetail.name,
-				path: '/pages/package-prod/pages/prod/prod?prodId=' + this.goodsId,
-				imageUrl: this.productDetail.thumbail,
-				success: function(res) {
-					// 转发成功
-				},
-				fail: function(res) {
-					// 转发失败
-				}
+			fail: function (res) {
+				// 转发失败
 			}
 		}
 	}
+}
 </script>
 <style>
-	@import './prod.css'
+@import './prod.css'
 </style>

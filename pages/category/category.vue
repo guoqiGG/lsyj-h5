@@ -1,44 +1,48 @@
 <template>
-	<view class="Mall4j container">
-		<!-- 顶部分类图片 -->
-		<view v-if="categoryImg" class="adver-map">
-			<view class="item-a">
-				<image :src="categoryImg" mode="widthFix" @error="handlePicError" />
+	<view style="padding-top: 10rpx;">
+		<view class="go-live" ><text @tap="toLiveAddress">返回直播间</text></view>
+		<view class="container">
+			<!-- 顶部分类图片 -->
+			<view v-if="categoryImg" class="adver-map">
+				<view class="item-a">
+					<image :src="categoryImg" mode="widthFix" @error="handlePicError" />
+				</view>
+			</view>
+			<!-- 滚动内容区 -->
+			<view class="main">
+				<!-- 左侧菜单start -->
+				<scroll-view scroll-y="true" class="leftmenu">
+					<block v-for="(item, index) in categoryList" :key="index">
+						<view :class="'menu-item ' + (selIndex == index ? 'active' : '')" :data-index="index"
+							:data-id="item.categoryId" @tap="onMenuTab">
+							<text class="menu-text">{{ item.categoryName }}</text>
+						</view>
+					</block>
+				</scroll-view>
+				<!-- 左侧菜单end -->
+				<!-- 右侧内容start -->
+				<scroll-view scroll-y="true" class="rightcontent">
+					<block v-for="(item, key) in prodList" :key="key">
+						<prod :item="item" />
+						<view style="width: 100%;height:30rpx;"></view>
+					</block>
+	
+					<!-- 空列表或加载全部提示 -->
+					<EmptyAllTips v-if="isLoaded" :isEmpty="!prodList.length" emptyTips="此分类下暂无商品"
+						:isAll="current == pages" />
+	
+				</scroll-view>
+				<!-- 右侧内容end -->
 			</view>
 		</view>
-		<!-- 滚动内容区 -->
-		<view class="main">
-			<!-- 左侧菜单start -->
-			<scroll-view scroll-y="true" class="leftmenu">
-				<block v-for="(item, index) in categoryList" :key="index">
-					<view :class="'menu-item ' + (selIndex == index ? 'active' : '')" :data-index="index"
-						:data-id="item.categoryId" @tap="onMenuTab">
-						<text class="menu-text">{{ item.categoryName }}</text>
-					</view>
-				</block>
-			</scroll-view>
-			<!-- 左侧菜单end -->
-			<!-- 右侧内容start -->
-			<scroll-view scroll-y="true" class="rightcontent">
-				<block v-for="(item, key) in prodList" :key="key">
-					<prod :item="item" />
-					<view style="width: 100%;height:30rpx;"></view>
-				</block>
-				
-				<!-- 空列表或加载全部提示 -->
-				<EmptyAllTips v-if="isLoaded" :isEmpty="!prodList.length" emptyTips="此分类下暂无商品"
-					:isAll="current == pages" />
-
-			</scroll-view>
-			<!-- 右侧内容end -->
-		</view>
+	
 	</view>
-
 </template>
 
 <script>
 import http from '@/utils/http'
 import prod from '../../components/production/index.vue'
+const util = require("@/utils/util.js");
 export default {
 	components: {
 		prod
@@ -94,7 +98,7 @@ export default {
 		// 获取分类下的商品列表
 		getProdList(categoryId) {
 			this.categoryId = categoryId
-			if(!this.categoryId){
+			if (!this.categoryId) {
 				return
 			}
 			this.isLoaded = false
@@ -117,7 +121,7 @@ export default {
 					this.prodList = res
 				}
 			}
-	
+
 			http.request(params)
 		},
 		/**
@@ -126,6 +130,29 @@ export default {
 		handlePicError() {
 			this.categoryImg = '../../static/def.png'
 		},
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				const params = {
+					url: '/huan/tuo/user/courseId',
+					data: JSON.stringify({ userId: uni.getStorageSync("bbcUserInfo").id }),
+					// data: JSON.stringify({ userId: 22 }),
+					callBack: (res) => {
+						if (res) {
+							// #ifdef H5 
+							window.location.href = res
+							// #endif
+						}
+					},
+					errCallBack: () => {
+						alert('errCallBack',)
+					},
+
+				};
+				http.request(params);
+
+			})
+		}
 
 	}
 }
