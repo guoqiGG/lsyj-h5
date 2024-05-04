@@ -27,6 +27,9 @@
 						<view class="title">
 							{{ item.orderGoods[0].title }}
 						</view>
+						<view class="size" v-if="item.specificationName != '默认'">
+							{{ item.specificationName ? item.specificationName : '' }}
+						</view>
 						<view class="price">
 							<view class="price-number">
 								￥{{ item.orderGoods[0].salePrice }}
@@ -140,12 +143,9 @@ export default {
 	methods: {
 		// 跳转取订单详情
 		goOrderDetail(orderId) {
-			if (this.currentTab !== 5) {
-				uni.navigateTo({
-					url: `/pages/package-user/pages/order-detail/order-detail?orderId=` + orderId
-				})
-			}
-
+			uni.navigateTo({
+				url: `/pages/package-user/pages/order-detail/order-detail?orderId=` + orderId
+			})
 		},
 		// 取消订单
 		cancelOrder(orderId) {
@@ -222,9 +222,10 @@ export default {
 			http.request(params)
 		},
 		handleTabClick(e) {
+			console.log(e)
 			this.currentTab = e.index;
-			this.pageNo=1
-			this.orderLists=[]
+			this.pageNo = 1
+			this.orderLists = []
 			this.status = e.id
 			this.getOrderLists()
 		},
@@ -322,10 +323,19 @@ export default {
 		}
 
 		.order-list-content-box-content-text {
-			margin-top: 62rpx;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+
 
 			.title {
 				font-size: 32rpx;
+			}
+
+			.size {
+				margin-top: 10rpx;
+				font-size: 22rpx;
+				color: #696868;
 			}
 
 			.price {

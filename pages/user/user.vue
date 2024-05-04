@@ -256,7 +256,7 @@ export default {
 
 		}
 		// 调用分享的事件
-		// this.getShareInfo();
+		this.getShareInfo()
 		// if (!uni.getStorageSync('puclicAppId')) {
 		// 	this.getWexinPublicAccount()
 		// } else {
@@ -268,6 +268,9 @@ export default {
 		// 	console.log(code)
 		// 	this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code)
 		// }
+	},
+	onLoad(options) {
+
 	},
 	methods: {
 		weixinAuthLogin(appId) {
@@ -528,7 +531,67 @@ export default {
 				},
 			};
 			http.request(params);
-		}
+		},
+		getShareInfo() {
+			var url = encodeURIComponent(window.location.href.split("#")[0]);
+			let userId = uni.getStorageSync('bbcUserInfo').id
+			if (!url && !userId) {
+				return
+			}
+			const params = {
+				url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
+				method: "GET",
+				callBack: (res) => {
+					wx.config({
+						debug: false,
+						appId: res.appId,
+						timestamp: parseInt(res.timestamp),
+						nonceStr: res.nonceStr,
+						signature: res.signature,
+						jsApiList: [
+							"updateAppMessageShareData",
+							"updateTimelineShareData"
+						]
+					});
+
+					wx.ready(() => {
+						wx.checkJsApi({
+							jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+							success: function (res) {
+								console.log('可以用');
+							},
+							fail: function (err) {
+								console.log('不可以用', err);
+							},
+						});
+						wx.updateAppMessageShareData({
+							title: res.title,
+							desc: res.coupyweiring,
+							link: window.location.href.split("#")[0] + '#/pages/user/user?userId=' + uni.getStorageSync('bbcUserInfo').id,
+							imgUrl: res.img,
+							success: function () {
+								console.log('分享成功')
+							},
+							fail: function (err) {
+								console.log('分享失败')
+							},
+						})
+						//错误了会走 这里
+						// wx.error(function (res) {
+						// 	alert('微信分享错误信息', err)
+						// });
+					});
+
+
+
+				}, errCallBack: () => {
+					console.log('失败')
+				},
+
+			};
+			http.request(params);
+
+		},
 	}
 }
 </script>

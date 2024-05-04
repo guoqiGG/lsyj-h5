@@ -9,6 +9,15 @@
   },
   "pages": [
     {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "氢春时代",
+        "backgroundTextStyle": "dark",
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
       "path": "pages/user/user",
       "style": {
         "navigationBarTitleText": "个人中心",
@@ -25,16 +34,7 @@
         "enablePullDownRefresh": false
       }
     },
-    {
-      "path": "pages/index/index",
-      "style": {
-        "navigationBarTitleText": "氢春时代",
-        "backgroundTextStyle": "dark",
-        "enablePullDownRefresh": true,
-        "navigationStyle": "custom",
-        "navigationBarTextStyle": "white"
-      }
-    },
+
     {
       "path": "pages/user-login/user-login",
       "style": {
@@ -178,14 +178,14 @@
             "navigationBarTextStyle": "white"
           }
         },
-		{
-			"path": "pages/huantuolive/huantuolive",
-			"style": {
-			  "navigationBarTitleText": "直播间",
-			  "navigationBarBackgroundColor": "#025BFF",
-			  "navigationBarTextStyle": "white"
-			}
-		  }
+        {
+          "path": "pages/huantuolive/huantuolive",
+          "style": {
+            "navigationBarTitleText": "直播间",
+            "navigationBarBackgroundColor": "#025BFF",
+            "navigationBarTextStyle": "white"
+          }
+        }
       ]
     },
     {
@@ -382,7 +382,7 @@
     "navigationBarBackgroundColor": "#F8F8F8",
     "backgroundColor": "#F8F8F8",
     "app-plus": {
-      "titleNView": false //禁用原生导航栏
+      "titleNView": false 
     }
   },
 

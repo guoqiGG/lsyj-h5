@@ -90,7 +90,7 @@ export default {
 		navigationBar
 	},
 	onLoad: function (options) {
-		this.getShareInfo();
+
 		console.log('options.scene', options)
 		// 团长绑定用户
 		if (options.scene) {
@@ -149,6 +149,9 @@ export default {
 			}
 		}
 	},
+	onShow() {
+		this.getShareInfo();
+	},
 	onShareAppMessage: function () {
 		wx.showShareMenu({
 			withShareTicket: true,
@@ -200,9 +203,11 @@ export default {
 	},
 	methods: {
 		getShareInfo() {
-			var url = window.location.href;
+			var url = encodeURIComponent(window.location.href.split("#")[0]);
 			let userId = uni.getStorageSync('bbcUserInfo').id
-			console.log(userId)
+			if (!url && !userId) {
+				return
+			}
 			const params = {
 				url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
 				method: "GET",
@@ -232,26 +237,23 @@ export default {
 						wx.updateAppMessageShareData({
 							title: res.title,
 							desc: res.coupyweiring,
-							link: window.location.href + '?userId=' + bbcUserInfo.id,
+							link: window.location.href.split("#")[0] + '#/?userId=' + uni.getStorageSync('bbcUserInfo').id,
 							imgUrl: res.img,
 							success: function () {
 								console.log('分享成功')
 							},
 							fail: function (err) {
-								console.log('分享失败')
+								console.log('分享失败',err)
 							},
 						})
 						//错误了会走 这里
-						// wx.error(function (res) {
-						// 	alert('微信分享错误信息', err)
-						// });
+						wx.error(function (err) {
+							alert('微信分享错误信息', err)
+						});
 					});
-
-
-
 				},
 				errCallBack: () => {
-					alert('errCallBack',)
+					console.log('失败')
 				},
 
 			};

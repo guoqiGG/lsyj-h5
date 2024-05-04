@@ -17,9 +17,10 @@
       </view>
       <view class="con-box">
         <view class="item" v-for="item in 1">
-          <image src="/static/clothes.png" />
+          <image
+            src="https://qingchuntai2.oss-cn-beijing.aliyuncs.com/2024/05/04/a2f9f7e1-8f89-4998-8a1d-187ec5e82889%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240504161638.jpg" />
           <view @tap="exchange">
-            <text>衣服优惠券</text>
+            <text v-if="scoreNumber">衣服优惠券(需{{ scoreNumber }}豆)</text>
           </view>
         </view>
       </view>
@@ -33,14 +34,19 @@
       </view>
       <view class="content">
         <view class="content-text">
-          为方便家人们兑换礼品，已领取的衣服卡和万能卡做如下变更:
+          为方便家人们兑换礼品，已领取的衣服卡和积分做如下变更:
         </view>
         <view class="content-text">
-          ① 衣服卡变换成青春豆，一张衣服卡等于一个青春豆，请在首页☞青春豆兑换区查看；
+          ①衣服卡变换成青春豆，一张衣服卡等于一个青春豆；
         </view>
         <view class="content-text">
-          ② 万能卡变换成代金券，一张万能卡等于0.3元代金券，请在个人中心的优惠券中查看。
-          如果有青春豆或代金券数量对不上的可以联系团长。
+          ②小鹅通积分变换成青春豆，一个积分等于一个青春豆；
+        </view>
+        <view class="content-text">
+          ③青春豆兑换的优惠券在“优惠券”中查询
+        </view>
+        <view class="content-text">
+          如果有青春豆数量对不上的可以联系团长。
         </view>
       </view>
     </view>
@@ -63,6 +69,7 @@ export default {
       pages: "",
       loadAll: false, // 已加载全部
       isLoaded: false,
+      scoreNumber: null
     };
   },
 
@@ -74,6 +81,7 @@ export default {
       title: '青春豆中心',
     });
     this.getScore()
+    this.getExchangeScore()
   },
   /**
    * 页面上拉触底事件的处理函数
@@ -103,7 +111,8 @@ export default {
         callBack: (res) => {
           uni.showToast({
             title: '兑换成功',
-            icon: 'none'
+            icon: 'none',
+            duration: 3000
           })
           this.getScore()
         }
@@ -124,6 +133,17 @@ export default {
         },
         callBack: (res) => {
           this.score = res.score
+        },
+      };
+      http.request(params);
+    },
+    // 获取衣服券需要多少豆兑换
+    getExchangeScore() {
+      const params = {
+        url: "/test/user/integral",
+        method: "get",
+        callBack: (res) => {
+          this.scoreNumber = res
         },
       };
       http.request(params);
