@@ -317,8 +317,9 @@ export default {
 					callBack: (res) => {
 						if (res) {
 							// #ifdef H5 
-							window.location.href = res
+							// window.location.href = res
 							// #endif
+							uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?urls=' + res })
 						}
 					},
 					errCallBack: () => {
@@ -495,7 +496,6 @@ swiper .banner-item .img-box img {
 
 	.convert {
 		background: linear-gradient(90deg, #3874e4 0%, #BA55FF 100%);
-		background-size: cover;
 		width: 346rpx;
 		height: 220rpx;
 		border-radius: 20rpx;
@@ -554,17 +554,6 @@ swiper .banner-item .img-box img {
 				font-size: 40rpx;
 				color: #6E2EED;
 				line-height: 62rpx;
-			}
-
-			.convert-pic {
-				box-sizing: border-box;
-				width: 100rpx;
-				height: 100rpx;
-
-				image {
-					width: 100%;
-					height: 100%;
-				}
 			}
 		}
 	}
@@ -630,16 +619,6 @@ swiper .banner-item .img-box img {
 				color: #F32843;
 			}
 
-			.singIn-pic {
-				box-sizing: border-box;
-				width: 100rpx;
-				height: 100rpx;
-
-				image {
-					width: 120%;
-					height: 120%;
-				}
-			}
 		}
 	}
 
@@ -651,7 +630,7 @@ swiper .banner-item .img-box img {
 	padding-top: 20rpx;
 
 	.sponsored-ad-title {
-		margin: 0  20rpx 20rpx;
+		margin: 0 20rpx 20rpx;
 		height: 48rpx;
 		box-sizing: border-box;
 		font-weight: 400;
@@ -659,7 +638,7 @@ swiper .banner-item .img-box img {
 		color: #101010;
 		line-height: 48rpx;
 		letter-spacing: 1px;
-		border-left: 6rpx solid #518BFC ;
+		border-left: 6rpx solid #518BFC;
 		padding-left: 10rpx;
 	}
 
