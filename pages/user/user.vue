@@ -323,7 +323,6 @@ export default {
 
 				callBack: (res) => {
 					this.orderNum = res
-					console.log(res, 'res==========>')
 				},
 			};
 			http.request(params);

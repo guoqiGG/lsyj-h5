@@ -1,7 +1,7 @@
 <template>
     <view class="gift-write-off">
         <view class="container">
-            <view class="item" v-for="(item, index) in dataList" v-key="index">
+            <view class="item" v-for="(item, index) in dataList" :key="index">
 
                 <view class="item-cen">
                     <view class="img">
