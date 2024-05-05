@@ -115,12 +115,14 @@ export default {
 		}
 	},
 	onLoad(option) {
+		util.checkAuthInfo(() => {
+			this.getShareInfo();
+		})
 		if (option.prodId) {
 			this.goodsId = option.prodId
 			this.getProductDetail()
 		}
-		// 调用分享的事件
-		this.getShareInfo();
+
 	},
 	onShow() {
 		if (uni.getStorageSync("bbcToken")) {
@@ -148,6 +150,7 @@ export default {
 
 		}
 		this.skuShow = false
+
 	},
 	methods: {
 		// 绑定团长接口

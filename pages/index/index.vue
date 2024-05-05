@@ -90,8 +90,9 @@ export default {
 		navigationBar
 	},
 	onLoad: function (options) {
-
-		console.log('options.scene', options)
+		util.checkAuthInfo(() => {
+			this.getShareInfo();
+		})
 		// 团长绑定用户
 		if (options.scene) {
 			if (uni.getStorageSync('bbcToken')) {
@@ -148,7 +149,10 @@ export default {
 				})
 			}
 		}
-		this.getShareInfo();
+
+	},
+	onShow() {
+
 	},
 	data() {
 		return {
@@ -223,7 +227,7 @@ export default {
 					});
 					//错误了会走 这里
 					wx.error(function (err) {
-						alert('微信分享错误信息', err)
+						console.log('微信分享错误信息', err)
 					});
 				},
 				errCallBack: () => {

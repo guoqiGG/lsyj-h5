@@ -256,6 +256,7 @@ export default {
 
 		}
 
+
 		// if (!uni.getStorageSync('puclicAppId')) {
 		// 	this.getWexinPublicAccount()
 		// } else {
@@ -269,8 +270,10 @@ export default {
 		// }
 	},
 	onLoad(options) {
-		// 调用分享的事件
-		this.getShareInfo()
+		util.checkAuthInfo(() => {
+			this.getShareInfo();
+		 })
+		
 	},
 	methods: {
 		weixinAuthLogin(appId) {
