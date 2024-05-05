@@ -119,6 +119,8 @@ export default {
 			this.goodsId = option.prodId
 			this.getProductDetail()
 		}
+		// 调用分享的事件
+		this.getShareInfo();
 	},
 	onShow() {
 		if (uni.getStorageSync("bbcToken")) {
@@ -146,9 +148,6 @@ export default {
 
 		}
 		this.skuShow = false
-		// 调用分享的事件
-		this.getShareInfo();
-
 	},
 	methods: {
 		// 绑定团长接口
@@ -370,9 +369,6 @@ export default {
 		getShareInfo() {
 			var url = encodeURIComponent(window.location.href.split("#")[0]);
 			let userId = uni.getStorageSync('bbcUserInfo').id
-			if (!url && !userId) {
-				return
-			}
 			const params = {
 				url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
 				method: "GET",
@@ -411,10 +407,10 @@ export default {
 								console.log('分享失败')
 							},
 						})
-						//错误了会走 这里
-						// 	wx.error(function (res) {
-						// 		alert('微信分享错误信息', err)
-						// 	});
+					});
+					//错误了会走 这里
+					wx.error(function (err) {
+						alert('微信分享错误信息', err)
 					});
 				},
 				errCallBack: () => {
@@ -425,19 +421,6 @@ export default {
 
 		},
 	},
-	onShareAppMessage: function (res) {
-		return {
-			title: this.productDetail.name,
-			path: '/pages/package-prod/pages/prod/prod?prodId=' + this.goodsId,
-			imageUrl: this.productDetail.thumbail,
-			success: function (res) {
-				// 转发成功
-			},
-			fail: function (res) {
-				// 转发失败
-			}
-		}
-	}
 }
 </script>
 <style>

@@ -255,8 +255,7 @@ export default {
 			});
 
 		}
-		// 调用分享的事件
-		this.getShareInfo()
+
 		// if (!uni.getStorageSync('puclicAppId')) {
 		// 	this.getWexinPublicAccount()
 		// } else {
@@ -270,7 +269,8 @@ export default {
 		// }
 	},
 	onLoad(options) {
-
+		// 调用分享的事件
+		this.getShareInfo()
 	},
 	methods: {
 		weixinAuthLogin(appId) {
@@ -535,9 +535,6 @@ export default {
 		getShareInfo() {
 			var url = encodeURIComponent(window.location.href.split("#")[0]);
 			let userId = uni.getStorageSync('bbcUserInfo').id
-			if (!url && !userId) {
-				return
-			}
 			const params = {
 				url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
 				method: "GET",
@@ -576,15 +573,13 @@ export default {
 								console.log('分享失败')
 							},
 						})
-						//错误了会走 这里
-						// wx.error(function (res) {
-						// 	alert('微信分享错误信息', err)
-						// });
 					});
-
-
-
-				}, errCallBack: () => {
+					//错误了会走 这里
+					wx.error(function (err) {
+						alert('微信分享错误信息', err)
+					});
+				},
+				errCallBack: () => {
 					console.log('失败')
 				},
 

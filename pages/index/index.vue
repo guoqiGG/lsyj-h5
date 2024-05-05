@@ -148,33 +148,7 @@ export default {
 				})
 			}
 		}
-	},
-	onShow() {
 		this.getShareInfo();
-	},
-	onShareAppMessage: function () {
-		wx.showShareMenu({
-			withShareTicket: true,
-			menus: ['shareAppMessage', 'shareTimeline']
-		})
-		return {
-			path: "pages/user/user",
-			title: mpAppName,
-			imageUrl: '/static/logo.png',
-			success: function (res) {
-				// 转发成功
-			},
-			fail: function (res) {
-				// 转发失败
-			}
-		};
-	},
-	//用户点击右上角分享朋友圈
-	onShareTimeline: function () {
-		return {
-			title: '氢春时代',
-			imageUrl: '/static/logo.png'
-		}
 	},
 	data() {
 		return {
@@ -205,9 +179,9 @@ export default {
 		getShareInfo() {
 			var url = encodeURIComponent(window.location.href.split("#")[0]);
 			let userId = uni.getStorageSync('bbcUserInfo').id
-			if (!url && !userId) {
-				return
-			}
+			// if (!url || !userId) {
+			// 	return
+			// }
 			const params = {
 				url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
 				method: "GET",
@@ -243,19 +217,18 @@ export default {
 								console.log('分享成功')
 							},
 							fail: function (err) {
-								console.log('分享失败',err)
+								console.log('分享失败', err)
 							},
 						})
-						//错误了会走 这里
-						wx.error(function (err) {
-							alert('微信分享错误信息', err)
-						});
+					});
+					//错误了会走 这里
+					wx.error(function (err) {
+						alert('微信分享错误信息', err)
 					});
 				},
 				errCallBack: () => {
 					console.log('失败')
 				},
-
 			};
 			http.request(params);
 
