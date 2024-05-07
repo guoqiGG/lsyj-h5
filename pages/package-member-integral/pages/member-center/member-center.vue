@@ -1,6 +1,9 @@
 <!-- 会员中心 -->
 <template>
     <view class="container">
+        <view class="gohome">
+            <image class="img" src="/static/home.png" @tap="goHome" /> <text @tap="goHome">返回首页</text>
+        </view>
         <view class="member-info-container">
             <view class="member-avatar">
                 <image style="width: 100%;height: 100%;margin: 0,0;" v-if="userInfo.avatar" class="img"
@@ -71,7 +74,7 @@
 </template>
 <script>
 import { userInfo } from "os";
-
+const util = require("@/utils/util.js");
 const http = require("@/utils/http");
 export default {
     data() {
@@ -87,6 +90,9 @@ export default {
         this.getScore()
     },
     methods: {
+        goHome() {
+            util.toHomePage()
+        },
         // 跳转到观看记录
         clickWatch() {
             uni.navigateTo({ url: '/pages/package-member-integral/pages/watch-records/watch-records' })

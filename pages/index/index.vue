@@ -80,7 +80,6 @@
 
 <script>
 import navigationBar from '@/components/navigation-bar/index.vue'
-import { mpAppName } from '@/utils/config';
 // 引入wxjs
 import wx from "weixin-js-sdk";
 const util = require("@/utils/util.js");
@@ -91,7 +90,9 @@ export default {
 	},
 	onLoad: function (options) {
 		util.checkAuthInfo(() => {
-			this.getShareInfo();
+			if (uni.getStorageSync('bbcUserInfo').id == uni.getStorageSync('bbcUserInfo').puid) {
+				this.getShareInfo();
+			}
 		})
 		// 团长绑定用户
 		if (options.scene) {
@@ -183,9 +184,6 @@ export default {
 		getShareInfo() {
 			var url = encodeURIComponent(window.location.href.split("#")[0]);
 			let userId = uni.getStorageSync('bbcUserInfo').id
-			// if (!url || !userId) {
-			// 	return
-			// }
 			const params = {
 				url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
 				method: "GET",
@@ -215,7 +213,7 @@ export default {
 						wx.updateAppMessageShareData({
 							title: res.title,
 							desc: res.coupyweiring,
-							link: window.location.href.split("#")[0] + '#/?userId=' + uni.getStorageSync('bbcUserInfo').id,
+							link: window.location.href.split("#")[0] + '#/?userId=' + res.userId,
 							imgUrl: res.img,
 							success: function () {
 								console.log('分享成功')

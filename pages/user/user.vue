@@ -241,10 +241,8 @@ export default {
 					null)) {
 					//有团长的id并且已经登录&&并且没有绑定团长
 					this.bindTeam()
-
 				}
 			}
-
 			this.getUserInfo()
 			this.getDefaultAddress()
 			this.getOrderNum()
@@ -253,68 +251,15 @@ export default {
 			uni.redirectTo({
 				url: "/pages/user-login/user-login",
 			});
-
 		}
-
-
-		// if (!uni.getStorageSync('puclicAppId')) {
-		// 	this.getWexinPublicAccount()
-		// } else {
-		// 	this.appId = uni.getStorageSync('puclicAppId')
-		// 	console.log(this.appId)
-		// }
-		// if (window.location.href.includes('code')) {
-		// 	const code = this.getQueryParam(window.location.href, 'code')
-		// 	console.log(code)
-		// 	this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code)
-		// }
 	},
 	onLoad(options) {
 		util.checkAuthInfo(() => {
 			this.getShareInfo();
-		 })
-		
+		})
+
 	},
 	methods: {
-		weixinAuthLogin(appId) {
-			let redirect_uri = encodeURIComponent('https://h5.hnliyue.cn/#/pages/user/user')
-			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
-		},
-
-		getQueryParam(url, param) {
-			// 创建一个URL对象
-			const urlObj = new URL(url);
-			// 使用URLSearchParams获取指定的查询参数
-			return urlObj.searchParams.get(param);
-		},
-		// 获取公众号appId
-		getWexinPublicAccount() {
-			const params = {
-				url: '/admin/get/setting?name=GONG_ZHONGHAO_APPID&pageNo=1&pageSize=10',
-				method: "GET",
-				callBack: (res) => {
-					uni.setStorageSync('puclicAppId', res.list[0].value)
-				},
-			};
-			http.request(params);
-		},
-		// 获取用户头像昵称
-		getUserPublicAccountOpenId(userId, code) {
-			const params = {
-				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1`,
-				method: "GET",
-				callBack: (res) => {
-					if (res.nickname && res.headimgurl) {
-						this.openShowAuthPopup()
-						this.userInfo.name = res.nickname
-						this.userInfo.avatar = res.headimgurl
-					} else {
-						return
-					}
-				},
-			};
-			http.request(params);
-		},
 		// 获取订单消息数量
 		getOrderNum() {
 			const params = {
@@ -567,7 +512,7 @@ export default {
 						wx.updateAppMessageShareData({
 							title: res.title,
 							desc: res.coupyweiring,
-							link: window.location.href.split("#")[0] + '#/pages/user/user?userId=' + uni.getStorageSync('bbcUserInfo').id,
+							link: window.location.href.split("#")[0] + '#/pages/user/user?userId=' + res.userId,
 							imgUrl: res.img,
 							success: function () {
 								console.log('分享成功')

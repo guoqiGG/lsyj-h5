@@ -140,11 +140,11 @@ export default {
 		// 获取用户公众号openId
 		getUserPublicAccountOpenId(userId, code) {
 			const params = {
-				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=0`,
+				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1`,
 				method: "GET",
 				callBack: (res) => {
 					// 返回个人中心页面
-					uni.switchTab({ url: '/pages/user/user' })
+					uni.switchTab({ url: '/pages/index/index' })
 				},
 			};
 			http.request(params);
