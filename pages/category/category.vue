@@ -113,7 +113,7 @@ export default {
 				},
 				callBack: res => {
 					this.isLoaded = true
-					this.prodList = res.concat(res.concat(res.concat(res.concat(res))))
+					this.prodList = res
 				}
 			}
 
