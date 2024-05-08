@@ -6,10 +6,9 @@
         </view>
         <view class="member-info-container">
             <view class="member-avatar">
-                <image style="width: 100%;height: 100%;margin: 0,0;" v-if="userInfo.avatar" class="img"
-                    :src="userInfo.avatar" mode="" />
+                <image style="width: 100%;height: 100%;margin: 0,0;" v-if="avatar" class="img" :src="avatar" mode="" />
             </view>
-            <view class="member-name">{{ userInfo.name }}</view>
+            <view class="member-name">{{ name }}</view>
             <view class="member-level">{{ userInfo.type == 1 ? '团长' : '普通' }}</view>
         </view>
         <view class="watch-beans">
@@ -81,15 +80,31 @@ export default {
         return {
             score: null,
             watchRecordTotal: 0,
-            userInfo: {}
+            userInfo: {},
+            avatar:null,
+            name:null,
         }
     },
     onShow() {
         this.userInfo = uni.getStorageSync('bbcUserInfo')
         this.watchRecord()
         this.getScore()
+        this.getDefaultAddress()
+
     },
     methods: {
+        // 获取最新的用户头像和昵称（直接从数据库）
+        getDefaultAddress() {
+            const params = {
+                url: "/pub/user/infById?userId=" + uni.getStorageSync('bbcUserInfo').id,
+                method: "GET",
+                callBack: (res) => {
+                    this.name = res.name
+                    this.avatar = res.avatar
+                },
+            };
+            http.request(params);
+        },
         goHome() {
             util.toHomePage()
         },
