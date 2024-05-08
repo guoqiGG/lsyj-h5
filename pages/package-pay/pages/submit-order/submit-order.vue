@@ -103,7 +103,7 @@
 						订单备注：
 					</view>
 					<view class="submit-order-comodity-info-order-remark-right">
-						<input placeholder="选填" type="text" @input="commentInput" />
+						<input placeholder="选填" style="width: 100%;" type="text" @input="commentInput" />
 					</view>
 
 				</view>
@@ -726,11 +726,10 @@ export default {
 				.submit-order-comodity-info-order-remark-left {
 					font-size: 32rpx;
 					color: #101010;
+					white-space: nowrap;
 				}
 
-				.submit-order-comodity-info-order-remark-right {
-					width: calc(100% - 170rpx);
-				}
+				.submit-order-comodity-info-order-remark-right {}
 			}
 
 		}
