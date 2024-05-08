@@ -187,7 +187,7 @@ export default {
 			})
 		},
 		// 直播间
-		liveBroadcast(){
+		liveBroadcast() {
 			uni.showToast({
 				title: '此功能暂未开放',
 				icon: "none",
@@ -219,7 +219,7 @@ export default {
 		// 跳转到邀请好友页面
 		toInvitationCards: function () {
 			uni.navigateTo({
-				url: '/pages/package-leader/pages/invitation-cards/invitation-cards'
+				url: '/pages/package-leader/pages/invitation-cards/invitation-cards?avatar='+this.leaderInfo.avatar
 			})
 		},
 	}
@@ -236,6 +236,7 @@ export default {
 	padding: 26rpx 22rpx;
 	background: #f2f2f2;
 	position: relative;
+
 	.leader-index-background {
 		position: absolute;
 		top: 0;
@@ -246,7 +247,7 @@ export default {
 		opacity: 1;
 		background: linear-gradient(180deg, #025BFF 0%, #025BFF 29%, #FFFFFF 100%);
 	}
-	
+
 	.leader-index-cot {
 		position: absolute;
 		top: 0;

@@ -288,7 +288,7 @@
 							let info = this.bbcUserInfo
 							info.name = this.nickName
 							info.avatar = this.photoFiles,
-								uni.setStorageSync("bbcUserInfo", info); //用户信息
+								uni.setStorageSync('bbcUserInfo', info); //用户信息
 							if (res.loginToken) {
 								uni.setStorageSync('bbcToken', res.loginToken)
 							}

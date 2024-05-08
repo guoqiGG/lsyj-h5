@@ -293,7 +293,7 @@ export default {
 				},
 				callBack: (res) => {
 					if (res.loginToken) {
-						uni.setStorageSync("bbcUserInfo", res);
+						uni.setStorageSync('bbcUserInfo', res);
 						uni.setStorageSync("bbcToken", res.loginToken);
 					}
 				},
@@ -446,13 +446,15 @@ export default {
 			};
 			http.request(params);
 		},
-		// 用户默认地址
+		// 用户默认地址（直接从数据库）
 		getDefaultAddress() {
 			const params = {
 				url: "/pub/user/infById?userId=" + uni.getStorageSync('bbcUserInfo').id,
 				method: "GET",
 				callBack: (res) => {
 					this.userInfo.userAddress = res.userAddress
+					this.userInfo.name = res.name
+					this.userInfo.avatar = res.avatar
 				},
 			};
 			http.request(params);
@@ -466,7 +468,7 @@ export default {
 			this.showAuth = false
 		},
 
-		// 获取用户信息
+		// 获取用户信息(走缓存)
 		getUserInfo() {
 			const params = {
 				url: "/pub/user/infoByToken?loginToken=" + uni.getStorageSync('bbcToken'),
@@ -837,11 +839,7 @@ export default {
 .con-container {
 	// padding: 50rpx 46rpx 70rpx;
 	padding: 50rpx 0rpx 70rpx;
-
-
 }
-
-
 
 .con-container .title {
 	font-weight: 400;

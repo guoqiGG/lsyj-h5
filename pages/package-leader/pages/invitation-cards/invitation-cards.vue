@@ -2,7 +2,8 @@
     <view class="container">
         <view class="con">
             <view class="user-avatar">
-                <image :src="leaderInfo.avatar ? leaderInfo.avatar : '/static/head04.png'" mode="scaleToFill" />
+                <image :src="avatar ? avatar : leaderInfo.avatar ? leaderInfo.avatar : '/static/head04.png'"
+                    mode="scaleToFill" />
             </view>
             <view class="user-name"><text>{{ leaderInfo.leaderName }}</text></view>
             <view class="in-text">
@@ -30,7 +31,8 @@ export default {
     data() {
         return {
             shareWxCode: '', // 生成的二维码路径 微信端
-            leaderInfo: {}
+            leaderInfo: {},
+            avatar: null
         }
     },
     onShow: function () {
@@ -41,10 +43,12 @@ export default {
         this.leaderInfo = uni.getStorageSync('bbcUserInfo')
         this.getInvitationCode()
     },
-
-
+    onLoad(options) {
+        if (options.avatar) {
+            this.avatar = options.avatar
+        }
+    },
     methods: {
-
         /**
          * 生成分销邀请二维码
          */
@@ -52,19 +56,20 @@ export default {
             // 请求小程序菊花码
             const params = {
                 // url: '/pub/leader/qr/code?scene=' + this.leaderInfo.id,
-				url: "/wx/h5/user/leader/binding",
+                url: "/wx/h5/user/leader/binding",
                 method: 'POST',
-				responseType: 'arraybuffer',
-				data: {
-					sign: 'qcsd',
-					data: JSON.stringify({scene: this.leaderInfo.id}),
-				},
+                responseType: 'arraybuffer',
+                data: {
+                    sign: 'qcsd',
+                    data: JSON.stringify({ scene: this.leaderInfo.id }),
+                },
                 callBack: (res) => {
                     this.shareWxCode = 'data:image/jpg;base64,' + wx.arrayBufferToBase64(res)
                 }
             }
             http.request(params)
-        }
+        },
+
     }
 }
 </script>

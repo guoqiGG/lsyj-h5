@@ -165,7 +165,7 @@ export default {
 				},
 				callBack: (res) => {
 					if (res.loginToken) {
-						uni.setStorageSync("bbcUserInfo", res);
+						uni.setStorageSync('bbcUserInfo', res);
 						uni.setStorageSync("bbcToken", res.loginToken);
 					}
 				},

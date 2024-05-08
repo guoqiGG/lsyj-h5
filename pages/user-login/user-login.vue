@@ -252,7 +252,7 @@ export default {
 								uni.setStorageSync("bbcHadLogin", true);
 								uni.setStorageSync("bbcToken", res.loginToken);
 								uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
-								uni.setStorageSync("bbcUserInfo", res); //用户信息
+								uni.setStorageSync('bbcUserInfo', res); //用户信息
 								uni.setStorageSync('noAuth', false) // 用户是否首次授权
 								// const expiresTimeStamp =
 								// 	(res.expiresIn * 1000) / 2 + new Date().getTime();
