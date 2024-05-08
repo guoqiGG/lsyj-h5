@@ -219,7 +219,7 @@ export default {
 		// 跳转到邀请好友页面
 		toInvitationCards: function () {
 			uni.navigateTo({
-				url: '/pages/package-leader/pages/invitation-cards/invitation-cards?avatar='+this.leaderInfo.avatar
+				url: '/pages/package-leader/pages/invitation-cards/invitation-cards?avatar=' + this.leaderInfo.avatar
 			})
 		},
 	}
