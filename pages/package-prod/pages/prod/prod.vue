@@ -2,7 +2,7 @@
 	<view class="container">
 		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="image-con">
-			<image class="image" :src="productDetail.thumbail" mode="aspectFit" @error="handlePicError" />
+			<image class="image" :src="productDetail.thumbail" @error="handlePicError" />
 		</view>
 		<view class="prod-content" v-if="productDetail.name">
 			<view class="prod-name">{{ productDetail.name }}</view>
@@ -25,6 +25,11 @@
 			<view class="prod-select-number-right" @tap="openSkuPopup">
 				...
 			</view>
+		</view>
+
+		<view class="prod-description"
+			style="margin-top: 10rpx;background: #fff;padding:30rpx;width:100%;overflow-x:hidden;box-sizing:border-box;">
+			<rich-text :nodes="productDetail.description"></rich-text>
 		</view>
 
 		<view class="footer">
