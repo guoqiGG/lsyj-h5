@@ -116,13 +116,13 @@ export default {
 		}
 	},
 	onLoad(option) {
-		
+
 	},
 	onShow() {
 		let bbcLoginResult = uni.getStorageSync("bbcLoginResult"); //用户信息
 		this.loginToken = bbcLoginResult.loginToken
 		this.userId = bbcLoginResult.id
-		this.mobile=bbcLoginResult.leaderMobile
+		this.mobile = bbcLoginResult.leaderMobile
 		this.getOrderLists()
 	},
 	methods: {
@@ -168,7 +168,7 @@ export default {
 					sign: "qcsd",
 					data: JSON.stringify({
 						orderId: orderId,
-						payType: 10,
+						payType: 50,
 						loginToken: this.loginToken
 					})
 				},
@@ -211,8 +211,8 @@ export default {
 		},
 		handleTabClick(e) {
 			this.currentTab = e.index;
-			this.pageNo=1
-			this.orderLists=[]
+			this.pageNo = 1
+			this.orderLists = []
 			this.status = e.id
 			this.getOrderLists()
 		},
@@ -224,7 +224,7 @@ export default {
 				pageSIize: this.pageSIize,
 				loginToken: this.loginToken,
 				status: this.status,
-				mobile:this.mobile,
+				mobile: this.mobile,
 			}
 			const params = {
 				url: "/pub/order/list",

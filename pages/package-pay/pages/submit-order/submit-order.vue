@@ -381,7 +381,7 @@ export default {
 				},
 				callBack: (res) => {
 					if (res.isNeedPay === 1) {
-						this.pay(res.orderId, 10, this.express ? 2 : 1)
+						this.pay(res.orderId, 50, this.express ? 2 : 1)
 					} else { // 0金额支付
 						// 兑换支付
 						let url =

@@ -180,7 +180,7 @@ export default {
 					sign: "qcsd",
 					data: JSON.stringify({
 						orderId: orderId,
-						payType: 10,
+						payType: 50,
 						loginToken: this.loginToken
 					})
 				},

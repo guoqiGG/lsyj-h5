@@ -110,7 +110,7 @@ export default {
 		if (window.location.href.includes('code')) {
 			const code = this.getQueryParam(window.location.href, 'code')
 			console.log(code)
-			this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code)
+			this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code, uni.getStorageSync('bbcToken'))
 		}
 	},
 
@@ -138,9 +138,9 @@ export default {
 			http.request(params);
 		},
 		// 获取用户公众号openId
-		getUserPublicAccountOpenId(userId, code) {
+		getUserPublicAccountOpenId(userId, code, loginToken) {
 			const params = {
-				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1`,
+				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1&loginToken=${loginToken}`,
 				method: "GET",
 				callBack: (res) => {
 					// 返回个人中心页面

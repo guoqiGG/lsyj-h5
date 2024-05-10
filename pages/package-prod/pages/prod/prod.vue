@@ -26,7 +26,6 @@
 				...
 			</view>
 		</view>
-
 		<view class="prod-description"
 			style="margin-top: 10rpx;background: #fff;padding:30rpx;width:100%;overflow-x:hidden;box-sizing:border-box;">
 			<rich-text :nodes="productDetail.description"></rich-text>
