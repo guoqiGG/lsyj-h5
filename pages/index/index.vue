@@ -214,7 +214,7 @@ export default {
 					});
 					//错误了会走 这里
 					wx.error(function (err) {
-						console.log('微信分享错误信息', err)
+						// console.log('微信分享错误信息', err)
 					});
 				},
 				errCallBack: () => {

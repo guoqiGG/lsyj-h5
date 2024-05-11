@@ -43,14 +43,6 @@
 const http = require("@/utils/http");
 const util = require("@/utils/util.js");
 import hCompress from "@/components/helang-compress/helang-compress";
-import {
-	resolve
-} from "path";
-import {
-	rejects
-} from "assert";
-// 引入wxjs
-import wx from "weixin-js-sdk";
 export default {
 	props: {},
 	components: {

@@ -232,6 +232,7 @@
 <script>
 const http = require("@/utils/http");
 const util = require("@/utils/util");
+import wxpay from "weixin-js-sdk";
 export default {
 	data() {
 		return {
@@ -409,21 +410,41 @@ export default {
 					})
 				},
 				callBack: (res) => {
-					wx.requestPayment({
-						timeStamp: res.timeStamp,
+					// wx.requestPayment({
+					// 	timeStamp: res.timeStamp,
+					// 	nonceStr: res.nonceStr,
+					// 	package: res.packageValue,
+					// 	signType: res.signType,
+					// 	paySign: res.paySign,
+					// 	success: e => {
+					// 		console.log('success', e)
+					// 		this.routeToAfterPay(true, this.orderNumbers)
+					// 	},
+					// 	fail: (e) => {
+					// 		console.log('failed', e)
+					// 		this.routeToAfterPay(false, this.orderNumbers)
+					// 	}
+					// })
+					wxpay.config({
+						debug: false,
+						appId: res.appId,
+						timestamp: res.timeStamp,
 						nonceStr: res.nonceStr,
-						package: res.packageValue,
-						signType: res.signType,
-						paySign: res.paySign,
-						success: e => {
-							console.log('success', e)
-							this.routeToAfterPay(true, this.orderNumbers)
-						},
-						fail: (e) => {
-							console.log('failed', e)
-							this.routeToAfterPay(false, this.orderNumbers)
-						}
+						signature: res.paySign,
+						// jsApiList: ['chooseWXPay']
 					})
+					WeixinJSBridge.invoke(
+						'getBrandWCPayRequest', {
+						appId: res.appId, //公众号名称，由商户传入
+						timeStamp: res.timeStamp, //时间戳，自1970年以来的秒数
+						nonceStr: res.nonceStr, //随机串
+						package: res.package,
+						signType: res.signType, //微信签名方式：
+						paySign: res.paySign //微信签名
+					},
+						function (res) {
+						}
+					)
 				}
 			}
 			http.request(params)
