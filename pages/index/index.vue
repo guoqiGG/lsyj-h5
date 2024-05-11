@@ -259,13 +259,12 @@ export default {
 			util.checkAuthInfo(() => {
 				const params = {
 					url: '/huan/tuo/user/courseId',
-					data: JSON.stringify({ userId: uni.getStorageSync("bbcUserInfo").id }),
-					// data: JSON.stringify({ userId: 22 }),
+					data: JSON.stringify({
+						userId: uni.getStorageSync("bbcUserInfo").id,
+						type: 0  // 0 h5  1 小程序
+					}),
 					callBack: (res) => {
 						if (res) {
-							// #ifdef H5 
-							// window.location.href = res
-							// #endif
 							uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?urls=' + res })
 						}
 					},

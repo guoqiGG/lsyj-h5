@@ -151,7 +151,9 @@ export default {
 
 		}
 		this.skuShow = false
-
+		if (window.location.href.includes('ht=1')) {
+			window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
+		}
 	},
 	methods: {
 		// 绑定团长接口
@@ -280,7 +282,7 @@ export default {
 					},
 					callBack: (res) => {
 						let orderItem = res
-						let url = '/pages/package-pay/pages/submit-order/submit-order'
+						let url = '/pages/package-pay/pages/submit-order/submit-order?params=1'
 						this.toSubmitOrder(orderItem, url)
 					},
 					errCallBack: (errMsg) => {
@@ -347,18 +349,18 @@ export default {
 				url,
 			});
 		},
-		// 跳转到欢拓直播地址
-		toLiveAddress() {
+			// 跳转到欢拓直播地址
+			toLiveAddress() {
 			util.checkAuthInfo(() => {
 				const params = {
 					url: '/huan/tuo/user/courseId',
-					data: JSON.stringify({ userId: uni.getStorageSync("bbcUserInfo").id }),
-					// data: JSON.stringify({ userId: 22 }),
+					data: JSON.stringify({
+						userId: uni.getStorageSync("bbcUserInfo").id,
+						type: 0  // 0 h5  1 小程序
+					}),
 					callBack: (res) => {
 						if (res) {
-							// #ifdef H5 
-							window.location.href = res
-							// #endif
+							uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?urls=' + res })
 						}
 					},
 					errCallBack: () => {
@@ -369,7 +371,7 @@ export default {
 				http.request(params);
 
 			})
-		},
+		}
 	},
 }
 </script>

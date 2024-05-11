@@ -3,6 +3,7 @@
         <iframe :src="urls" frameborder="0" allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"
             width="100%" height="100%">
         </iframe>
+        <!-- <web-view :src="urls" /> -->
         <view v-if="urls" class="home" @tap="goHome">
             <image src="/static/tabbar/selected-home.png" @tap="goHome" />
         </view>
@@ -45,8 +46,8 @@ export default {
     right: 10%;
     z-index: 10000;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-   
-   
+
+
 }
 
 .home image {
