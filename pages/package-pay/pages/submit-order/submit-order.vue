@@ -443,6 +443,18 @@ export default {
 						paySign: res.paySign //微信签名
 					},
 						function (res) {
+							console.log(res);
+							alert(res)
+							if (res.err_msg == "get_brand_wcpay_request:ok") {
+								this.routeToAfterPay(true, this.orderNumbers)
+								alert('支付成功');
+							} else if (res.err_msg == "get_brand_wcpay_request:cancel") {
+								alert('支付取消');
+								this.routeToAfterPay(false, this.orderNumbers)
+							} else {
+
+								alert(res.err_msg);
+							}
 						}
 					)
 				}
