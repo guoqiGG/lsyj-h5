@@ -70,10 +70,7 @@ export default {
 		uni.setNavigationBarTitle({
 			title: '用户登录',
 		});
-		// const hasWechatLogin = uni.getStorageSync('wechat_login_tag') || null;
-		// if (hasWechatLogin) {
-		// 	this.checkWeChatCode();
-		// }
+		this.getWexinPublicAccount()
 	},
 
 	/**
@@ -87,31 +84,36 @@ export default {
 			},
 		});
 	},
-
 	/**
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-		// 头部导航标题
-		uni.setNavigationBarTitle({
-			title: '用户登录'
-		});
-		// 调用分享的事件
-		// this.getShareInfo();
-		this.getWexinPublicAccount()
 		if (window.location.href.includes('code')) {
 			const code = this.getQueryParam(window.location.href, 'code')
-			console.log(code)
-			this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code, uni.getStorageSync('bbcToken'))
+			const state = this.getQueryParam(window.location.href, 'state')
+			console.log(state, code, window.location.href)
+			if (state == '123') {
+				this.getUserPublicAccountOpenIdByCode(code)
+			}
+			if (state == 'STATE') {
+				if (uni.getStorageSync('bbcUserInfo') && uni.getStorageSync('bbcToken')) {
+					this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code, uni.getStorageSync('bbcToken'))
+				}
+			}
+
 		}
 	},
-
 	methods: {
+		// 静默授权
+		jingMoAuth(appId) {
+			let redirect_uri = encodeURIComponent('https://h5.hnliyue.cn/#/pages/user-login/user-login')
+			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
+		},
+		// 手动授权
 		weixinAuthLogin(appId) {
 			let redirect_uri = encodeURIComponent('https://h5.hnliyue.cn/#/pages/user-login/user-login')
 			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 		},
-
 		getQueryParam(url, param) {
 			// 创建一个URL对象
 			const urlObj = new URL(url);
@@ -125,6 +127,9 @@ export default {
 				method: "GET",
 				callBack: (res) => {
 					this.appId = res.list[0].value
+					if (!window.location.href.includes('code')) {
+						this.jingMoAuth(this.appId)
+					}
 				},
 			};
 			http.request(params);
@@ -135,14 +140,38 @@ export default {
 				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1&loginToken=${loginToken}`,
 				method: "GET",
 				callBack: (res) => {
-					// 返回个人中心页面
-					uni.switchTab({ url: '/pages/index/index' })
+					window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
+				},
+			};
+			http.request(params);
+		},
+		// 获取用户openID
+		getUserPublicAccountOpenIdByCode(code) {
+			const params = {
+				url: `/wx/h5/codeLogin?code=${code}`,
+				method: "GET",
+				callBack: (res) => {
+					if (res.id) {
+						uni.setStorageSync("bbcTempUid", res.openId);
+						if (res.loginToken) {
+							uni.setStorageSync("bbcIsPrivacy", 1);
+							uni.setStorageSync("bbcHadLogin", true);
+							uni.setStorageSync("bbcToken", res.loginToken);
+							uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
+							uni.setStorageSync('bbcUserInfo', res); //用户信息
+							getApp().globalData.isLanding = false;
+							while (getApp().globalData.requestQueue.length) {
+								http.request(getApp().globalData.requestQueue.pop());
+							}
+						}
+						window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
+					}
+
 				},
 			};
 			http.request(params);
 		},
 		phoneChange(e) {
-			console.log(e)
 			if (!util.checkPhoneNumber(e.detail.value)) {
 				uni.showToast({
 					title: '请输入正确的手机号',
@@ -223,7 +252,6 @@ export default {
 						smsCode: this.code,
 					}),
 					callBack: (res) => {
-						console.log(res, 'callBack===>')
 						if (!res.id) {
 							uni.setStorageSync("bbcTempUid", res);
 							// 还原全局 正在登录状态
@@ -231,11 +259,6 @@ export default {
 							while (getApp().globalData.requestQueue.length) {
 								http.request(getApp().globalData.requestQueue.pop());
 								getApp().globalData.currentReqCounts--;
-							}
-							if (uni.getStorageSync('noAuth')) {
-								this.showAuth = true
-							} else {
-								this.showAuth = false
 							}
 						} else {
 							uni.setStorageSync("bbcTempUid", res.openId);
@@ -245,7 +268,6 @@ export default {
 								uni.setStorageSync("bbcToken", res.loginToken);
 								uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
 								uni.setStorageSync('bbcUserInfo', res); //用户信息
-								uni.setStorageSync('noAuth', false) // 用户是否首次授权
 								// const expiresTimeStamp =
 								// 	(res.expiresIn * 1000) / 2 + new Date().getTime();
 								// // 缓存token的过期时间
@@ -260,7 +282,8 @@ export default {
 									this.weixinAuthLogin(this.appId)
 								} else {
 									// 返回未登录前点击的页面
-									util.previousPage()
+									// util.previousPage()
+									window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
 								}
 
 							}
@@ -279,7 +302,6 @@ export default {
 						uni.removeStorageSync("bbcCode");
 						uni.removeStorageSync("bbcUserInfo");
 						uni.removeStorageSync("bbcExpiresTimeStamp");
-						uni.removeStorageSync("noAuth");
 					},
 				};
 				http.request(params);

@@ -49,10 +49,9 @@ const previousPage = () => {
   const prevPage = pages[pages.length - 2];
   if (!prevPage) {
     // util.toHomePage();
-	 uni.switchTab({ url: "/pages/index/index" });
+    uni.switchTab({ url: "/pages/index/index" });
     return;
   }
-
   // 判断上一页面是否为tabbar页面 (首页和分类页无需登录接口)
   const isTabbar =
     prevPage.route === "pages/user/user" ||

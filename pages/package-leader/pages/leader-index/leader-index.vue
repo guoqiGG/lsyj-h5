@@ -157,6 +157,7 @@ export default {
 		let bbcUserInfo = uni.getStorageSync("bbcUserInfo"); //用户信息
 		this.userId = bbcUserInfo.id
 		this.getLeaderInformation()
+		this.getTodaySale()
 	},
 	methods: {
 		instanceWithdrawal() {
@@ -215,7 +216,23 @@ export default {
 			}
 			http.request(params);
 		},
-
+		// 查询今日销量
+		getTodaySale() {
+			const params = {
+				url: "pub/user/leader/amount",
+				method: "POST",
+				data: {
+					sign: 'qcsd',
+					data: JSON.stringify({
+						userId: uni.getStorageSync('bbcUserInfo').id
+					}),
+				},
+				callBack: (res) => {
+					console.log(res)
+				},
+			}
+			http.request(params);
+		},
 		// 跳转到邀请好友页面
 		toInvitationCards: function () {
 			uni.navigateTo({
