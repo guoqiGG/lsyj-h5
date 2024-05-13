@@ -70,7 +70,7 @@
 				</view>
 				<view class="sponsored-ad-content-box" @tap="toLiveAddress">
 					<view class="sponsored-ad-content">
-						<image src="/static/zhibo.png" style="width: 100%; height:100%;" alt="" />
+						<image :src="liveImg" style="width: 100%; height:100%;border-radius: 20rpx;" alt="" />
 					</view>
 
 				</view>
@@ -152,6 +152,7 @@ export default {
 			}
 		}
 		this.getCarousel()
+		this.getLiveImg()
 	},
 	onShow() {
 
@@ -167,6 +168,7 @@ export default {
 			},
 			isBgImg: false,
 			indexImgs: [],
+			liveImg: null,
 		}
 	},
 	methods: {
@@ -253,6 +255,16 @@ export default {
 				}
 			}
 			http.request(params)
+		},
+		getLiveImg() {
+			const params = {
+				url: '/admin/get/setting?name=HOME_PAGE_IMAGE&pageNo=1&pageSize=10',
+				method: "GET",
+				callBack: (res) => {
+					this.liveImg = res.list[0].value
+				},
+			};
+			http.request(params);
 		},
 		// 跳转到欢拓直播地址
 		toLiveAddress() {
