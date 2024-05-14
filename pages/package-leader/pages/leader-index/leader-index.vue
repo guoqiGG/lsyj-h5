@@ -1,5 +1,6 @@
 <template>
 	<view class="leader-index">
+		<navigation/>
 		<view class="leader-index-cot">
 			<view class="user-info">
 				<view class="left">

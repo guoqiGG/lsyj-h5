@@ -1,5 +1,6 @@
 <template>
-	<view class="Mall4j personal-information">
+	<view class="personal-information">
+		<navigation/>
 		<view class="item-wrap">
 			<view class="cloumn-item">
 				<view class="txt-wrap">头像</view>

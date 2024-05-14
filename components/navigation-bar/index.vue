@@ -1,20 +1,5 @@
-<!--
-  Copyright (c) 2018-2999 广州市蓝海创新科技有限公司 All rights reserved.
-
-  https://www.mall4j.com/
-
-  未经允许，不可做商业用途！
-
-  版权所有，侵权必究！
--->
-
 <template>
-  <view class=" bar-sticky" :style="[
-    isBgImg
-      ? { backgroundImage: navigationBarStyle.backgroundImage }
-      : { background: navigationBarStyle.background },
-  ]">
-    <image v-if="isMinePage" class="top-bg-img" src="/static/images/icon/mine-bg.png" mode="top" />
+  <view class=" bar-sticky" :style="{ background: navigationBarStyle.background }">
     <view class="content-wrap">
       <view class="status-line" :style="{
     height: lineHeight,
@@ -22,14 +7,7 @@
       <view class="bar-line">
         <view class="bar-line container-in">
           <view v-if="!custom" class="bar-font bar-content" :class="{ 'left-text': isLeft }">
-            <!-- <view
-            class="icon-fanhui bar-back rt_pos"
-            :style="{ 'border-color': navigationBarStyle.iconColor || normal.iconColor }"
-            @click="$turnPage('1', 'navigateBack')"
-            v-if="showBack"
-          >
-          </view> -->
-           <image v-if="showBack && isWhiteBack" class="back-img" src="../../static/back-white.png" mode=""
+            <image v-if="showBack && isWhiteBack" class="back-img" src="../../static/back-white.png" mode=""
               @click="$turnPage('1', 'navigateBack')" />
             <image v-if="showBack && !isWhiteBack" class="back-img" src="../../static/back.png" mode=""
               @click="$turnPage('1', 'navigateBack')" />
@@ -49,79 +27,28 @@
 
 <script>
 export default {
-  props: {
-    custom: {
-      type: Boolean,
-      default: false
-    }, // 自定义头部，否则沿用原生的头部样式
-    navigationBarStyle: {
-      type: Object,
-      default: function () {
-        return {
-          background: '#F81A1A',
-          fontColor: '#000000',
-          iconColor: '#000000'
-        }
-      }
-    }, // 原生头部自定义样式
-    showBack: {
-      type: Boolean,
-      default: false
-    }, // 是否显示回退图标，默认显示
-    isBgImg: {
-      type: Boolean,
-      default: false
-    },
-    title: {
-      type: String,
-      default: ''
-    },
-    showTitle: {
-      type: Boolean,
-      default: true
-    },
-    url: {
-      type: String,
-      default: ''
-    },
-    isLeft: {
-      type: Boolean,
-      default: false
-    },
-    isWhiteBack: {
-      type: Boolean,
-      default: false
-    },
-    // 是否是我的页面
-    isMinePage: {
-      type: Boolean,
-      default: false
-    }
-  },
   data() {
     return {
-      normal: {
-        backgroundImage: ``,
-        background: '#F81A1A',
-        fontColor: '#000000',
+      custom: false,
+      navigationBarStyle: {
+        background: '#025BFF',
+        fontColor: '#ffffff',
         iconColor: '#000000'
-      }, // 公用样式,个性化样式可通过传值实现
-      lineHeight: '', // 状态栏高度
-      bgStyle: {}
+      },
+      showBack: true,
+      title: '欢迎来到氢春态',
+      showTitle: true,
+      isLeft: false,
+      isWhiteBack: true,
+      lineHeight: ''
     }
   },
   mounted() {
-    // this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
+    this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
   },
   methods: {
     $turnPage(x, y) {
-      if (this.url) {
-        this.$Router.push({
-          path: this.url
-        })
-      } else {
-        uni.navigateBack(-1)
-      }
+      uni.navigateBack(-1)
     }
   }
 }

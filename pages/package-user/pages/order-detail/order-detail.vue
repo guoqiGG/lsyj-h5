@@ -1,5 +1,6 @@
 <template>
 	<view class="order-detail">
+		<navigation/>
 		<view class="order-detail-backgroundImg">
 			<image src="/pages/package-user/static/order-detail-bg.png" mode=""></image>
 		</view>

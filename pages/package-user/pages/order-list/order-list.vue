@@ -1,5 +1,6 @@
 <template>
 	<view class="order-list">
+		<navigation/>
 		<u-tabs :scrollable="true" :current="currentTab" :list="list1" @click="handleTabClick"></u-tabs>
 		<view class="order-list-content">
 			<view class="order-list-content-box" v-for="(item, index) in orderLists" :key="item.orderId">

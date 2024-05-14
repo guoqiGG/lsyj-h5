@@ -1,5 +1,6 @@
 <template>
 	<view class="submit-order">
+		<navigation/>
 		<view class="submit-order-index">
 			<view v-if="!express" class="submit-order-index-express">
 				<view class="submit-order-index-express-title">
@@ -369,7 +370,7 @@ export default {
 				data: {
 					sign: "qcsd",
 					data: JSON.stringify({
-						loginToken: this.userInfo.loginToken,
+						loginToken: uni.getStorageSync('bbcToken'),
 						couponIds: this.checkList,
 						userId: this.userInfo.id,
 						orderType: this.express ? 2 : 1,
@@ -406,7 +407,7 @@ export default {
 					data: JSON.stringify({
 						orderId: orderId,
 						payType: payType,
-						loginToken: this.userInfo.loginToken
+						loginToken: uni.getStorageSync('bbcToken')
 					})
 				},
 				callBack: (res) => {

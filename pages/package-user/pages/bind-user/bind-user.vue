@@ -1,5 +1,6 @@
 <template>
     <view class="container">
+        <navigation/>
         <view class="con">
             <view class="user-avatar">
                 <image :src="userInfo.avatar ? userInfo.avatar : '/static/head04.png'" mode="scaleToFill" />

@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<navigation/>
 		<view class="main">
 			<!-- 信息输入框 -->
 			<view class="section">

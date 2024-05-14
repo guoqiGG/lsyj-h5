@@ -1,5 +1,6 @@
 <template>
     <view class="gift-write-off">
+        <navigation/>
         <view class="container">
             <view class="item" v-for="(item, index) in dataList" :key="index">
                 <view class="item-cen">

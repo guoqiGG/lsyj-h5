@@ -1,5 +1,6 @@
 <template>
     <view class="container">
+        <navigation/>
         <view class="income-all">
             <view class="income-total"><text>累计收益 (元)</text></view>
             <view class="income-total-text"><text>23.08</text></view>

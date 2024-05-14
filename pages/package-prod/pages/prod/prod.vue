@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<navigation/>
 		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="image-con">
 			<image class="image" :src="productDetail.thumbail" @error="handlePicError" />
@@ -97,8 +98,6 @@
 <script>
 const http = require("@/utils/http");
 const util = require("@/utils/util");
-// 引入wxjs
-import wx from "weixin-js-sdk";
 export default {
 	data() {
 		return {
@@ -349,8 +348,8 @@ export default {
 				url,
 			});
 		},
-			// 跳转到欢拓直播地址
-			toLiveAddress() {
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
 			util.checkAuthInfo(() => {
 				const params = {
 					url: '/huan/tuo/user/courseId',

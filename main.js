@@ -5,7 +5,9 @@ import Vue from "vue";
 import "./uni.promisify.adaptor";
 import store from "./store/store.js";
 import uView from "./uni_modules/uview-ui";
-
+import navigation from './components/navigation-bar/index.vue'
+// 注册全局组件
+Vue.component('navigation', navigation)
 Vue.config.productionTip = false;
 Vue.mixin({
   methods: {

@@ -1,5 +1,6 @@
 <template>
 	<view class="con">
+		<navigation/>
 		<view class="h-tabs">
 			<view :class="'h-tab ' + (coupon_state == 1 ? 'on' : '')" data-type="1" @tap="changeTab">可合并
 			</view>

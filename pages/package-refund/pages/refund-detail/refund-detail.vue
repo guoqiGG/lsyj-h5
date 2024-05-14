@@ -1,5 +1,6 @@
 <template>
     <view class="container">
+        <navigation/>
         <view class="refund-top">
             <view class="refund-top-title"><text>退款成功</text></view>
             <view class="refund-top-time"><text>2024-03-03 10:57:50</text></view>

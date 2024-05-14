@@ -1,5 +1,6 @@
 <template>
     <view class="container">
+		<navigation/>
         <view class="search-con">
             <image class="img" src="../../static/search.png" mode="scaleToFill" />
             <input class="input" placeholder="请输入搜索昵称" type="text" v-model="searchValue" />

@@ -1,5 +1,6 @@
 <template>
 	<view class="container">
+		<navigation/>
 		<view class="con">
 			<view class="list" v-if="couponInfo.name">
 				<view class="left-con">

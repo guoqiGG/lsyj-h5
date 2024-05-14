@@ -1,5 +1,6 @@
 <template>
 	<view class="Mall4j wallet-container">
+		<navigation />
 		<view class="con">
 			<image src="https://devcdn.hnbjx.net.cn/0c12b6d0-59c0-11ee-aba8-c9501bbb929b.png" @tap="toLive(room_id)">
 			</image>

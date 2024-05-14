@@ -1,5 +1,6 @@
 <template>
-	<view class="Mall4j container">
+	<view class="container">
+		<navigation/>
 		<view :style="liveBroadcastList.length > 0 ? 'padding-bottom:10rpx;' : ''">
 			<view class="live-container" v-if="liveBroadcastList.length > 0">
 				<view v-for="(item, index) in liveBroadcastList" :key="index" :data-roomid="item.roomId"

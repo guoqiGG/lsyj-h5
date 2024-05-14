@@ -1,9 +1,10 @@
 <template>
   <!-- 青春豆商城 -->
   <view class=" integral-index">
-    <view class="gohome">
+    <navigation/>
+    <!-- <view class="gohome">
       <image class="img" src="/static/home.png" @tap="goHome" /> <text @tap="goHome">返回首页</text>
-    </view>
+    </view> -->
     <view class="integral-msg">
       <view class="my-integral">
         <view class="number-box">

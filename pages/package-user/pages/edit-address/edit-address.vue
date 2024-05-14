@@ -1,5 +1,6 @@
 <template>
-  <view class="Mall4j container">
+  <view class="container">
+    <navigation/>
     <!--input列表 -->
     <view  class="input-box">
       <view class="section">

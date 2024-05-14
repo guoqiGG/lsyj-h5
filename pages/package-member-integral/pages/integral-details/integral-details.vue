@@ -1,5 +1,6 @@
 <template>
     <view class="gift-write-off">
+        <navigation/>
         <view class="container">
             <view class="top-con">
                 <view class="top">

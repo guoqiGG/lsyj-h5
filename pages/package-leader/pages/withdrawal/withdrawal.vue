@@ -1,5 +1,6 @@
 <template>
 	<view class="withdrawal">
+		<navigation/>
 		<view class="withdrawal-tit">
 			<view class="withdrawal-tit-lf">
 				提现方式

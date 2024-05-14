@@ -43,7 +43,7 @@ export default {
     border-radius: 50%;
     background: #FFF;
     top: 70%;
-    right: 10%;
+    left: 10%;
     z-index: 10000;
     box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
 

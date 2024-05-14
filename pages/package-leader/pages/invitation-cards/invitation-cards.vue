@@ -1,5 +1,6 @@
 <template>
     <view class="container">
+        <navigation/>
         <view class="con">
             <view class="user-avatar">
                 <image :src="avatar ? avatar : leaderInfo.avatar ? leaderInfo.avatar : '/static/head04.png'"

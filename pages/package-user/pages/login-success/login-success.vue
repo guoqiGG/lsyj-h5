@@ -1,5 +1,5 @@
 <template>
-  <view class="Mall4j login-success">
+  <view class="login-success">
     <view class="success-img">
       <image src="@/static/allow.png" mode="heightFix" />
     </view>

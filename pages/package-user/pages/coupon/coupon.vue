@@ -1,6 +1,7 @@
 <template>
   <!-- 我的优惠券 -->
-  <view class="Mall4j container">
+  <view class="container">
+    <navigation/>
     <view class="h-tabs">
       <view :class="'h-tab ' + (status == 0 ? 'on' : '')" data-status="0" @tap="changeTab">未使用</view>
       <view :class="'h-tab ' + (status == 1 ? 'on' : '')" data-status="1" @tap="changeTab">使用记录</view>

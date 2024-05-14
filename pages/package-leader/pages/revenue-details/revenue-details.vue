@@ -1,5 +1,6 @@
 <template>
 	<view class="revenue-list">
+		<navigation/>
 		<view class="revenue-list-content">
 			<view class="revenue-list-content-box" v-for="(item, index) in revenueLists" :key="item.orderId">
 				<image class="bg_list" src="/static/login/revenue_bg.png" mode=""></image>

@@ -1,5 +1,6 @@
 <template>
-  <view class="Mall4j container">
+  <view class="container">
+    <navigation/>
     <view class="take-notes">
       <view class="total">
         <text>总提现：</text>

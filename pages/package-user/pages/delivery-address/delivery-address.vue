@@ -1,5 +1,6 @@
 <template>
-    <view class="Mall4j container">
+    <view class="container">
+        <navigation/>
         <view class="main">
             <radio-group v-if="reDraw" class="radio-group">
                 <block v-for="(item, index) in addressList" :key="index">
