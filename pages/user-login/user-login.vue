@@ -106,12 +106,12 @@ export default {
 	methods: {
 		// 静默授权
 		jingMoAuth(appId) {
-			let redirect_uri = encodeURIComponent('https://h5.hnliyue.cn/#/pages/user-login/user-login')
+			let redirect_uri = encodeURIComponent(window.location.href.split("#")[0] + '#/pages/user-login/user-login')
 			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_base&state=123#wechat_redirect`
 		},
 		// 手动授权
 		weixinAuthLogin(appId) {
-			let redirect_uri = encodeURIComponent('https://h5.hnliyue.cn/#/pages/user-login/user-login')
+			let redirect_uri = encodeURIComponent(window.location.href.split("#")[0] + '#/pages/user-login/user-login')
 			window.location.href = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
 		},
 		getQueryParam(url, param) {
@@ -140,7 +140,14 @@ export default {
 				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1&loginToken=${loginToken}`,
 				method: "GET",
 				callBack: (res) => {
-					window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
+					const pages = getCurrentPages()
+					console.log(pages)
+					if (uni.getStorageSync('bbcRouteUrlAfterLogin')) {
+						window.location.href = window.location.href.split("?")[0] + '#' + uni.getStorageSync('bbcRouteUrlAfterLogin')
+					} else {
+						window.location.href = window.location.href.split("?")[0] + '#/pages/index/index'
+					}
+
 				},
 			};
 			http.request(params);
@@ -164,7 +171,12 @@ export default {
 								http.request(getApp().globalData.requestQueue.pop());
 							}
 						}
-						window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
+						if (uni.getStorageSync('bbcRouteUrlAfterLogin')) {
+							window.location.href = window.location.href.split("?")[0] + '#' + uni.getStorageSync('bbcRouteUrlAfterLogin')
+						} else {
+							window.location.href = window.location.href.split("?")[0] + '#/pages/index/index'
+						}
+
 					}
 
 				},
@@ -282,8 +294,8 @@ export default {
 									this.weixinAuthLogin(this.appId)
 								} else {
 									// 返回未登录前点击的页面
-									// util.previousPage()
-									window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
+									util.previousPage()
+									// window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
 								}
 
 							}

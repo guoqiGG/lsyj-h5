@@ -1,6 +1,6 @@
 <template>
 	<view class="leader-index">
-		<navigation/>
+		<navigation />
 		<view class="leader-index-cot">
 			<view class="user-info">
 				<view class="left">
@@ -117,13 +117,13 @@
 					<u-icon name="arrow-right" size="28"></u-icon>
 				</view>
 			</view>
-			<view class="list-line">
+			<view class="list-line" @click="goLiveroomList()">
 				<view class="list-line-lf">
 					<view class="list-line-lf-img">
 						<image src="/pages/package-leader/static/ls.png" mode=""></image>
 					</view>
 					<view class="list-line-lf-text">
-						青春豆流水
+						直播间列表
 					</view>
 				</view>
 				<view class="list-line-rt">
@@ -305,17 +305,17 @@ export default {
 				url: "/pages/package-leader/pages/user-shop-details/user-shop-details"
 			})
 		},
+		// 直播间列表
+		goLiveroomList() {
+			uni.navigateTo({
+				url: "/pages/package-leader/pages/live-broadcast/live-broadcast"
+			})
+		},
 		goToFriends() {
 			uni.navigateTo({
 				url: "/pages/package-leader/pages/my-friends/my-friends"
 			})
 		},
-		// 直播间
-		// liveBroadcast(){
-		// uni.navigateTo({
-		// 	url: "/pages/package-leader/pages/live-broadcast/live-broadcast"
-		// })
-		// },
 		// 查询团长信息
 		getLeaderInformation() {
 			let obj = {

@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
 		<navigation/>
+		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="con">
 			<view class="list" v-if="giftInfo.name">
 				<view class="left-con">
@@ -32,6 +33,9 @@ export default {
 		uni.setNavigationBarTitle({
 			title: '领取礼品卡'
 		})
+		if (window.location.href.includes('ht=1')) {
+			window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
+		}
 	},
 	onLoad: function (options) {
 		if (options.id) {
@@ -81,6 +85,29 @@ export default {
 	},
 	// }) 
 	methods: {
+			// 跳转到欢拓直播地址
+			toLiveAddress() {
+			util.checkAuthInfo(() => {
+				const params = {
+					url: '/huan/tuo/user/courseId',
+					data: JSON.stringify({
+						userId: uni.getStorageSync("bbcUserInfo").id,
+						type: 0  // 0 h5  1 小程序
+					}),
+					callBack: (res) => {
+						if (res) {
+							uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?urls=' + res })
+						}
+					},
+					errCallBack: () => {
+						// alert('errCallBack',)
+					},
+
+				};
+				http.request(params);
+
+			})
+		},
 		// 领取礼品卡
 		receiveGift: util.debounce(function () {
 			const params = {

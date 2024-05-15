@@ -281,7 +281,6 @@ export default {
 						}
 					},
 					errCallBack: () => {
-						alert('errCallBack',)
 					},
 
 				};

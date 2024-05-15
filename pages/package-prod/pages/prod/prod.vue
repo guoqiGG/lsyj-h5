@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<navigation/>
+		<navigation />
 		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="image-con">
 			<image class="image" :src="productDetail.thumbail" @error="handlePicError" />
@@ -363,7 +363,7 @@ export default {
 						}
 					},
 					errCallBack: () => {
-						alert('errCallBack',)
+						// alert('errCallBack',)
 					},
 
 				};

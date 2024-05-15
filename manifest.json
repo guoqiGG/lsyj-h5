@@ -81,11 +81,11 @@
     "vueVersion" : "2",
     "h5" : {
         "devServer" : {
-            "disableHostCheck" : true,
+            // "disableHostCheck": true,
             "proxy" : {
                 "/api" : {
                     "target" : "https://qct.hnliyue.cn/youth",
-                    //   "target": "http://192.168.110.22:8072",
+                    // "target": "http://192.168.110.22:8072",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {

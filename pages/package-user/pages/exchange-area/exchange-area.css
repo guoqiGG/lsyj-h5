@@ -45,3 +45,14 @@ Page {
   font-weight: normal;
   letter-spacing: 0.06em;
 }
+.go-live {
+  margin-top: 10rpx;
+}
+.go-live text {
+  margin-left: 30rpx;
+  font-size: 32rpx;
+  background-color: #005aff;
+  padding: 8rpx 15rpx;
+  color: #FFF;
+  border-radius: 10rpx;
+}

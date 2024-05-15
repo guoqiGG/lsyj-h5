@@ -1,7 +1,7 @@
 Page {
   width: 100%;
   min-height: 100vh;
-  background: #F6f6f6;
+  background: #f6f6f6;
 }
 .con {
   padding: 20rpx;
@@ -44,7 +44,7 @@ Page {
   right: -10rpx;
   z-index: 5;
 }
-.dot:nth-child(2){
+.dot:nth-child(2) {
   top: 176rpx;
   right: -10rpx;
 }
@@ -78,4 +78,16 @@ Page {
   float: right;
   margin-top: 20rpx;
   width: 140rpx;
+}
+
+.go-live {
+  margin-top: 10rpx;
+}
+.go-live text {
+  margin-left: 30rpx;
+  font-size: 32rpx;
+  background-color: #005aff;
+  padding: 8rpx 15rpx;
+  color: #fff;
+  border-radius: 10rpx;
 }

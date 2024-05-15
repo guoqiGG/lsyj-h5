@@ -20,10 +20,10 @@ function request(params) {
   } else if (Object.prototype.toString.call(params.data) == "[object Number]") {
     params.data = params.data + "";
   }
- const BaseHost = '/api'
+  const BaseHost = "/api";
   uni.request({
     // url: (params.domain ? params.domain : config.domain) + params.url,
-	  url:BaseHost + params.url,
+    url:BaseHost + params.url,
     // 接口请求地址
     data: params.data,
     header: {
@@ -97,7 +97,7 @@ function request(params) {
           });
         }
         if (params.errCallBack) {
-          params.errCallBack(responseData,'params.errCallBack==========');
+          params.errCallBack(responseData, "params.errCallBack==========");
         }
         return;
       }
@@ -122,7 +122,7 @@ function request(params) {
       if (responseData.code === 500) {
         if (params.errCallBack) {
           params.errCallBack(responseData);
-		  // getApp().globalData.showLoginExpired = false;
+          // getApp().globalData.showLoginExpired = false;
           return;
         }
         uni.showToast({
