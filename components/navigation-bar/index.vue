@@ -153,5 +153,7 @@ export default {
 .home {
   width: 50rpx;
   height: 50rpx;
+  position: absolute;
+  left: 30rpx;
 }
 </style>
