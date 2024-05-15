@@ -7,12 +7,10 @@
       <view class="bar-line">
         <view class="bar-line container-in">
           <view v-if="!custom" class="bar-font bar-content" :class="{ 'left-text': isLeft }">
-            <image v-if="showBack && isWhiteBack" class="back-img" src="../../static/back-white.png" mode=""
+            <image v-if="!showHome" class="back-img" src="../../static/back-white.png" mode=""
               @click="$turnPage('1', 'navigateBack')" />
-            <image v-if="showBack && !isWhiteBack" class="back-img" src="../../static/back.png" mode=""
-              @click="$turnPage('1', 'navigateBack')" />
-            <view v-if="showTitle" class="bar-title"
-              :style="{ color: navigationBarStyle.fontColor || normal.fontColor }">
+            <image v-else class="home" src="../../static/home.png" mode="" @click="goHome" />
+            <view class="bar-title" :style="{ color: navigationBarStyle.fontColor || normal.fontColor }">
               {{ title }}
             </view>
           </view>
@@ -26,6 +24,7 @@
 </template>
 
 <script>
+const util = require("@/utils/util.js");
 export default {
   data() {
     return {
@@ -35,20 +34,29 @@ export default {
         fontColor: '#ffffff',
         iconColor: '#000000'
       },
-      showBack: true,
       title: '欢迎来到氢春态',
-      showTitle: true,
       isLeft: false,
       isWhiteBack: true,
-      lineHeight: ''
+      lineHeight: '',
+      showHome: false
     }
   },
   mounted() {
-    this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
+    // this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
+    const pages = getCurrentPages()
+    console.log(pages.length)
+    if (pages.length <= 1) {
+      this.showHome = true
+    } else {
+      this.showHome = false
+    }
   },
   methods: {
     $turnPage(x, y) {
       uni.navigateBack(-1)
+    },
+    goHome() {
+      util.toHomePage()
     }
   }
 }
@@ -140,5 +148,10 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
+}
+
+.home {
+  width: 50rpx;
+  height: 50rpx;
 }
 </style>
