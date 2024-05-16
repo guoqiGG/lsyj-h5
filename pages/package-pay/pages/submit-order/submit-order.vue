@@ -1,6 +1,6 @@
 <template>
 	<view class="submit-order">
-		<navigation/>
+		<navigation />
 		<view class="submit-order-index">
 			<view v-if="!express" class="submit-order-index-express">
 				<view class="submit-order-index-express-title">
@@ -378,7 +378,7 @@ export default {
 						address: this.express ? this.userInfo.leaderAddress : '',
 						goods: this.orderItemInfo.goods,
 						comment: this.comment,
-						openId: this.userInfo.openId
+						openId: this.userInfo.bizId
 					})
 				},
 				callBack: (res) => {

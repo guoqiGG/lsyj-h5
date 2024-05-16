@@ -96,8 +96,12 @@ export default {
 				this.getUserPublicAccountOpenIdByCode(code)
 			}
 			if (state == 'STATE') {
+				const url = new URL(window.location.href);
+				const params = url.searchParams;
+				const codes = params.getAll('code');
+				console.log(codes)
 				if (uni.getStorageSync('bbcUserInfo') && uni.getStorageSync('bbcToken')) {
-					this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, code, uni.getStorageSync('bbcToken'))
+					this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, codes.length == 1 ? codes[0] : codes[1], uni.getStorageSync('bbcToken'))
 				}
 			}
 
@@ -140,14 +144,12 @@ export default {
 				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1&loginToken=${loginToken}`,
 				method: "GET",
 				callBack: (res) => {
-					const pages = getCurrentPages()
-					console.log(pages)
+					console.log(uni.getStorageSync('bbcRouteUrlAfterLogin'))
 					if (uni.getStorageSync('bbcRouteUrlAfterLogin')) {
 						window.location.href = window.location.href.split("?")[0] + '#' + uni.getStorageSync('bbcRouteUrlAfterLogin')
 					} else {
 						window.location.href = window.location.href.split("?")[0] + '#/pages/index/index'
 					}
-
 				},
 			};
 			http.request(params);
@@ -176,7 +178,8 @@ export default {
 						} else {
 							window.location.href = window.location.href.split("?")[0] + '#/pages/index/index'
 						}
-
+					} else {
+						window.location.href = window.location.href.replace('&state=123', '')
 					}
 
 				},
@@ -295,7 +298,6 @@ export default {
 								} else {
 									// 返回未登录前点击的页面
 									util.previousPage()
-									// window.location.href = 'https://h5.hnliyue.cn/#/pages/index/index'
 								}
 
 							}

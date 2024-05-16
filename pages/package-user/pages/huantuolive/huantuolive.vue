@@ -32,7 +32,7 @@ export default {
                             sign: 'qcsd',
                             data: JSON.stringify({
                                 loginToken: uni.getStorageSync('bbcToken'),
-                                parentId: options.puid
+                                parentId: options.userId
                             })
                         },
                         callBack: (res) => {
