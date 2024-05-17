@@ -17,10 +17,16 @@ import wx from "weixin-js-sdk";
 export default {
     data() {
         return {
-            urls: null
+            urls: null,
+            courseId: null
         }
     },
     onLoad(options) {
+        if (options.courseId) {
+            this.courseId = options.courseId
+            uni.setStorageSync('courseId', options.courseId)
+            uni.setStorageSync('courseIdExpiredTime', new Date().getTime())
+        }
         this.getShareInfo()
         if (options.userId) {
             if (uni.getStorageSync('bbcToken')) {
@@ -90,7 +96,7 @@ export default {
                         wx.updateAppMessageShareData({
                             title: res.title,
                             desc: res.coupyweiring,
-                            link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId,
+                            link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&courseId=' + this.courseId,
                             imgUrl: res.img,
                             success: function () {
                                 console.log('分享成功')
@@ -122,15 +128,12 @@ export default {
                     url: '/huan/tuo/user/courseId',
                     data: JSON.stringify({
                         userId: uni.getStorageSync("bbcUserInfo").id,
-                        type: 0  // 0 h5  1 小程序
+                        type: 0,  // 0 h5  1 小程序
+                        course_id: this.courseId
                     }),
                     callBack: (res) => {
                         this.urls = res
-                    },
-                    errCallBack: () => {
-                        // alert('errCallBack',)
-                    },
-
+                    }
                 };
                 http.request(params);
             })

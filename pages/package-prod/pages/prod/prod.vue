@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<navigation />
-		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
+		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="image-con">
 			<image class="image" :src="productDetail.thumbail" @error="handlePicError" />
 		</view>
@@ -98,6 +98,8 @@
 <script>
 const http = require("@/utils/http");
 const util = require("@/utils/util");
+// 引入wxjs
+import wx from "weixin-js-sdk";
 export default {
 	data() {
 		return {
@@ -115,67 +117,95 @@ export default {
 			// totalSmallPrice: null,//总的小数
 			chechIndex: 0, //选中商品规格 默认第一个
 			orderType: 1, // 1-配送单，2-自提单   leaderType 0-有店 1-无店
+			showGoLiveRoom: false
 		}
 	},
 	onLoad(option) {
-
-		if (option.prodId) {
-			this.goodsId = option.prodId
-			this.getProductDetail()
-		}
+		util.checkAuthInfo(() => {
+			if (option.prodId) {
+				this.goodsId = option.prodId
+				this.getProductDetail()
+			}
+			this.getShareInfo()
+		})
 	},
 	onShow() {
-		if (uni.getStorageSync("bbcToken")) {
+		if (uni.getStorageSync('courseIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('courseIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
+		util.checkAuthInfo(() => {
 			this.userInfo = uni.getStorageSync('bbcUserInfo')
 			if (this.userInfo.leaderType === 0) {
 				this.orderType = 2
 			} else if (this.userInfo.leaderType === 1) {
 				this.orderType = 1
 			}
-			let url = window.location.href
-			if (url.split("userId=")[1]) {
-				this.leaderId = (url.split("userId=")[1]).split('&')[0]
-				// this.userInfo.leaderName = ""
-				if (this.leaderId !== this.userInfo.id && (this.userInfo.leaderName == '' || this.userInfo.leaderName ==
-					null)) {
-					//有上级团长的id  并且已经登录 并且没有绑定团长
-					this.bindTeam()
-				}
+			this.skuShow = false
+			if (window.location.href.includes('ht=1')) {
+				window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
 			}
-		} else {
-			this.isAuthInfo = false;
-			uni.redirectTo({
-				url: "/pages/user-login/user-login",
-			});
-
-		}
-		this.skuShow = false
-		if (window.location.href.includes('ht=1')) {
-			window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
-		}
+		})
 	},
 	methods: {
-		// 绑定团长接口
-		bindTeam() {
-			let obj = {
-				userId: this.leaderId,
-				loginToken: uni.getStorageSync('bbcToken')
-			}
+		getShareInfo() {
+			var url = encodeURIComponent(window.location.href.split("#")[0]);
+			let userId = uni.getStorageSync('bbcUserInfo').id
 			const params = {
-				url: "/pub/h5/user/leader/binding",
-				method: "POST",
-				data: {
-					sign: 'qcsd',
-					data: JSON.stringify(obj),
-				},
+				url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
+				method: "GET",
 				callBack: (res) => {
-					if (res.loginToken) {
-						uni.setStorageSync('bbcUserInfo', res);
-						uni.setStorageSync("bbcToken", res.loginToken);
-					}
+					wx.config({
+						debug: false,
+						appId: res.appId,
+						timestamp: parseInt(res.timestamp),
+						nonceStr: res.nonceStr,
+						signature: res.signature,
+						jsApiList: [
+							"updateAppMessageShareData",
+							"updateTimelineShareData"
+						]
+					});
+
+					wx.ready(() => {
+						wx.checkJsApi({
+							jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+							success: function (res) {
+								console.log('可以用');
+							},
+							fail: function (err) {
+								console.log('不可以用', err);
+							},
+						});
+						wx.updateAppMessageShareData({
+							title: this.productDetail.name,
+							desc: '快来选购吧！',
+							link: window.location.href.split("#")[0] + '#/pages/package-prod/pages/prod/prod?prodId=' + this.goodsId,
+							imgUrl: this.productDetail.thumbail,
+							success: function () {
+								console.log('分享成功')
+							},
+							fail: function (err) {
+								console.log('分享失败', err)
+							},
+						})
+					});
+					//错误了会走 这里
+					wx.error(function (err) {
+						// console.log('微信分享错误信息', err)
+					});
+				},
+				errCallBack: () => {
+					console.log('失败')
 				},
 			};
 			http.request(params);
+
 		},
 		toHomePage() {
 			util.toHomePage()
@@ -299,46 +329,6 @@ export default {
 				http.request(params);
 			})
 		},
-		//buyNow: util.debounce(function () {
-		// util.checkAuthInfo(() => {
-		// 	// 订单预检
-		// 	let obj = {
-		// 		loginToken: uni.getStorageSync('bbcToken'),
-		// 		userId: uni.getStorageSync('bbcUserInfo').id,
-		// 		orderType: this.orderType,
-		// 		goods: [{
-		// 			goodsId: this.goodsId,
-		// 			skuId: this.chechIndex,
-		// 			buyNumber: this.numberValue
-		// 		}]
-		// 	}
-		// 	const params = {
-		// 		url: "/pub/order/preview",
-		// 		method: "POST",
-		// 		data: {
-		// 			sign: 'qcsd',
-		// 			data: JSON.stringify(obj),
-		// 		},
-		// 		callBack: (res) => {
-		// 			let orderItem = res
-		// 			let url = '/pages/package-pay/pages/submit-order/submit-order'
-		// 			this.toSubmitOrder(orderItem, url)
-		// 		},
-		// 		errCallBack: (errMsg) => {
-		// 			if (errMsg.code === 500) {
-		// 				uni.showToast({
-		// 					title: errMsg.msg,
-		// 					icon: 'none',
-		// 					mask: true
-		// 				})
-		// 			}
-		// 			this.closeSkuPopup()
-		// 		},
-
-		// 	}
-		// 	http.request(params);
-		// })
-		// }, 1000)
 		/**
 		 * 跳转提交订单页
 		 */
@@ -351,27 +341,10 @@ export default {
 		// 跳转到欢拓直播地址
 		toLiveAddress() {
 			util.checkAuthInfo(() => {
-				const params = {
-					url: '/huan/tuo/user/courseId',
-					data: JSON.stringify({
-						userId: uni.getStorageSync("bbcUserInfo").id,
-						type: 0  // 0 h5  1 小程序
-					}),
-					callBack: (res) => {
-						if (res) {
-							uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?urls=' + res })
-						}
-					},
-					errCallBack: () => {
-						// alert('errCallBack',)
-					},
-
-				};
-				http.request(params);
-
+				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?courseId=' + uni.getStorageSync('courseId') })
 			})
-		}
-	},
+		},
+	}
 }
 </script>
 <style>

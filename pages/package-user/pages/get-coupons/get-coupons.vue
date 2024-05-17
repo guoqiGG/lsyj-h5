@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
 		<navigation />
-		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
+		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="con">
 			<view class="list" v-if="couponInfo.name">
 				<view class="left-con">
@@ -31,11 +31,22 @@ export default {
 		return {
 			couponId: null,
 			couponInfo: {},
+			showGoLiveRoom: false
 		};
 	},
 	onShow: function () {
+		if (uni.getStorageSync('courseIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('courseIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
 	},
 	onLoad: function (options) {
+
 		if (options.id) {
 			this.couponId = options.id
 			if (uni.getStorageSync('bbcToken')) {
@@ -64,24 +75,7 @@ export default {
 		// 跳转到欢拓直播地址
 		toLiveAddress() {
 			util.checkAuthInfo(() => {
-				const params = {
-					url: '/huan/tuo/user/courseId',
-					data: JSON.stringify({
-						userId: uni.getStorageSync("bbcUserInfo").id,
-						type: 0  // 0 h5  1 小程序
-					}),
-					callBack: (res) => {
-						if (res) {
-							uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?urls=' + res })
-						}
-					},
-					errCallBack: () => {
-						// alert('errCallBack',)
-					},
-
-				};
-				http.request(params);
-
+				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?courseId=' + uni.getStorageSync('courseId') })
 			})
 		},
 		// 领取礼品卡

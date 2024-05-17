@@ -91,66 +91,8 @@ export default {
 	},
 	onLoad: function (options) {
 		util.checkAuthInfo(() => {
-			if (uni.getStorageSync('bbcUserInfo').id == uni.getStorageSync('bbcUserInfo').puid) {
-				this.getShareInfo();
-			}
+			this.getShareInfo();
 		})
-		// 团长绑定用户
-		if (options.scene) {
-			if (uni.getStorageSync('bbcToken')) {
-				console.log(decodeURIComponent(options.scene))
-				if (decodeURIComponent(options.scene).includes('*')) { // 团长扫用户
-					let userId = options.scene.split('*')[0]
-					let giftId = options.scene.split('*')[1]
-					http.request({
-						url: '/pub/user/leader/binding',
-						methods: 'POST',
-						data: {
-							sign: 'qcsd',
-							data: JSON.stringify({
-								userId: userId,
-								giftRuleUserId: giftId,
-								loginToken: uni.getStorageSync('bbcToken')
-							})
-						},
-						callBack: (res) => {
-							if (res.loginToken) {
-								uni.setStorageSync('bbcToken', res.loginToken)
-							}
-							uni.showToast({
-								title: '核销成功',
-								icon: 'none',
-							})
-						}
-					})
-				} else { // 用户扫团长
-					http.request({
-						url: '/pub/leader/binding',
-						methods: 'POST',
-						data: {
-							sign: 'qcsd',
-							data: JSON.stringify({
-								loginToken: uni.getStorageSync('bbcToken'),
-								parentId: options.scene
-							})
-						},
-						callBack: (res) => {
-							if (res.loginToken) {
-								uni.setStorageSync('bbcToken', res.loginToken)
-							}
-							uni.showToast({
-								title: '绑定成功',
-								icon: 'none',
-							})
-						}
-					})
-				}
-
-			} else {
-				util.checkAuthInfo(() => {
-				})
-			}
-		}
 		this.getCarousel()
 		this.getLiveImg()
 	},

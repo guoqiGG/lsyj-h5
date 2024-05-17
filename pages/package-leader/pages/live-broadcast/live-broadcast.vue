@@ -2,7 +2,8 @@
 	<view class="container">
 		<navigation />
 		<view :style="liveBroadcastList.length > 0 ? 'padding-bottom:10rpx;' : ''">
-			<view class="live-item" v-for="item in liveBroadcastList" :key="item.courseId" @tap="toHuanTuoLiveList">
+			<view class="live-item" v-for="item in liveBroadcastList" :key="item.courseId"
+				@tap="toHuanTuoLiveList(item.courseId)">
 				<view class="courseName">{{ item.courseName }}</view>
 			</view>
 		</view>
@@ -39,8 +40,8 @@ export default {
 			};
 			http.request(params);
 		},
-		toHuanTuoLiveList() {
-			uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive' })
+		toHuanTuoLiveList(courseId) {
+			uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?courseId=' + courseId })
 		},
 	},
 };

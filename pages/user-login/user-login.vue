@@ -283,11 +283,6 @@ export default {
 								uni.setStorageSync("bbcToken", res.loginToken);
 								uni.setStorageSync("bbcLoginResult", res); // 保存整个登录数据
 								uni.setStorageSync('bbcUserInfo', res); //用户信息
-								// const expiresTimeStamp =
-								// 	(res.expiresIn * 1000) / 2 + new Date().getTime();
-								// // 缓存token的过期时间
-								// uni.setStorageSync("bbcExpiresTimeStamp", expiresTimeStamp);
-								// 还原全局 正在登录状态
 								getApp().globalData.isLanding = false;
 								while (getApp().globalData.requestQueue.length) {
 									http.request(getApp().globalData.requestQueue.pop());

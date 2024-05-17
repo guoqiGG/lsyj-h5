@@ -232,17 +232,7 @@ export default {
 		if (uni.getStorageSync("bbcToken")) {
 			this.isAuthInfo = true;
 			this.userInfo = uni.getStorageSync('bbcUserInfo')
-			let url = window.location.href
-			if (url.split("userId=")[1]) {
-				this.leaderId = (url.split("userId=")[1]).split('#')[0]
-				this.userInfo.leaderName = ""
-				if (this.leaderId !== this.userInfo.id && (this.userInfo.leaderName == '' || this.userInfo
-					.leaderName ==
-					null)) {
-					//有团长的id并且已经登录&&并且没有绑定团长
-					this.bindTeam()
-				}
-			}
+
 			this.getUserInfo()
 			this.getDefaultAddress()
 			this.getOrderNum()
@@ -275,29 +265,6 @@ export default {
 				callBack: (res) => {
 					this.orderNum = res
 				},
-			};
-			http.request(params);
-		},
-		// 绑定团长接口
-		bindTeam() {
-			let obj = {
-				userId: this.leaderId,
-				loginToken: uni.getStorageSync('bbcToken')
-			}
-			const params = {
-				url: "/pub/h5/user/leader/binding",
-				method: "POST",
-				data: {
-					sign: 'qcsd',
-					data: JSON.stringify(obj),
-				},
-				callBack: (res) => {
-					if (res.loginToken) {
-						uni.setStorageSync('bbcUserInfo', res);
-						uni.setStorageSync("bbcToken", res.loginToken);
-					}
-				},
-
 			};
 			http.request(params);
 		},
@@ -514,7 +481,7 @@ export default {
 						wx.updateAppMessageShareData({
 							title: res.title,
 							desc: res.coupyweiring,
-							link: window.location.href.split("#")[0] + '#/pages/user/user?userId=' + res.userId,
+							link: window.location.href.split("#")[0] + '#/pages/user/user',
 							imgUrl: res.img,
 							success: function () {
 								console.log('分享成功')

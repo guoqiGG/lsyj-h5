@@ -1,7 +1,7 @@
 <template>
 	<view class="container">
-		<navigation/>
-		<view class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
+		<navigation />
+		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="con">
 			<view class="list" v-if="giftInfo.name">
 				<view class="left-con">
@@ -27,6 +27,7 @@ export default {
 		return {
 			giftId: null,
 			giftInfo: {},
+			showGoLiveRoom: false
 		};
 	},
 	onShow: function () {
@@ -36,8 +37,18 @@ export default {
 		if (window.location.href.includes('ht=1')) {
 			window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
 		}
+		if (uni.getStorageSync('courseIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('courseIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
 	},
 	onLoad: function (options) {
+		
 		if (options.id) {
 			this.giftId = options.id
 			if (uni.getStorageSync('bbcToken')) {
@@ -85,27 +96,10 @@ export default {
 	},
 	// }) 
 	methods: {
-			// 跳转到欢拓直播地址
-			toLiveAddress() {
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
 			util.checkAuthInfo(() => {
-				const params = {
-					url: '/huan/tuo/user/courseId',
-					data: JSON.stringify({
-						userId: uni.getStorageSync("bbcUserInfo").id,
-						type: 0  // 0 h5  1 小程序
-					}),
-					callBack: (res) => {
-						if (res) {
-							uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?urls=' + res })
-						}
-					},
-					errCallBack: () => {
-						// alert('errCallBack',)
-					},
-
-				};
-				http.request(params);
-
+				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?courseId=' + uni.getStorageSync('courseId') })
 			})
 		},
 		// 领取礼品卡
