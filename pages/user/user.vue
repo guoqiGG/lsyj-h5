@@ -174,7 +174,7 @@
 		<view>
 			<u-popup :show="showAuth" :closeable="closeable" @close="closeShowAuthPopup">
 				<view class="con-container">
-					<view class="title"><text>氢春时代 申请</text></view>
+					<view class="title"><text>上品时代 申请</text></view>
 					<view class="desc">
 						<view class="desc-big"><text>获取您的昵称、头像</text></view>
 						<view class="desc-small"><text>提供具有辨识度的用户中心界面</text></view>

@@ -7,7 +7,7 @@
 						<image src="/static/horn.png" class="hornpng" />
 						<view class="scroll-news-content">
 							<view class="news-content">
-								<view class="news-text">走进氢春态，省钱成常态！进入直播间，福利不间断！</view>
+								<view class="news-text">走进上品时代，省钱成常态！进入直播间，福利不间断！</view>
 							</view>
 						</view>
 						<!-- <text class="arrow" /> -->
@@ -102,7 +102,7 @@ export default {
 	data() {
 		return {
 			navigationBarIsShow: true,
-			title: '氢春时代',
+			title: '上品时代',
 			tabConfig: {
 				background: '',
 				fontColor: '#FFFFFF',

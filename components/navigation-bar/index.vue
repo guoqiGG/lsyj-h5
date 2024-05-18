@@ -34,7 +34,7 @@ export default {
         fontColor: '#ffffff',
         iconColor: '#000000'
       },
-      title: '欢迎来到氢春态',
+      title: '欢迎来到上品时代',
       isLeft: false,
       isWhiteBack: true,
       lineHeight: '',
