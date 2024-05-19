@@ -444,7 +444,27 @@ export default {
 						paySign: res.paySign //微信签名
 					},
 						function (res) {
-							console.log(res);
+							// 支付成功
+							if (res.err_msg == "get_brand_wcpay_request:ok") {
+								// 使用以上方式判断前端返回,微信团队郑重提示：
+								//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+								// 支付成功后的跳转
+								uni.redirectTo({
+									url: '/pages/package-pay/pages/pay-result/pay-result?sts=1&orderNumbers=' + orderId
+								})
+							}
+							// 支付过程中用户取消
+							if (res.err_msg == "get_brand_wcpay_request:cancel") {
+								uni.redirectTo({
+									url: '/pages/package-pay/pages/pay-result/pay-result?sts=0&orderNumbers=' + orderId
+								})
+							}
+							// 支付失败
+							if (res.err_msg == "get_brand_wcpay_request:fail") {
+								uni.redirectTo({
+									url: '/pages/package-pay/pages/pay-result/pay-result?sts=0&orderNumbers=' + orderId
+								})
+							}
 						}
 					)
 				}
