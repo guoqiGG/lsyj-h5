@@ -18,18 +18,24 @@ export default {
     data() {
         return {
             urls: null,
-            courseId: null
+            courseId: null,
+            courseName: null
         }
     },
     onLoad(options) {
-        if (options.courseId) {
-            this.courseId = options.courseId
-            uni.setStorageSync('courseId', options.courseId)
-            uni.setStorageSync('courseIdExpiredTime', new Date().getTime())
+        if (options.courseName) {
+            this.courseName = options.courseName
         }
         this.getShareInfo()
-        if (options.userId) {
-            if (uni.getStorageSync('bbcToken')) {
+        util.checkAuthInfo(() => {
+
+            if (options.courseId) {
+                this.courseId = options.courseId
+                uni.setStorageSync('courseId', options.courseId)
+                uni.setStorageSync('courseIdExpiredTime', new Date().getTime())
+                this.toLiveAddress(options.courseId)
+            }
+            if (options.userId) {
                 if (!uni.getStorageSync('bbcUserInfo').puid) {
                     http.request({
                         url: '/pub/leader/binding',
@@ -54,14 +60,10 @@ export default {
                         }
                     })
                 }
-
-            } else {
-                util.checkAuthInfo(() => { })
             }
-        }
+        })
     },
     onShow() {
-        this.toLiveAddress()
     },
     methods: {
         getShareInfo() {
@@ -95,7 +97,7 @@ export default {
                         });
                         wx.updateAppMessageShareData({
                             title: res.title,
-                            desc: res.coupyweiring,
+                            desc: this.courseName,
                             link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&courseId=' + this.courseId,
                             imgUrl: res.img,
                             success: function () {
@@ -122,14 +124,14 @@ export default {
             uni.switchTab({ url: "/pages/index/index" });
         },
         // 跳转到欢拓直播地址
-        toLiveAddress() {
+        toLiveAddress(courseId) {
             util.checkAuthInfo(() => {
                 const params = {
                     url: '/huan/tuo/user/courseId',
                     data: JSON.stringify({
                         userId: uni.getStorageSync("bbcUserInfo").id,
                         type: 0,  // 0 h5  1 小程序
-                        course_id: this.courseId
+                        course_id: courseId
                     }),
                     callBack: (res) => {
                         this.urls = res
