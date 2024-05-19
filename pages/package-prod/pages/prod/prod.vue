@@ -140,12 +140,7 @@ export default {
 			this.showGoLiveRoom = false
 		}
 		util.checkAuthInfo(() => {
-			this.userInfo = uni.getStorageSync('bbcUserInfo')
-			if (this.userInfo.leaderType === 0) {
-				this.orderType = 2
-			} else if (this.userInfo.leaderType === 1) {
-				this.orderType = 1
-			}
+			this.getUserInfo()
 			this.skuShow = false
 			if (window.location.href.includes('ht=1')) {
 				window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
@@ -153,6 +148,23 @@ export default {
 		})
 	},
 	methods: {
+		// 获取用户信息
+		getUserInfo() {
+			const params = {
+				url: "/pub/user/get/detail?userId=" + uni.getStorageSync('bbcUserInfo').id,
+				method: "GET",
+				callBack: (res) => {
+					uni.setStorageSync('bbcUserInfo', res)
+					this.userInfo = res
+					if (this.userInfo.leaderType === 0) {
+						this.orderType = 2
+					} else if (this.userInfo.leaderType === 1) {
+						this.orderType = 1
+					}
+				},
+			};
+			http.request(params);
+		},
 		getShareInfo() {
 			var url = encodeURIComponent(window.location.href.split("#")[0]);
 			let userId = uni.getStorageSync('bbcUserInfo').id

@@ -413,19 +413,6 @@ export default {
 			};
 			http.request(params);
 		},
-		// 用户默认地址（直接从数据库）
-		getDefaultAddress() {
-			const params = {
-				url: "/pub/user/infById?userId=" + uni.getStorageSync('bbcUserInfo').id,
-				method: "GET",
-				callBack: (res) => {
-					this.userInfo.userAddress = res.userAddress
-					this.userInfo.name = res.name
-					this.userInfo.avatar = res.avatar
-				},
-			};
-			http.request(params);
-		},
 		// 打开授权弹出层
 		openShowAuthPopup() {
 			this.showAuth = true
@@ -434,11 +421,10 @@ export default {
 		closeShowAuthPopup() {
 			this.showAuth = false
 		},
-
-		// 获取用户信息(走缓存)
+		// 获取用户信息
 		getUserInfo() {
 			const params = {
-				url: "/pub/user/infoByToken?loginToken=" + uni.getStorageSync('bbcToken'),
+				url: "/pub/user/get/detail?userId=" + uni.getStorageSync('bbcUserInfo').id,
 				method: "GET",
 				callBack: (res) => {
 					uni.setStorageSync('bbcUserInfo', res)

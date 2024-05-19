@@ -1,6 +1,6 @@
 {
     "name" : "上品时代",
-    "appid" : "__UNI__EE86967",
+    "appid" : "__UNI__FAD3127",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -81,11 +81,11 @@
     "vueVersion" : "2",
     "h5" : {
         "devServer" : {
-            // "disableHostCheck": true,
+            "disableHostCheck" : true,
             "proxy" : {
                 "/api" : {
                     "target" : "https://spsd.hnliyue.cn/youth",
-                    // "target": "http://192.168.110.22:8072",
+                    //   "target": "http://192.168.110.22:8072",
                     "changeOrigin" : true,
                     "secure" : false,
                     "pathRewrite" : {
