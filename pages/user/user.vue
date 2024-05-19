@@ -234,7 +234,6 @@ export default {
 			this.userInfo = uni.getStorageSync('bbcUserInfo')
 
 			this.getUserInfo()
-			this.getDefaultAddress()
 			this.getOrderNum()
 		} else {
 			this.isAuthInfo = false;
