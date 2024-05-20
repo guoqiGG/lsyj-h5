@@ -30,7 +30,7 @@ export default {
     return {
       custom: false,
       navigationBarStyle: {
-        background: '#025BFF',
+        background: '#FD594D ',
         fontColor: '#ffffff',
         iconColor: '#000000'
       },

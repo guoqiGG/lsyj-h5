@@ -61,7 +61,7 @@
 
 .top-con {
   padding: 32rpx 20rpx;
-  background: linear-gradient(180deg, #025bff 0%, rgba(2, 91, 255, 0) 100%);
+  background: linear-gradient(180deg, #FD594D  0%, rgba(2, 91, 255, 0) 100%);
 }
 .top-con .top {
   padding: 38rpx 64rpx;
@@ -115,7 +115,7 @@
   border: 2rpx solid #ffffff;
   font-weight: 400;
   font-size: 32rpx;
-  color: #025bff;
+  color: #FD594D ;
   line-height: 54rpx;
   text-align: left;
   font-style: normal;

@@ -358,7 +358,7 @@ export default {
 	padding-bottom: 20rpx;
 
 	.leader-index-cot {
-		background: linear-gradient(180deg, #025BFF 0%, #ffffff 100%);
+		background: linear-gradient(180deg, #FD594D  0%, #ffffff 100%);
 		padding: 30rpx;
 	}
 }

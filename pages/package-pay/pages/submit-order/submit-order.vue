@@ -493,7 +493,7 @@ export default {
 	position: relative;
 	padding-bottom: 168rpx;
 	overflow-y: scroll;
-	background: linear-gradient(180deg, #025BFF 0%, #F2F2F2 50%);
+	background: linear-gradient(180deg, #FD594D  0%, #F2F2F2 50%);
 
 	.submit-order-index {
 		box-sizing: border-box;
@@ -510,7 +510,7 @@ export default {
 				line-height: 66rpx;
 				background: #FFFFFF;
 				font-size: 32rpx;
-				color: #025BFF;
+				color: #FD594D ;
 			}
 
 			.submit-order-index-express-content {
@@ -586,7 +586,7 @@ export default {
 				line-height: 66rpx;
 				background: #FFFFFF;
 				font-size: 32rpx;
-				color: #025BFF;
+				color: #FD594D ;
 			}
 
 			.submit-order-index-not-express-content {
@@ -1019,7 +1019,7 @@ export default {
 			height: 78rpx !important;
 			border-radius: 54rpx !important;
 
-			background: #025BFF !important;
+			background: #FD594D  !important;
 		}
 	}
 }

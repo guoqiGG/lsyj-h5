@@ -15,8 +15,8 @@ html {
   height: 100%;
 }
 
-/* 清除浮动 */s
-.clearfix::after {
+/* 清除浮动 */
+s .clearfix::after {
   content: "";
   display: block;
   clear: both;
@@ -57,12 +57,12 @@ uni-checkbox .uni-checkbox-input {
   width: 32rpx !important;
   height: 32rpx !important;
   border-radius: 50% !important;
-  border-color: #025BFF !important;
+  border-color: #4083FF  !important;
 }
 /*checkbox选中后样式  */
 uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked {
-  background: #005aff;
-  border: 1px solid transparent !important;
+  background: #4083FF ;
+  border: 1px solid #4083FF  !important;
 }
 /*checkbox选中后图标样式  */
 uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked::before {
@@ -87,12 +87,12 @@ checkbox .wx-checkbox-input {
   border-radius: 50%;
   width: 35rpx;
   height: 35rpx;
-  border-color: #025BFF !important;
+  border-color: #4083FF  !important;
 }
 /*checkbox选中后样式  */
 checkbox .wx-checkbox-input.wx-checkbox-input-checked {
-  background: #005aff;
-  border-color: #005aff;
+  background: #4083FF ;
+  border-color: #4083FF ;
 }
 /*checkbox选中后图标样式  */
 checkbox .wx-checkbox-input.wx-checkbox-input-checked::before {
@@ -137,7 +137,7 @@ uni-radio .uni-radio-input {
 /* 选中后的 背景样式 */
 uni-radio .uni-radio-input.uni-radio-input-checked {
   border: none !important;
-  background: #005aff !important;
+  background: #4083FF  !important;
 }
 /* 选中后的 对勾样式 */
 uni-radio .uni-radio-input.uni-radio-input-checked::before {

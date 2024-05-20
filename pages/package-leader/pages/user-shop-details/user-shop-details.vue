@@ -90,7 +90,7 @@ export default {
 			activeLineStyle: {
 				width: '56rpx',
 				height: '2rpx',
-				background: '#025BFF'
+				background: '#FD594D '
 			}
 		}
 	},
@@ -192,7 +192,7 @@ export default {
 		margin-bottom: 26rpx;
 
 		.blue {
-			color: #025BFF;
+			color: #FD594D ;
 		}
 	}
 

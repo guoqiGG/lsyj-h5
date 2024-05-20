@@ -513,7 +513,7 @@ export default {
 	width: 100vw;
 	height: 574rpx;
 	z-index: 3;
-	background: linear-gradient(180deg, #025BFF 0%, rgba(216, 216, 216, 0) 89%);
+	background: linear-gradient(180deg, #FD594D  0%, rgba(216, 216, 216, 0) 89%);
 }
 
 .user {
@@ -688,8 +688,8 @@ export default {
 		}
 
 		.receving-address-pic {
-			width: 276rpx;
-			height: 276rpx;
+			width: 204rpx;
+			height: 212rpx;
 
 			image {
 				width: 100%;
@@ -834,7 +834,7 @@ export default {
 	margin: 66rpx auto 0;
 	width: 364rpx;
 	height: 78rpx;
-	background: #025bff;
+	background: #FD594D ;
 	border-radius: 12rpx 12rpx 12rpx 12rpx;
 	font-weight: 400;
 	font-size: 28rpx;

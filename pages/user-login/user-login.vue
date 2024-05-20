@@ -336,14 +336,13 @@ export default {
 </script>
 <style lang="scss">
 page {
-	background: #e6eefe;
+	background: #FFF3EF;
 	height: 100%;
 	position: relative;
 }
 
 .con {
-	background: #e6eefe;
-	/* background: linear-gradient(180deg, #bfd6ff 0%, rgba(238, 238, 238, 0) 100%); */
+	background: #FFF3EF;
 }
 
 .login_bg {
@@ -393,7 +392,7 @@ page {
 		}
 
 		.color {
-			color: #025bff;
+			color: #FD594D;
 		}
 	}
 }
@@ -404,8 +403,8 @@ page {
 	line-height: 88rpx;
 	margin: 0 auto;
 	text-align: center;
-	background-color: #cecece;
-	border: 1rpx solid #cecece;
+	background-color: #FD594D;
+	border: 1rpx solid #FD594D;
 	color: #fff;
 	border-radius: 14rpx;
 	font-size: 32rpx;
@@ -414,12 +413,12 @@ page {
 	font-weight: normal;
 	letter-spacing: 0rpx;
 	opacity: 1;
-	/* box-shadow: 0rpx 8rpx 20rpx 0rpx rgba(140, 180, 255, 0.83); */
+	box-shadow: 0rpx 8rpx 12rpx 0rpx #FFA099;
 }
 
 .loginColor {
-	background-color: #005aff;
-	border: 1rpx solid #005aff;
+	background-color: #FD594D;
+	border: 1rpx solid #FD594D;
 }
 
 /* 条款声明 */
@@ -435,11 +434,11 @@ page {
 }
 
 .statement text {
-	color: #005aff;
+	color: #4083FF;
 	cursor: pointer;
 }
 
 /deep/.uni-checkbox .uni-checkbox-input {
-	background-color: #e6eefe;
+	//background-color: #e6eefe;
 }
 </style>
