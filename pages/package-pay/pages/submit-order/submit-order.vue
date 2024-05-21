@@ -1,6 +1,7 @@
 <template>
 	<view class="submit-order">
 		<navigation />
+		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="submit-order-index">
 			<view v-if="!express" class="submit-order-index-express">
 				<view class="submit-order-index-express-title">
@@ -120,7 +121,7 @@
 						<view v-if="totalCouponAmount <= 0" style="font-size: 24rpx;color: #9E9E9E;"
 							@click="selectCouponClick()">选择优惠券</view>
 						<view style="font-size: 24rpx;color: #C53032;" v-else @click="selectCouponClick()">-￥{{
-				parsePrice(totalCouponAmount)[0] }}.{{ parsePrice(totalCouponAmount)[1] }}</view>
+			parsePrice(totalCouponAmount)[0] }}.{{ parsePrice(totalCouponAmount)[1] }}</view>
 						<view>
 							<image style="width: 18rpx;height:24rpx;margin-left:10rpx;" src="/static/arrow-right.png"
 								mode="scaleToFill" />
@@ -255,6 +256,7 @@ export default {
 			checkList: [],
 			orderItemInfo: {}, //订单信息
 			userInfo: {},
+			showGoLiveRoom: false
 		}
 	},
 	onLoad(options) {
@@ -268,6 +270,15 @@ export default {
 		}
 	},
 	onShow() {
+		if (uni.getStorageSync('coureIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
 		if (uni.getStorageSync('bbcOrderItem')) {
 			this.userInfo = uni.getStorageSync('bbcOrderItem').userInfo
 			this.name = this.userInfo.name
@@ -482,18 +493,37 @@ export default {
 			uni.redirectTo({
 				url: url
 			})
-		}
+		},
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+			})
+		},
 	}
 }
 </script>
 
 <style lang="scss" scoped>
+.go-live {
+	margin-top: 10rpx;
+}
+
+.go-live text {
+	margin-left: 30rpx;
+	font-size: 32rpx;
+	background-color: #005aff;
+	padding: 8rpx 15rpx;
+	color: #FFF;
+	border-radius: 10rpx;
+}
+
 .submit-order {
 	background: #f2f2f2;
 	position: relative;
 	padding-bottom: 168rpx;
 	overflow-y: scroll;
-	background: linear-gradient(180deg, #FD594D  0%, #F2F2F2 50%);
+	background: linear-gradient(180deg, #FD594D 0%, #F2F2F2 50%);
 
 	.submit-order-index {
 		box-sizing: border-box;
@@ -510,7 +540,7 @@ export default {
 				line-height: 66rpx;
 				background: #FFFFFF;
 				font-size: 32rpx;
-				color: #FD594D ;
+				color: #FD594D;
 			}
 
 			.submit-order-index-express-content {
@@ -586,7 +616,7 @@ export default {
 				line-height: 66rpx;
 				background: #FFFFFF;
 				font-size: 32rpx;
-				color: #FD594D ;
+				color: #FD594D;
 			}
 
 			.submit-order-index-not-express-content {
@@ -1019,7 +1049,7 @@ export default {
 			height: 78rpx !important;
 			border-radius: 54rpx !important;
 
-			background: #FD594D  !important;
+			background: #FD594D !important;
 		}
 	}
 }

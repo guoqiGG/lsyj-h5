@@ -2,9 +2,9 @@
 	<view class="container">
 		<navigation />
 		<view :style="liveBroadcastList.length > 0 ? 'padding-bottom:10rpx;' : ''">
-			<view class="live-item" v-for="item in liveBroadcastList" :key="item.courseId"
-				@tap="toHuanTuoLiveList(item.courseId, item.courseName)">
-				<view class="courseName">{{ item.courseName }}</view>
+			<view class="live-item" v-for="item in liveBroadcastList" :key="item.coureId"
+				@tap="toHuanTuoLiveList(item.coureId, item.coureName, item.url)">
+				<view class="coureName">{{ item.coureName }}</view>
 			</view>
 		</view>
 	</view>
@@ -30,18 +30,16 @@ export default {
 		queryLiveList() {
 			this.isLoaded = false
 			const params = {
-				url: "/huan/tuo/newPage?pageNo=" + this.current + '&pageSize=' + this.size,
+				url: "/pub/user/get/douyin/coure",
 				method: "GET",
 				callBack: (res) => {
-					console.log(res)
-					this.isLoaded = true;
-					this.liveBroadcastList = res.list;
+					this.liveBroadcastList = res;
 				},
 			};
 			http.request(params);
 		},
-		toHuanTuoLiveList(courseId, courseName) {
-			uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?courseId=' + courseId + '&courseName=' + courseName })
+		toHuanTuoLiveList(coureId, coureName, url) {
+			uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + coureId + '&coureName=' + coureName + '&url=' + url })
 		},
 	},
 };

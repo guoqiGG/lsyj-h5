@@ -35,8 +35,8 @@ export default {
 		};
 	},
 	onShow: function () {
-		if (uni.getStorageSync('courseIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('courseIdExpiredTime')) {
+		if (uni.getStorageSync('coureIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
 				this.showGoLiveRoom = false
 			} else {
 				this.showGoLiveRoom = true
@@ -75,7 +75,7 @@ export default {
 		// 跳转到欢拓直播地址
 		toLiveAddress() {
 			util.checkAuthInfo(() => {
-				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?courseId=' + uni.getStorageSync('courseId') })
+				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
 			})
 		},
 		// 领取礼品卡

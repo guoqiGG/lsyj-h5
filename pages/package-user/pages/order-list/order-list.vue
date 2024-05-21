@@ -2,6 +2,7 @@
 	<view style="height: 100vh;background: #f2f2f2;">
 		<view class="order-list">
 			<navigation />
+			<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 			<u-tabs :scrollable="true" :current="currentTab" :list="list1" @click="handleTabClick"></u-tabs>
 			<view class="order-list-content">
 				<view class="order-list-content-box" v-for="(item, index) in orderLists" :key="item.orderId">
@@ -81,6 +82,7 @@
 
 <script>
 const http = require("@/utils/http");
+const util = require("@/utils/util");
 import wxpay from "weixin-js-sdk";
 export default {
 	data() {
@@ -120,7 +122,8 @@ export default {
 				width: '56rpx',
 				height: '2rpx',
 				background: '#025BFF'
-			}
+			},
+			showGoLiveRoom: false
 		}
 	},
 	onLoad(option) {
@@ -140,6 +143,15 @@ export default {
 		}
 	},
 	onShow() {
+		if (uni.getStorageSync('coureIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
 		this.loginToken = uni.getStorageSync("bbcToken")
 		this.userId = uni.getStorageSync("bbcUserInfo").id
 		this.getOrderLists()
@@ -280,6 +292,12 @@ export default {
 			}
 			http.request(params);
 		},
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+			})
+		},
 
 	},
 	/**
@@ -298,6 +316,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.go-live {
+	margin-top: 10rpx;
+}
+
+.go-live text {
+	margin-left: 30rpx;
+	font-size: 32rpx;
+	background-color: #005aff;
+	padding: 8rpx 15rpx;
+	color: #FFF;
+	border-radius: 10rpx;
+}
+
 /deep/ .u-tabs__wrapper__nav__line {
 	left: -12rpx;
 	width: 58rpx !important;

@@ -1,6 +1,7 @@
 <template>
   <view class="container">
-    <navigation/>
+    <navigation />
+    <view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
     <!-- 失败 -->
     <view v-if="sts == 0" class="pay-fail">
       <view class="img">
@@ -34,6 +35,7 @@
 </template>
 
 <script>
+const util = require("@/utils/util");
 export default {
   components: {},
   props: {},
@@ -41,6 +43,7 @@ export default {
     return {
       sts: 0,
       orderNumbers: "",
+      showGoLiveRoom: false
     };
   },
   /**
@@ -51,6 +54,17 @@ export default {
       sts: options.sts,
       orderNumbers: options.orderNumbers,
     });
+  },
+  onShow() {
+    if (uni.getStorageSync('coureIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
   },
 
   methods: {
@@ -64,6 +78,12 @@ export default {
       uni.switchTab({
         url: "/pages/category/category",
       });
+    },
+    // 跳转到欢拓直播地址
+    toLiveAddress() {
+      util.checkAuthInfo(() => {
+        uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+      })
     },
   },
 };

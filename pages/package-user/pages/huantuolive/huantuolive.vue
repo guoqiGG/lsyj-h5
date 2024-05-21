@@ -1,12 +1,12 @@
 <template>
     <view class="con">
-        <iframe :src="urls" frameborder="0" allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"
-            width="100%" height="100%">
-        </iframe>
+        <iframe :src="urls" allowfullscreen="true" frameborder="no" border="0"
+            allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;" width="100%"
+            height="100%"></iframe>
         <!-- <web-view :src="urls" /> -->
-        <view v-if="urls" class="home" @tap="goHome">
+        <!-- <view v-if="urls" class="home" @tap="goHome">
             <image src="/static/tabbar/selected-home.png" @tap="goHome" />
-        </view>
+        </view> -->
     </view>
 </template>
 <script>
@@ -18,54 +18,134 @@ export default {
     data() {
         return {
             urls: null,
-            courseId: null,
-            courseName: null
+            coureId: null,
+            coureName: null,
+            liveUrl: null,
+            timer: null
         }
     },
     onLoad(options) {
-        if (options.courseName) {
-            this.courseName = options.courseName
-        }
-        this.getShareInfo()
         util.checkAuthInfo(() => {
-
-            if (options.courseId) {
-                this.courseId = options.courseId
-                uni.setStorageSync('courseId', options.courseId)
-                uni.setStorageSync('courseIdExpiredTime', new Date().getTime())
-                this.toLiveAddress(options.courseId)
+            this.getShareInfo()
+            this.getdySign(options.url)
+            if (options.url) {
+                this.liveUrl = decodeURIComponent(options.url)
             }
-            if (options.userId) {
-                if (!uni.getStorageSync('bbcUserInfo').puid) {
-                    http.request({
-                        url: '/pub/leader/binding',
-                        methods: 'POST',
-                        data: {
-                            sign: 'qcsd',
-                            data: JSON.stringify({
-                                loginToken: uni.getStorageSync('bbcToken'),
-                                parentId: options.userId
-                            })
-                        },
-                        callBack: (res) => {
-                            if (res.loginToken) {
-                                uni.setStorageSync('bbcToken', res.loginToken)
-                                uni.setStorageSync('bbcUserInfo', res)
-                            }
-                            uni.showToast({
-                                title: '绑定成功',
-                                icon: 'none',
-                                duration: 2000
-                            })
-                        }
-                    })
-                }
+            if (options.coureName) {
+                this.coureName = options.coureName
             }
+            if (options.coureId) {
+                this.coureId = options.coureId
+                uni.setStorageSync('coureId', options.coureId)
+                uni.setStorageSync('coureName', options.coureName)
+                uni.setStorageSync('url', options.url)
+                uni.setStorageSync('coureIdExpiredTime', new Date().getTime())
+            }
+            // if (options.userId) {
+            //     if (!uni.getStorageSync('bbcUserInfo').puid) {
+            //         http.request({
+            //             url: '/pub/leader/binding',
+            //             methods: 'POST',
+            //             data: {
+            //                 sign: 'qcsd',
+            //                 data: JSON.stringify({
+            //                     loginToken: uni.getStorageSync('bbcToken'),
+            //                     parentId: options.userId
+            //                 })
+            //             },
+            //             callBack: (res) => {
+            //                 if (res.loginToken) {
+            //                     uni.setStorageSync('bbcToken', res.loginToken)
+            //                     uni.setStorageSync('bbcUserInfo', res)
+            //                 }
+            //                 uni.showToast({
+            //                     title: '绑定成功',
+            //                     icon: 'none',
+            //                     duration: 2000
+            //                 })
+            //             }
+            //         })
+            //     }
+            // }
         })
+
     },
     onShow() {
+        console.log('onShow')
+        clearInterval(this.timer)
+        this.timer = null
+        this.timer = setInterval(() => {
+            this.insertWatchTime()
+        }, 60000);
     },
     methods: {
+        stringToBase64(str) {
+            let base64 = '';
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+            for (let i = 0; i < str.length; i += 3) {
+                const char1 = str.charCodeAt(i);
+                const char2 = str.charCodeAt(i + 1);
+                const char3 = str.charCodeAt(i + 2);
+
+                const enc1 = char1 >> 2;
+                const enc2 = ((char1 & 3) << 4) | (char2 >> 4);
+                const enc3 = ((char2 & 15) << 2) | (char3 >> 6);
+                const enc4 = char3 & 63;
+
+                base64 += characters.charAt(enc1) + characters.charAt(enc2) + characters.charAt(enc3) + characters.charAt(enc4);
+            }
+            return base64
+        },
+
+        utf8_encode(str) {
+            var output = '';
+            for (var n = 0; n < str.length; n++) {
+                var c = str.charCodeAt(n);
+                if (c < 128) {
+                    output += String.fromCharCode(c);
+                } else if ((c > 127) && (c < 2048)) {
+                    output += String.fromCharCode((c >> 6) | 192);
+                    output += String.fromCharCode((c & 63) | 128);
+                } else {
+                    output += String.fromCharCode((c >> 12) | 224);
+                    output += String.fromCharCode(((c >> 6) & 63) | 128);
+                    output += String.fromCharCode((c & 63) | 128);
+                }
+            }
+            return output;
+        },
+        // 插入观看时间 
+        insertWatchTime() {
+            const params = {
+                url: `/voice/engine/time?course_id=${this.coureId}&userId=${uni.getStorageSync('bbcUserInfo').id}`,
+                method: "GET",
+                callBack: (res) => {
+                }
+            };
+            http.request(params);
+        },
+        // 生成抖音签名信息 并生成直播间地址
+        getdySign(url) {
+            let userId = uni.getStorageSync('bbcUserInfo').id
+            let timeStamp = new Date().getTime()
+            let secretKey = 'eh.phe./st'
+            const params = {
+                url: `/voice/engine/sign?secretKey=${secretKey}&timeStamp=${timeStamp}&userId=${userId}`,
+                method: "GET",
+                callBack: (res) => {
+                    let Sign = res
+                    let Nickname = encodeURIComponent(this.stringToBase64(this.utf8_encode(uni.getStorageSync('bbcUserInfo').name)))
+                    let UserId = uni.getStorageSync('bbcUserInfo').id
+                    // let Timestamp = new Date().getTime()
+                    console.log(uni.getStorageSync('bbcUserInfo').name, UserId)
+                    // this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${Timestamp}&forceCheck=true`
+                    this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${timeStamp}`
+                    console.log(this.urls)
+                }
+            };
+            http.request(params);
+        },
+        // 分享
         getShareInfo() {
             var url = encodeURIComponent(window.location.href.split("#")[0]);
             let userId = uni.getStorageSync('bbcUserInfo').id
@@ -97,8 +177,8 @@ export default {
                         });
                         wx.updateAppMessageShareData({
                             title: res.title,
-                            desc: this.courseName,
-                            link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&courseId=' + this.courseId,
+                            desc: this.coureName,
+                            link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&coureId=' + this.coureId + '&url=' + this.liveUrl,
                             imgUrl: res.img,
                             success: function () {
                                 console.log('分享成功')
@@ -120,27 +200,21 @@ export default {
             http.request(params);
 
         },
+        // 返回首页
         goHome() {
             uni.switchTab({ url: "/pages/index/index" });
         },
-        // 跳转到欢拓直播地址
-        toLiveAddress(courseId) {
-            util.checkAuthInfo(() => {
-                const params = {
-                    url: '/huan/tuo/user/courseId',
-                    data: JSON.stringify({
-                        userId: uni.getStorageSync("bbcUserInfo").id,
-                        type: 0,  // 0 h5  1 小程序
-                        course_id: courseId
-                    }),
-                    callBack: (res) => {
-                        this.urls = res
-                    }
-                };
-                http.request(params);
-            })
-        }
     },
+    onHide() {
+        console.log('onHide')
+        clearInterval(this.timer)
+        this.timer = null
+    },
+    onUnload() {
+        console.log('onUnload')
+        clearInterval(this.timer)
+        this.timer = null
+    }
 
 }
 </script>
