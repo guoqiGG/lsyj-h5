@@ -22,7 +22,9 @@ export default {
     },
     onLoad(options) {
         util.checkAuthInfo(() => {
-            this.getShareInfo()
+            if (uni.getStorageSync('bbcUserInfo').puid) {
+                this.getShareInfo()
+            }
             this.getdySign(options.url)
             if (options.url) {
                 this.liveUrl = decodeURIComponent(options.url)
