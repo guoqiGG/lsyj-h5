@@ -128,18 +128,17 @@ export default {
         getdySign(url) {
             let userId = uni.getStorageSync('bbcUserInfo').id
             let timeStamp = new Date().getTime()
-            let secretKey = 'eh.phe./st'
             const params = {
-                url: `/voice/engine/sign?secretKey=${secretKey}&timeStamp=${timeStamp}&userId=${userId}`,
+                url: `/voice/engine/sign?userId=${userId}`,
                 method: "GET",
                 callBack: (res) => {
-                    let Sign = res
+                    let Sign = res.sign
                     let Nickname = encodeURIComponent(this.stringToBase64(this.utf8_encode(uni.getStorageSync('bbcUserInfo').name)))
                     let UserId = uni.getStorageSync('bbcUserInfo').id
                     // let Timestamp = new Date().getTime()
                     console.log(uni.getStorageSync('bbcUserInfo').name, UserId)
                     // this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${Timestamp}&forceCheck=true`
-                    this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${timeStamp}`
+                    this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}`
                     console.log(this.urls)
                 }
             };
