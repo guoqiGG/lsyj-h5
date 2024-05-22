@@ -1,6 +1,6 @@
-.container{
+.container {
   background: #e6e6e6;
-  padding-bottom: 200rpx; 
+  padding-bottom: 200rpx;
   overflow-y: scroll;
 }
 .go-live {
@@ -11,7 +11,7 @@
   font-size: 32rpx;
   background-color: #005aff;
   padding: 8rpx 15rpx;
-  color: #FFF;
+  color: #fff;
   border-radius: 10rpx;
 }
 .image-con {
@@ -164,7 +164,7 @@
 
 /* 规格弹出层 */
 .con-container {
-  padding: 36rpx 15rpx;
+  padding: 20rpx 15rpx 0;
 }
 .con-container .sku-info {
   display: flex;
@@ -242,7 +242,7 @@
 }
 .goods-sku {
   background: #ffffff;
-  padding: 40rpx 20rpx;
+  padding: 20rpx 20rpx;
 }
 .goods-sku .goods-sku-title {
   font-weight: 400;
@@ -258,16 +258,16 @@
   overflow: hidden;
   display: flex;
   flex-wrap: wrap;
-  justify-content:space-between;
+  justify-content: space-between;
 }
 .goods-sku-list .goods-sku-list-item {
-	width: 40%;
-	overflow: hidden;
+  width: 40%;
+  overflow: hidden;
   /* float: left; */
   /* width: 152.5rpx; */
   /* height: 80rpx; */
   /* line-height: 80rpx; */
-  background: #F1F1F1;
+  background: #f1f1f1;
   border-radius: 8rpx 8rpx 8rpx 8rpx;
   padding: 10rpx 20rpx;
   text-align: center;
@@ -293,11 +293,11 @@
   height: 25rpx;
 }
 .con-container .buy-now {
-  margin: 40rpx auto 20rpx;
+  margin: 20rpx auto 20rpx;
   padding: 8rpx 0;
   text-align: center;
   width: 520rpx;
-   height: 66rpx;
+  height: 66rpx;
   border-radius: 50rpx;
   background: #f85721;
   font-size: 36rpx;
