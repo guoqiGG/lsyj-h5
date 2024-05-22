@@ -128,7 +128,9 @@ export default {
 				this.goodsId = option.prodId
 				this.getProductDetail()
 			}
-			this.getShareInfo()
+			if (uni.getStorageSync('bbcUserInfo').puid) {
+                this.getShareInfo()
+            }
 		})
 	},
 	onShow() {

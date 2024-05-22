@@ -130,7 +130,7 @@ export default {
 				method: "GET",
 				callBack: (res) => {
 					this.appId = res.list[0].value
-					if (!window.location.href.includes('code')) {
+					if (!window.location.href.includes('code') && !uni.getStorageSync('userManualExit')) {
 						this.jingMoAuth(this.appId)
 					}
 				},
@@ -144,6 +144,7 @@ export default {
 				method: "GET",
 				callBack: (res) => {
 					console.log(uni.getStorageSync('bbcRouteUrlAfterLogin'))
+					uni.removeStorageSync('userManualExit')
 					if (uni.getStorageSync('bbcRouteUrlAfterLogin')) {
 						window.location.href = window.location.href.split("?")[0] + '#' + uni.getStorageSync('bbcRouteUrlAfterLogin')
 					} else {
@@ -291,6 +292,7 @@ export default {
 									this.weixinAuthLogin(this.appId)
 								} else {
 									// 返回未登录前点击的页面
+									uni.removeStorageSync('userManualExit')
 									util.previousPage()
 								}
 

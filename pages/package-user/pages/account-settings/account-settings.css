@@ -75,3 +75,15 @@ view.right-img {
 .phone-number {
   color: #979797;
 }
+
+.logout{
+  width: 200rpx;
+  margin: 0 auto;
+  font-size: 38rpx;
+  background-color: #FD594D;
+  line-height: 72rpx;
+  color: #FFFFFF;
+  text-align: center;
+  border-radius: 8rpx;
+  margin-top: 100rpx;
+}

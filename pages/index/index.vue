@@ -90,7 +90,9 @@ export default {
 	onLoad: function (options) {
 		console.log(1)
 		util.checkAuthInfo(() => {
-			this.getShareInfo();
+			if (uni.getStorageSync('bbcUserInfo').puid) {
+                this.getShareInfo()
+            }
 		})
 		this.getCarousel()
 		this.getLiveImg()
