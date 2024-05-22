@@ -41,32 +41,32 @@ export default {
                 uni.setStorageSync('url', options.url)
                 uni.setStorageSync('coureIdExpiredTime', new Date().getTime())
             }
-            // if (options.userId) {
-            //     if (!uni.getStorageSync('bbcUserInfo').puid) {
-            //         http.request({
-            //             url: '/pub/leader/binding',
-            //             methods: 'POST',
-            //             data: {
-            //                 sign: 'qcsd',
-            //                 data: JSON.stringify({
-            //                     loginToken: uni.getStorageSync('bbcToken'),
-            //                     parentId: options.userId
-            //                 })
-            //             },
-            //             callBack: (res) => {
-            //                 if (res.loginToken) {
-            //                     uni.setStorageSync('bbcToken', res.loginToken)
-            //                     uni.setStorageSync('bbcUserInfo', res)
-            //                 }
-            //                 uni.showToast({
-            //                     title: '绑定成功',
-            //                     icon: 'none',
-            //                     duration: 2000
-            //                 })
-            //             }
-            //         })
-            //     }
-            // }
+            if (options.userId) {
+                if (!uni.getStorageSync('bbcUserInfo').puid) {
+                    http.request({
+                        url: '/pub/leader/binding',
+                        methods: 'POST',
+                        data: {
+                            sign: 'qcsd',
+                            data: JSON.stringify({
+                                loginToken: uni.getStorageSync('bbcToken'),
+                                parentId: options.userId
+                            })
+                        },
+                        callBack: (res) => {
+                            if (res.loginToken) {
+                                uni.setStorageSync('bbcToken', res.loginToken)
+                                uni.setStorageSync('bbcUserInfo', res)
+                            }
+                            uni.showToast({
+                                title: '绑定成功',
+                                icon: 'none',
+                                duration: 2000
+                            })
+                        }
+                    })
+                }
+            }
         })
 
     },
@@ -138,7 +138,7 @@ export default {
                     // let Timestamp = new Date().getTime()
                     console.log(uni.getStorageSync('bbcUserInfo').name, UserId)
                     // this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${Timestamp}&forceCheck=true`
-                    this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}`
+                    this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}&forceCheck=true`
                     console.log(this.urls)
                 }
             };

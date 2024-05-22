@@ -80,6 +80,11 @@
   },
   "vueVersion": "2",
   "h5": {
+    "optimization": {
+      "treeShaking": {
+        "enable": true
+      }
+    },
     "devServer": {
       "disableHostCheck": true,
       "proxy": {
