@@ -3,10 +3,6 @@
         <iframe :src="urls" allowfullscreen="true" frameborder="no" border="0"
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;" width="100%"
             height="100%"></iframe>
-        <!-- <web-view :src="urls" /> -->
-        <!-- <view v-if="urls" class="home" @tap="goHome">
-            <image src="/static/tabbar/selected-home.png" @tap="goHome" />
-        </view> -->
     </view>
 </template>
 <script>
