@@ -13,7 +13,7 @@
         <iframe class="iframe" :src="urls" frameborder="0"
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
         <view v-if="urls" class="send-beans">
-            {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '今日已领取' }}
+            {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '青春豆已送' }}
         </view>
     </view>
 </template>
@@ -362,7 +362,7 @@ export default {
 .send-beans {
     position: fixed;
     z-index: 2;
-    top: 45%;
+    top: 500rpx;
     right: 5%;
     width: 80rpx;
     font-size: 24rpx;
