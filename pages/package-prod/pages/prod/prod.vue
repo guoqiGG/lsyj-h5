@@ -340,7 +340,7 @@ export default {
 		 */
 		toSubmitOrder(orderItem, url) {
 			uni.setStorageSync("bbcOrderItem", Object.assign({}, orderItem));
-			window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/submit-order/submit-order'
+			window.location.replace(window.location.href.split("#")[0] + '#/pages/package-pay/pages/submit-order/submit-order')
 			// uni.navigateTo({
 			// 	url,
 			// });

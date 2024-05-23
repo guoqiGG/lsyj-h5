@@ -276,6 +276,7 @@ export default {
 		toLiveAddress() {
 			util.checkAuthInfo(() => {
 				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+				window.location.replace(window.location.href.split("#")[0] +'#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url'))
 			})
 		},
 		// 获取订单消息数量

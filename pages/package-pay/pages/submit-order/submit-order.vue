@@ -670,7 +670,6 @@ export default {
 		.submit-order-comodity-info {
 			margin-top: 20rpx;
 			width: 710rpx;
-			height: 440rpx;
 			border-radius: 8rpx;
 			opacity: 1;
 			box-sizing: border-box;

@@ -1,8 +1,14 @@
 <template>
     <view class="con">
         <view class="top" v-if="urls">
-            <view>上品时代</view>
-            <view @tap="goUserPage">个人中心</view>
+            <view class="item">
+                <image class="image" src="/static/live-logo.png" />
+                <text>上品时代</text>
+            </view>
+            <view class="item" @tap="goUserPage">
+                <image style="width: 40rpx;height:40rpx;" class="image" src="/static/live-user.png" />
+                <text>个人中心</text>
+            </view>
         </view>
         <iframe class="iframe" :src="urls" frameborder="0"
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
@@ -317,13 +323,35 @@ export default {
 .top {
     height: 80rpx;
     line-height: 80rpx;
-    font-size: 28rpx;
-    font-weight: 400;
-    margin: 0 30rpx;
+    margin: 0 48rpx;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    font-weight: 400;
+    font-size: 28rpx;
+    color: #101010;
+
+
+}
+
+.top .item {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+
+
+
+}
+
+.top .item .image {
+    width: 56rpx;
+    height: 56rpx;
+}
+
+.top .item text {
+    margin-left: 10rpx;
+
 }
 
 .iframe {
@@ -333,6 +361,7 @@ export default {
 
 .send-beans {
     position: fixed;
+    z-index: 2;
     top: 45%;
     right: 5%;
     width: 80rpx;

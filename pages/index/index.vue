@@ -91,8 +91,8 @@ export default {
 		console.log(1)
 		util.checkAuthInfo(() => {
 			if (uni.getStorageSync('bbcUserInfo').puid) {
-                this.getShareInfo()
-            }
+				this.getShareInfo()
+			}
 		})
 		this.getCarousel()
 		this.getLiveImg()
@@ -452,7 +452,7 @@ swiper .banner-item .img-box video {
 		padding: 14rpx 22rpx;
 		overflow: hidden;
 
-	
+
 
 		.bg-singIn {
 			border-radius: 25rpx;

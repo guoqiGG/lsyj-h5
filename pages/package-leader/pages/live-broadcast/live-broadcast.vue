@@ -39,7 +39,7 @@ export default {
 			http.request(params);
 		},
 		toHuanTuoLiveList(coureId, coureName, url) {
-			uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + coureId + '&coureName=' + coureName + '&url=' + url })
+			window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + coureId + '&coureName=' + coureName + '&url=' + url)
 		},
 	},
 };
