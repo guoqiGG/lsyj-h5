@@ -2,7 +2,6 @@
 	<view style="height: 100vh;background: #f2f2f2;">
 		<view class="order-list">
 			<navigation />
-			<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 			<u-tabs :scrollable="true" :current="currentTab" :list="list1" @click="handleTabClick"></u-tabs>
 			<view class="order-list-content">
 				<view class="order-list-content-box" v-for="(item, index) in orderLists" :key="item.orderId">
@@ -123,7 +122,7 @@ export default {
 				height: '2rpx',
 				background: '#025BFF'
 			},
-			showGoLiveRoom: false
+			
 		}
 	},
 	onLoad(option) {
@@ -143,15 +142,7 @@ export default {
 		}
 	},
 	onShow() {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
-				this.showGoLiveRoom = false
-			} else {
-				this.showGoLiveRoom = true
-			}
-		} else {
-			this.showGoLiveRoom = false
-		}
+	
 		this.loginToken = uni.getStorageSync("bbcToken")
 		this.userId = uni.getStorageSync("bbcUserInfo").id
 		this.getOrderLists()
@@ -201,21 +192,7 @@ export default {
 					})
 				},
 				callBack: (res) => {
-					// wx.requestPayment({
-					// 	timeStamp: res.timeStamp,
-					// 	nonceStr: res.nonceStr,
-					// 	package: res.packageValue,
-					// 	signType: res.signType,
-					// 	paySign: res.paySign,
-					// 	success: e => {
-					// 		console.log('success', e)
-					// 		this.getOrderLists()
-					// 	},
-					// 	fail: (e) => {
-					// 		console.log('failed', e)
-					// 	}
-					// })
-
+					uni.setStorageSync('payInfo', res)
 					wxpay.config({
 						debug: false,
 						appId: res.appId,
@@ -234,8 +211,24 @@ export default {
 						paySign: res.paySign //微信签名
 					},
 						function (res) {
+							// 支付成功
+							if (res.err_msg == "get_brand_wcpay_request:ok") {
+								// 使用以上方式判断前端返回,微信团队郑重提示：
+								//res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+								// 支付成功后的跳转
+								window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/pay-result/pay-result?sts=1&orderNumbers=' + orderId
+							}
+							// 支付过程中用户取消
+							if (res.err_msg == "get_brand_wcpay_request:cancel") {
+								window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/pay-result/pay-result?sts=0&orderNumbers=' + orderId
+							}
+							// 支付失败
+							if (res.err_msg == "get_brand_wcpay_request:fail") {
+								window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/pay-result/pay-result?sts=0&orderNumbers=' + orderId
+							}
 						}
 					)
+
 				}
 			}
 			http.request(params)
@@ -292,13 +285,6 @@ export default {
 			}
 			http.request(params);
 		},
-		// 跳转到欢拓直播地址
-		toLiveAddress() {
-			util.checkAuthInfo(() => {
-				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
-			})
-		},
-
 	},
 	/**
 		 * 页面上拉触底事件的处理函数

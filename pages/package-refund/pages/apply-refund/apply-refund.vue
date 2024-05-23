@@ -15,10 +15,10 @@
 					</view>
 					<view class="refund-info-content-text-content">
 						<view class="refund-info-content-text-content-price">
-							<text
-								style="color: #C53032;font-size: 32rpx;">￥{{ orderDetail.orderGoods[0].salePrice }}</text>
-							<text
-								style="margin-left: 14rpx;color: #979797;font-size: 24rpx;">{{ orderDetail.goodsCount }}件</text>
+							<text style="color: #C53032;font-size: 32rpx;">￥{{ orderDetail.orderGoods[0].salePrice
+								}}</text>
+							<text style="margin-left: 14rpx;color: #979797;font-size: 24rpx;">{{ orderDetail.goodsCount
+								}}件</text>
 						</view>
 					</view>
 				</view>
@@ -55,9 +55,10 @@
 
 	</view>
 </template>
-<script setup>
+<script>
 const http = require("@/utils/http");
 const config = require("@/utils/config.js"); // 统一的网络请求方法
+
 export default {
 	data() {
 		return {
@@ -85,7 +86,6 @@ export default {
 			this.getOrderDetail()
 		}
 	},
-
 	methods: {
 		// 获取商品详情
 		getOrderDetail() {
@@ -135,9 +135,13 @@ export default {
 						title: "申请成功~",
 						icon: "none",
 					});
-					uni.navigateTo({
-						url: `/pages/package-user/pages/order-list/order-list?id=` + 0
-					})
+					// uni.navigateTo({
+					// 	url: `/pages/package-user/pages/order-list/order-list?id=` + 0,
+					// })
+
+					window.location.href = window.location.href.split("#")[0] + '#/pages/package-user/pages/order-list/order-list?id=0'
+
+
 				},
 			}
 			http.request(params);
@@ -204,6 +208,7 @@ export default {
 	}
 }
 </script>
+
 <style lang="scss" scoped>
 .apply-refund {
 	width: 100vw;

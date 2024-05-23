@@ -6,6 +6,9 @@ import "./uni.promisify.adaptor";
 import store from "./store/store.js";
 import uView from "./uni_modules/uview-ui";
 import navigation from './components/navigation-bar/index.vue'
+import NoSleep from "nosleep.js/dist/NoSleep.min.js";
+Vue.prototype.$NoSleep = NoSleep;
+
 // 注册全局组件
 Vue.component('navigation', navigation)
 Vue.config.productionTip = false;

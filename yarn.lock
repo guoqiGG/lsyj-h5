@@ -34,6 +34,11 @@
   "resolved" "https://registry.npmmirror.com/jweixin-module/-/jweixin-module-1.6.0.tgz"
   "version" "1.6.0"
 
+"nosleep.js@^0.12.0":
+  "integrity" "sha512-9d1HbpKLh3sdWlhXMhU6MMH+wQzKkrgfRkYV0EBdvt99YJfj0ilCJrWRDYG2130Tm4GXbEoTCx5b34JSaP+HhA=="
+  "resolved" "https://registry.npmmirror.com/nosleep.js/-/nosleep.js-0.12.0.tgz"
+  "version" "0.12.0"
+
 "sha1@^1.1.1":
   "integrity" "sha512-dZBS6OrMjtgVkopB1Gmo4RQCDKiZsqcpAQpkV/aaj+FCrCg8r4I4qMkDPQjBgLIxlmu9k4nUbWq6ohXahOneYA=="
   "resolved" "https://registry.npmmirror.com/sha1/-/sha1-1.1.1.tgz"

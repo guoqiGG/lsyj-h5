@@ -1,7 +1,6 @@
 <template>
   <view class="container">
     <navigation />
-    <view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
     <!-- 失败 -->
     <view v-if="sts == 0" class="pay-fail">
       <view class="img">
@@ -56,34 +55,20 @@ export default {
     });
   },
   onShow() {
-    if (uni.getStorageSync('coureIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
-				this.showGoLiveRoom = false
-			} else {
-				this.showGoLiveRoom = true
-			}
-		} else {
-			this.showGoLiveRoom = false
-		}
   },
 
   methods: {
     toOrderList: function () {
-      uni.navigateTo({
-        url: "/pages/package-user/pages/order-list/order-list?id=0"
-      });
+      // uni.navigateTo({
+      //   url: "/pages/package-user/pages/order-list/order-list?id=0"
+      // });
+      window.location.href = window.location.href.split("#")[0] + '#/pages/package-user/pages/order-list/order-list?id=0'
     },
     // 继续购物
     toCategory: function () {
       uni.switchTab({
         url: "/pages/category/category",
       });
-    },
-    // 跳转到欢拓直播地址
-    toLiveAddress() {
-      util.checkAuthInfo(() => {
-        uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
-      })
     },
   },
 };

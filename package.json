@@ -3,6 +3,7 @@
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.10",
     "jweixin-module": "^1.6.0",
+    "nosleep.js": "^0.12.0",
     "sha1": "^1.1.1",
     "uni-simple-router": "^2.0.8-beta.4",
     "weixin-js-sdk": "^1.6.5"

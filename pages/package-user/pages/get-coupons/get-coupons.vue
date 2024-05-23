@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
 		<navigation />
-		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="con">
 			<view class="list" v-if="couponInfo.name">
 				<view class="left-con">
@@ -31,19 +30,9 @@ export default {
 		return {
 			couponId: null,
 			couponInfo: {},
-			showGoLiveRoom: false
 		};
 	},
 	onShow: function () {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
-				this.showGoLiveRoom = false
-			} else {
-				this.showGoLiveRoom = true
-			}
-		} else {
-			this.showGoLiveRoom = false
-		}
 	},
 	onLoad: function (options) {
 
@@ -56,9 +45,9 @@ export default {
 				util.checkAuthInfo(() => { })
 			}
 		}
-		if (window.location.href.includes('ht=1')) {
-			window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
-		}
+		// if (window.location.href.includes('ht=1')) {
+		// 	window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
+		// }
 	},
 	// js文件，广告事件监听 Page({ 
 	adLoad() {
@@ -72,13 +61,7 @@ export default {
 	},
 	// }) 
 	methods: {
-		// 跳转到欢拓直播地址
-		toLiveAddress() {
-			util.checkAuthInfo(() => {
-				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
-			})
-		},
-		// 领取礼品卡
+		// 领取优惠券
 		receiveGift: util.debounce(function () {
 			const params = {
 				url: "/user/coupon/receive",
@@ -106,7 +89,7 @@ export default {
 			http.request(params);
 		}, 1000),
 
-		// 根据id获取礼品卡
+		// 根据id获取优惠券信息
 		getCouponListData(id, userId) {
 			const params = {
 				url: "/user/coupon/chcek",

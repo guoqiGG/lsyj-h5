@@ -1,7 +1,6 @@
 <template>
 	<view class="submit-order">
 		<navigation />
-		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="submit-order-index">
 			<view v-if="!express" class="submit-order-index-express">
 				<view class="submit-order-index-express-title">
@@ -121,7 +120,7 @@
 						<view v-if="totalCouponAmount <= 0" style="font-size: 24rpx;color: #9E9E9E;"
 							@click="selectCouponClick()">选择优惠券</view>
 						<view style="font-size: 24rpx;color: #C53032;" v-else @click="selectCouponClick()">-￥{{
-			parsePrice(totalCouponAmount)[0] }}.{{ parsePrice(totalCouponAmount)[1] }}</view>
+				parsePrice(totalCouponAmount)[0] }}.{{ parsePrice(totalCouponAmount)[1] }}</view>
 						<view>
 							<image style="width: 18rpx;height:24rpx;margin-left:10rpx;" src="/static/arrow-right.png"
 								mode="scaleToFill" />
@@ -167,61 +166,63 @@
 		<view class="submit-popup">
 			<u-popup :show="show" @close="close">
 				<view class="popup-style">
-					<view class="popup-style-title">
-						<view class="popup-style-title-left">
-							{{ "优惠券(" + couponList.length + ")" }}
-						</view>
-						<view @click="close()" class="popup-style-title-right">
-							<u-icon name="close" size="38"></u-icon>
-						</view>
-					</view>
-					<view class="popup-style-content">
-						<u-checkbox-group v-model="checkboxValue1" placement="column" @change="checkboxChange">
-							<view v-for="(item, index) in couponList" class="popup-style-content-wrap" :key="item.id">
-								<view class="popup-style-content-wrap-left">
-									<view class="popup-style-content-wrap-left-img">
-										<image src="/pages/package-pay/static/coupon-list.png" mode=""></image>
-									</view>
-									<view class="popup-style-content-wrap-left-text">
-										<text class="popup-style-content-wrap-left-text-number-left">
-											￥
-										</text>
-										<text class="popup-style-content-wrap-left-text-number-middle">
-											{{ parsePrice(item.couponAmount)[0]
-											}}
-										</text>
-										<text class="popup-style-content-wrap-left-text-number-right">
-											.{{ parsePrice(item.couponAmount)[1] }}
-										</text>
-									</view>
-								</view>
-								<view class="popup-style-content-wrap-right">
-									<view class="popup-style-content-wrap-right-title">
-										<view class="popup-style-content-wrap-right-title-lf">
-											平台
-										</view>
-										<view class="popup-style-content-wrap-right-title-rt"
-											style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
-											{{ item.couponName }}
-										</view>
-									</view>
-									<view class="popup-style-content-wrap-right-cot">
-										（特殊商品除外）
-									</view>
-									<view class="popup-style-content-wrap-right-button">
-										<u-checkbox :disabled="item.disabled" :key="item.id" :name="item.id"
-											@change="getCheckClick(item.id)">
-										</u-checkbox>
-									</view>
-									<view class="popup-style-content-wrap-right-time">
-										{{ item.updateTime }}
-									</view>
-								</view>
+					<scroll-view scroll-y="true" style="height: 600rpx;">
+						<view class="popup-style-title">
+							<view class="popup-style-title-left">
+								{{ "优惠券(" + couponList.length + ")" }}
 							</view>
-						</u-checkbox-group>
-					</view>
+							<view @click="close()" class="popup-style-title-right">
+								<u-icon name="close" size="38"></u-icon>
+							</view>
+						</view>
+						<view class="popup-style-content">
+							<u-checkbox-group v-model="checkboxValue1" placement="column" @change="checkboxChange">
+								<view v-for="(item, index) in couponList" class="popup-style-content-wrap"
+									:key="item.id">
+									<view class="popup-style-content-wrap-left">
+										<view class="popup-style-content-wrap-left-img">
+											<image src="/pages/package-pay/static/coupon-list.png" mode=""></image>
+										</view>
+										<view class="popup-style-content-wrap-left-text">
+											<text class="popup-style-content-wrap-left-text-number-left">
+												￥
+											</text>
+											<text class="popup-style-content-wrap-left-text-number-middle">
+												{{ parsePrice(item.couponAmount)[0]
+												}}
+											</text>
+											<text class="popup-style-content-wrap-left-text-number-right">
+												.{{ parsePrice(item.couponAmount)[1] }}
+											</text>
+										</view>
+									</view>
+									<view class="popup-style-content-wrap-right">
+										<view class="popup-style-content-wrap-right-title">
+											<view class="popup-style-content-wrap-right-title-lf">
+												平台
+											</view>
+											<view class="popup-style-content-wrap-right-title-rt"
+												style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">
+												{{ item.couponName }}
+											</view>
+										</view>
+										<view class="popup-style-content-wrap-right-cot">
+											（特殊商品除外）
+										</view>
+										<view class="popup-style-content-wrap-right-button">
+											<u-checkbox :disabled="item.disabled" :key="item.id" :name="item.id"
+												@change="getCheckClick(item.id)">
+											</u-checkbox>
+										</view>
+										<view class="popup-style-content-wrap-right-time">
+											{{ item.updateTime }}
+										</view>
+									</view>
+								</view>
+							</u-checkbox-group>
+						</view>
+					</scroll-view>
 					<view class="popup-style-button">
-
 						<u-button @click="confirmSelectCoupon()" type="primary" text="确定"></u-button>
 					</view>
 				</view>
@@ -270,15 +271,6 @@ export default {
 		}
 	},
 	onShow() {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
-				this.showGoLiveRoom = false
-			} else {
-				this.showGoLiveRoom = true
-			}
-		} else {
-			this.showGoLiveRoom = false
-		}
 		if (uni.getStorageSync('bbcOrderItem')) {
 			this.userInfo = uni.getStorageSync('bbcOrderItem').userInfo
 			this.name = this.userInfo.name
@@ -422,21 +414,7 @@ export default {
 					})
 				},
 				callBack: (res) => {
-					// wx.requestPayment({
-					// 	timeStamp: res.timeStamp,
-					// 	nonceStr: res.nonceStr,
-					// 	package: res.packageValue,
-					// 	signType: res.signType,
-					// 	paySign: res.paySign,
-					// 	success: e => {
-					// 		console.log('success', e)
-					// 		this.routeToAfterPay(true, this.orderNumbers)
-					// 	},
-					// 	fail: (e) => {
-					// 		console.log('failed', e)
-					// 		this.routeToAfterPay(false, this.orderNumbers)
-					// 	}
-					// })
+					uni.setStorageSync('payInfo', res)
 					wxpay.config({
 						debug: false,
 						appId: res.appId,
@@ -492,12 +470,6 @@ export default {
 			}
 			uni.redirectTo({
 				url: url
-			})
-		},
-		// 跳转到欢拓直播地址
-		toLiveAddress() {
-			util.checkAuthInfo(() => {
-				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
 			})
 		},
 	}
@@ -906,10 +878,8 @@ export default {
 	}
 
 	.popup-style {
-		height: 1168rpx;
 		box-sizing: border-box;
 		padding: 10rpx 20rpx;
-		position: relative;
 
 		.popup-style-title {
 			display: flex;
@@ -1040,9 +1010,7 @@ export default {
 	}
 
 	.popup-style-button {
-		position: absolute;
-		bottom: 40rpx;
-		left: 40rpx;
+		margin: 20rpx 40rpx;
 
 		/deep/ .u-button {
 			width: 670rpx !important;

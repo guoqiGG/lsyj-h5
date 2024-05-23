@@ -31,13 +31,13 @@
 					</view>
 				</label>
 			</view>
-			<button class="authorized-btn" @tap="maskBtn" :class="phoneNumber ? 'loginColor' : ''">
-				立即登录
+			<button class="authorized-btn" @tap="maskBtn" :class="phoneNumber ? 'loginColor' : ''"
+				:loading="isChecked ? true : false">
+				{{ this.isChecked ? '登陆中' : '立即登录' }}
 			</button>
 		</view>
 	</view>
 </template>
-
 
 <script>
 const http = require("@/utils/http");
@@ -52,13 +52,14 @@ export default {
 		return {
 			appType: uni.getStorageSync("bbcAppType"),
 			showAuth: false, // 用户是否首次登录 true 是 false 否
-			isPrivacy: 0,
+			isPrivacy: 1,
 			phoneNumber: null,
 			code: 1994,
 			flag: false,
 			flag2: false,
 			// codeText:null,
-			appId: null
+			appId: null,
+			isChecked: false
 		};
 	},
 
@@ -88,23 +89,21 @@ export default {
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-		if (window.location.href.includes('code')) {
-			const code = this.getQueryParam(window.location.href, 'code')
-			const state = this.getQueryParam(window.location.href, 'state')
-			console.log(state, code, window.location.href)
-			if (state == '123') {
-				this.getUserPublicAccountOpenIdByCode(code)
-			}
-			if (state == 'STATE') {
-				const url = new URL(window.location.href);
-				const params = url.searchParams;
-				const codes = params.getAll('code');
-				console.log(codes)
-				if (uni.getStorageSync('bbcUserInfo') && uni.getStorageSync('bbcToken')) {
-					this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, codes.length == 1 ? codes[0] : codes[1], uni.getStorageSync('bbcToken'))
-				}
-			}
-		}
+		// if (window.location.href.includes('code')) {
+		// 	const code = this.getQueryParam(window.location.href, 'code')
+		// 	const state = this.getQueryParam(window.location.href, 'state')
+		// 	if (state == '123') {
+		// 		this.getUserPublicAccountOpenIdByCode(code)
+		// 	}
+		// 	if (state == 'STATE') {
+		// 		const url = new URL(window.location.href);
+		// 		const params = url.searchParams;
+		// 		const codes = params.getAll('code');
+		// 		if (uni.getStorageSync('bbcUserInfo') && uni.getStorageSync('bbcToken')) {
+		// 			this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, codes.length == 1 ? codes[0] : codes[1], uni.getStorageSync('bbcToken'))
+		// 		}
+		// 	}
+		// }
 	},
 	methods: {
 		// 静默授权
@@ -131,7 +130,7 @@ export default {
 				callBack: (res) => {
 					this.appId = res.list[0].value
 					if (!window.location.href.includes('code') && !uni.getStorageSync('userManualExit')) {
-						this.jingMoAuth(this.appId)
+						// this.jingMoAuth(this.appId)
 					}
 				},
 			};
@@ -143,7 +142,6 @@ export default {
 				url: `/wx/h5/getToken/wx?userId=${userId}&code=${code}&type=1&loginToken=${loginToken}`,
 				method: "GET",
 				callBack: (res) => {
-					console.log(uni.getStorageSync('bbcRouteUrlAfterLogin'))
 					uni.removeStorageSync('userManualExit')
 					if (uni.getStorageSync('bbcRouteUrlAfterLogin')) {
 						window.location.href = window.location.href.split("?")[0] + '#' + uni.getStorageSync('bbcRouteUrlAfterLogin')
@@ -251,6 +249,7 @@ export default {
 		},
 		// 立即登录
 		maskBtn() {
+
 			if (!util.checkPhoneNumber(this.phoneNumber)) {
 				uni.showToast({
 					title: '请输入正确的手机号',
@@ -259,6 +258,7 @@ export default {
 				return
 			}
 			if (this.isPrivacy === 1 && this.phoneNumber && this.code) {
+				this.isChecked = true
 				const params = {
 					url: '/pub/user/login/sms/code',
 					method: "POST",
@@ -267,6 +267,7 @@ export default {
 						smsCode: this.code,
 					}),
 					callBack: (res) => {
+						this.isChecked = false
 						if (!res.id) {
 							uni.setStorageSync("bbcTempUid", res);
 							// 还原全局 正在登录状态
@@ -287,6 +288,7 @@ export default {
 								while (getApp().globalData.requestQueue.length) {
 									http.request(getApp().globalData.requestQueue.pop());
 								}
+
 								if (!res.bizId) {
 									// 弹出公众号授权
 									this.weixinAuthLogin(this.appId)
@@ -300,6 +302,7 @@ export default {
 						}
 					},
 					errCallBack: () => {
+						this.isChecked = false
 						// 还原全局 正在登录状态
 						getApp().globalData.isLanding = false;
 						while (getApp().globalData.requestQueue.length) {
@@ -440,7 +443,5 @@ page {
 	cursor: pointer;
 }
 
-/deep/.uni-checkbox .uni-checkbox-input {
-	//background-color: #e6eefe;
-}
+.checked {}
 </style>

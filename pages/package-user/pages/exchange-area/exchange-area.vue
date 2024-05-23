@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
 		<navigation />
-		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="con">
 			<view class="list" v-if="giftInfo.name">
 				<view class="left-con">
@@ -34,55 +33,16 @@ export default {
 		uni.setNavigationBarTitle({
 			title: '领取礼品卡'
 		})
-		if (window.location.href.includes('ht=1')) {
-			window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
-		}
-		if (uni.getStorageSync('coureIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
-				this.showGoLiveRoom = false
-			} else {
-				this.showGoLiveRoom = true
-			}
-		} else {
-			this.showGoLiveRoom = false
-		}
 	},
 	onLoad: function (options) {
-		
-		if (options.id) {
-			this.giftId = options.id
-			if (uni.getStorageSync('bbcToken')) {
-				this.openId = uni.getStorageSync('bbcUserInfo').openId
-				this.getGiftListData(options.id, this.openId)
-			} else {
-				wx.login({
-					success: (res) => {
-						// 用code 请求登录
-						const params = {
-							url: "/pub/user/login/auth",
-							method: "POST",
-							data: JSON.stringify({
-								code: res.code,
-								loginType: 1
-							}),
-							callBack: (res1) => {
-								if (!res1.id) {
-									this.openId = res1
-								} else {
-									this.openId = res1.openId
-								}
-								this.getGiftListData(options.id, this.openId)
-							},
-							errCallBack: () => {
-							},
-						};
-						http.request(params);
-					},
-				});
-
+		util.checkAuthInfo(() => {
+			if (options.id) {
+				if (uni.getStorageSync('bbcToken')) {
+					this.giftId = options.id
+					this.getGiftListData(options.id, uni.getStorageSync('bbcUserInfo').id)
+				}
 			}
-		}
-
+		})
 	},
 	// js文件，广告事件监听 Page({ 
 	adLoad() {
@@ -96,12 +56,6 @@ export default {
 	},
 	// }) 
 	methods: {
-		// 跳转到欢拓直播地址
-		toLiveAddress() {
-			util.checkAuthInfo(() => {
-				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
-			})
-		},
 		// 领取礼品卡
 		receiveGift: util.debounce(function () {
 			const params = {
@@ -110,7 +64,7 @@ export default {
 				data: {
 					sign: 'qcsd',
 					data: JSON.stringify({
-						id: this.giftId, openId: this.openId
+						id: this.giftId, userId: uni.getStorageSync('bbcUserInfo').id
 					}),
 				},
 				callBack: (res) => {
@@ -136,13 +90,13 @@ export default {
 		}, 1000),
 
 		// 根据id获取礼品卡
-		getGiftListData(id, openId) {
+		getGiftListData(id, userId) {
 			const params = {
 				url: "/pub/user/gift/one",
 				method: "POST",
 				data: {
 					sign: 'qcsd',
-					data: JSON.stringify({ giftId: id, openId: openId }),
+					data: JSON.stringify({ giftId: id, userId: userId }),
 				},
 				callBack: (res) => {
 					this.giftInfo = res

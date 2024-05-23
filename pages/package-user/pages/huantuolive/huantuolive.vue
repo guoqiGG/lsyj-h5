@@ -1,15 +1,21 @@
 <template>
     <view class="con">
-        <iframe :src="urls" allowfullscreen="true" frameborder="no" border="0"
-            allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;" width="100%"
-            height="100%"></iframe>
+        <view class="top" v-if="urls">
+            <view>上品时代</view>
+            <view @tap="goUserPage">个人中心</view>
+        </view>
+        <iframe class="iframe" :src="urls" frameborder="0"
+            allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
+        <view v-if="urls" class="send-beans">
+            {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '今日已领取' }}
+        </view>
     </view>
 </template>
 <script>
 const util = require("@/utils/util.js");
 const http = require("@/utils/http");
 // 引入wxjs
-import wx from "weixin-js-sdk";
+import wxpay from "weixin-js-sdk";
 export default {
     data() {
         return {
@@ -17,7 +23,8 @@ export default {
             coureId: null,
             coureName: null,
             liveUrl: null,
-            timer: null
+            timer: null,
+            countDown: null
         }
     },
     onLoad(options) {
@@ -67,6 +74,55 @@ export default {
             }
         })
 
+        if (window.addEventListener) {
+            if (uni.getStorageSync('payInfo')) {
+                uni.removeStorageSync('payInfo')
+            }
+            window.addEventListener("storage", function (e) {
+                let res = e.target.localStorage.payInfo
+                console.log(res)
+                if (uni.getStorageSync('payInfo').appId) {
+                    wxpay.config({
+                        debug: false,
+                        appId: uni.getStorageSync('payInfo').appId,
+                        timestamp: uni.getStorageSync('payInfo').timeStamp,
+                        nonceStr: uni.getStorageSync('payInfo').nonceStr,
+                        signature: uni.getStorageSync('payInfo').paySign,
+                        // jsApiList: ['chooseWXPay']
+                    })
+                    WeixinJSBridge.invoke(
+                        'getBrandWCPayRequest', {
+                        appId: uni.getStorageSync('payInfo').appId, //公众号名称，由商户传入
+                        timeStamp: uni.getStorageSync('payInfo').timeStamp, //时间戳，自1970年以来的秒数
+                        nonceStr: uni.getStorageSync('payInfo').nonceStr, //随机串
+                        package: uni.getStorageSync('payInfo').package,
+                        signType: uni.getStorageSync('payInfo').signType, //微信签名方式：
+                        paySign: uni.getStorageSync('payInfo').paySign //微信签名
+                    },
+                        function (res) {
+                            uni.removeStorageSync('payInfo')
+                            // 支付成功
+                            if (res.err_msg == "get_brand_wcpay_request:ok") {
+                                // 使用以上方式判断前端返回,微信团队郑重提示：
+                                //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                                // 支付成功后的跳转
+                                window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/pay-result/pay-result?sts=1&orderNumbers=' + orderId
+                            }
+                            // 支付过程中用户取消
+                            if (res.err_msg == "get_brand_wcpay_request:cancel") {
+                                window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/pay-result/pay-result?sts=0&orderNumbers=' + orderId
+                            }
+                            // 支付失败
+                            if (res.err_msg == "get_brand_wcpay_request:fail") {
+                                window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/pay-result/pay-result?sts=0&orderNumbers=' + orderId
+                            }
+                        }
+                    )
+                }
+            });
+        }
+
+
     },
     onShow() {
         console.log('onShow')
@@ -75,8 +131,43 @@ export default {
         this.timer = setInterval(() => {
             this.insertWatchTime()
         }, 60000);
+        this.countdownSendingBeans()
+        this.noSleep()
     },
     methods: {
+        //屏幕常亮
+        noSleep() {
+            let noSleep = new this.$NoSleep();
+            document.addEventListener('click',
+                function enableNoSleep() {
+                    noSleep.enable();
+                    document.removeEventListener('click', enableNoSleep, false);
+                },
+                false);
+        },
+        // 跳转个人中心
+        goUserPage() {
+            uni.switchTab({ url: '/pages/user/user' })
+        },
+        // 倒计时
+        countdownSendingBeans() {
+            const params = {
+                url: `/voice/engine/dao/time?course_id=${this.coureId}&userId=${uni.getStorageSync('bbcUserInfo').id}`,
+                method: "GET",
+                callBack: (res) => {
+                    console.log(res)
+                    this.countDown = res
+                    let timer = setInterval(() => {
+                        if (this.countDown == 0) {
+                            clearInterval(timer)
+                            timer = null
+                        }
+                        this.countDown--
+                    }, 60000);
+                }
+            };
+            http.request(params);
+        },
         stringToBase64(str) {
             let base64 = '';
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
@@ -125,7 +216,6 @@ export default {
         // 生成抖音签名信息 并生成直播间地址
         getdySign(url) {
             let userId = uni.getStorageSync('bbcUserInfo').id
-            let timeStamp = new Date().getTime()
             const params = {
                 url: `/voice/engine/sign?userId=${userId}`,
                 method: "GET",
@@ -150,7 +240,7 @@ export default {
                 url: `/wx/h5/getSing?url=${url}&userId=${userId}`,
                 method: "GET",
                 callBack: (res) => {
-                    wx.config({
+                    wxpay.config({
                         debug: false,
                         appId: res.appId,
                         timestamp: parseInt(res.timestamp),
@@ -162,8 +252,8 @@ export default {
                         ]
                     });
 
-                    wx.ready(() => {
-                        wx.checkJsApi({
+                    wxpay.ready(() => {
+                        wxpay.checkJsApi({
                             jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
                             success: function (res) {
                                 console.log('可以用');
@@ -172,7 +262,7 @@ export default {
                                 console.log('不可以用', err);
                             },
                         });
-                        wx.updateAppMessageShareData({
+                        wxpay.updateAppMessageShareData({
                             title: res.title,
                             desc: this.coureName,
                             link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&coureId=' + this.coureId + '&url=' + this.liveUrl,
@@ -186,7 +276,7 @@ export default {
                         })
                     });
                     //错误了会走 这里
-                    wx.error(function (err) {
+                    wxpay.error(function (err) {
                         // console.log('微信分享错误信息', err)
                     });
                 },
@@ -217,29 +307,42 @@ export default {
 </script>
 <style>
 .con {
+    position: fixed;
+    top: 0;
+    left: 0;
     height: 100vh;
-    width: 100vw;
-    position: relative;
+    width: 100%;
 }
 
-.home {
-    position: absolute;
-    width: 70rpx;
-    height: 70rpx;
-    border-radius: 50%;
+.top {
+    height: 80rpx;
+    line-height: 80rpx;
+    font-size: 28rpx;
+    font-weight: 400;
+    margin: 0 30rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.iframe {
+    width: 100%;
+    height: calc(100% - 80rpx);
+}
+
+.send-beans {
+    position: fixed;
+    top: 45%;
+    right: 5%;
+    width: 80rpx;
+    font-size: 24rpx;
+    font-weight: 400;
+    border-radius: 8px;
+    overflow: hidden;
     background: #FFF;
-    top: 70%;
-    left: 10%;
-    z-index: 10000;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
-
-
-}
-
-.home image {
-    margin-top: 10rpx;
-    margin-left: 10rpx;
-    width: 50rpx;
-    height: 50rpx;
+    padding: 10rpx;
+    text-align: center;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, .12);
 }
 </style>

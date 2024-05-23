@@ -1,7 +1,6 @@
 <template>
 	<view class="order-detail">
 		<navigation />
-		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="order-detail-backgroundImg">
 			<image src="/pages/package-user/static/order-detail-bg.png" mode=""></image>
 		</view>
@@ -155,7 +154,6 @@ export default {
 			orderId: null, //订单id
 			loginToken: null,
 			orderDetail: null,
-			showGoLiveRoom: false
 		}
 	},
 	onLoad(option) {
@@ -168,15 +166,6 @@ export default {
 
 	},
 	onShow() {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
-				this.showGoLiveRoom = false
-			} else {
-				this.showGoLiveRoom = true
-			}
-		} else {
-			this.showGoLiveRoom = false
-		}
 	},
 	methods: {
 		getOrderDetail() {

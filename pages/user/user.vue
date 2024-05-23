@@ -198,6 +198,16 @@
 				</view>
 			</u-popup>
 		</view>
+
+		<view class="liveRoom" v-if="showGoLiveRoom" @tap="toLiveAddress">
+			<view class="anime">
+				<view class="item"></view>
+				<view class="item"></view>
+				<view class="item"></view>
+				<view class="item"></view>
+			</view>
+			<text class="text">直播间</text>
+		</view>
 	</view>
 </template>
 
@@ -221,7 +231,8 @@ export default {
 				pendingDeliveryNum: null,
 				deliveryNum: null,
 			},
-			appId: null
+			appId: null,
+			showGoLiveRoom: false
 		}
 	},
 	components: {
@@ -229,6 +240,16 @@ export default {
 	},
 
 	onShow() {
+		if (uni.getStorageSync('coureIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
+
 		if (uni.getStorageSync("bbcToken")) {
 			this.isAuthInfo = true;
 			this.userInfo = uni.getStorageSync('bbcUserInfo')
@@ -251,6 +272,12 @@ export default {
 
 	},
 	methods: {
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+			})
+		},
 		// 获取订单消息数量
 		getOrderNum() {
 			const params = {
@@ -279,9 +306,11 @@ export default {
 		// 跳转订单列表
 		goOrderList(orderId) {
 			util.checkAuthInfo(() => {
-				uni.navigateTo({
-					url: '/pages/package-user/pages/order-list/order-list?id=' + orderId
-				})
+				// uni.navigateTo({
+				// 	url: '/pages/package-user/pages/order-list/order-list?id=' + orderId,
+				// })
+				window.location.href = window.location.href.split("#")[0] + '#/pages/package-user/pages/order-list/order-list?id=' + orderId
+
 			})
 		},
 		// 跳转我的卡包
@@ -500,6 +529,79 @@ export default {
 	min-height: 100vh;
 	position: relative;
 	background: #f2f2f2;
+}
+
+.liveRoom {
+	position: fixed;
+	height: 80rpx;
+	width: 80rpx;
+	border-radius: 15rpx;
+	padding: 5rpx;
+	right: 5%;
+	bottom: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+	background: #FFF;
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, .12);
+
+	.anime {
+		height: 40rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+
+		.item {
+			width: 8rpx;
+			height: 40rpx;
+			background: #ff5470;
+			margin-left: 5rpx;
+			animation: loop 2s linear infinite 0s;
+
+			&:nth-child(2) {
+				height: 20rpx;
+				background: #00ebc7;
+				animation: loop 2s linear infinite 0.5s;
+			}
+
+			&:nth-child(3) {
+				height: 40rpx;
+				background: #fde24f;
+				animation: loop 2s linear infinite 1s;
+			}
+
+			&:nth-child(4) {
+				height: 20rpx;
+				background: #14C9C9;
+				animation: loop 2s linear infinite 1.5s;
+			}
+
+		}
+
+	}
+
+	.text {
+		font-size: 24rpx;
+		line-height: 40rpx;
+		font-weight: 400;
+	}
+}
+
+@keyframes loop {
+	0% {
+		height: 0rpx;
+	}
+
+	50% {
+		height: 40rpx;
+	}
+
+	100% {
+		height: 0rpx;
+	}
 }
 
 @media screen and (max-height: 699px) {

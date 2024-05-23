@@ -1,7 +1,6 @@
 <template>
 	<view class="container">
 		<navigation />
-		<view v-if="showGoLiveRoom" class="go-live"><text @tap="toLiveAddress">返回直播间</text></view>
 		<view class="image-con">
 			<image class="image" :src="productDetail.thumbail" @error="handlePicError" />
 		</view>
@@ -76,7 +75,7 @@
 							<view class="add" @tap="numberValueAdd">+</view>
 						</view>
 					</view>
-					<scroll-view v-if="goodsSkus.length > 1" scroll-y="true" style="height: 500rpx;">
+					<scroll-view v-if="goodsSkus.length > 1" scroll-y="true" style="height: 300rpx;">
 						<view class="goods-sku">
 							<view class="goods-sku-title"><text>规格</text></view>
 							<view class="goods-sku-list">
@@ -129,26 +128,17 @@ export default {
 				this.getProductDetail()
 			}
 			if (uni.getStorageSync('bbcUserInfo').puid) {
-                this.getShareInfo()
-            }
+				this.getShareInfo()
+			}
 		})
 	},
 	onShow() {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
-			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
-				this.showGoLiveRoom = false
-			} else {
-				this.showGoLiveRoom = true
-			}
-		} else {
-			this.showGoLiveRoom = false
-		}
 		util.checkAuthInfo(() => {
 			this.getUserInfo()
 			this.skuShow = false
-			if (window.location.href.includes('ht=1')) {
-				window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
-			}
+			// if (window.location.href.includes('ht=1')) {
+			// 	window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
+			// }
 		})
 	},
 	methods: {
@@ -327,7 +317,7 @@ export default {
 					},
 					callBack: (res) => {
 						let orderItem = res
-						let url = '/pages/package-pay/pages/submit-order/submit-order?params=1'
+						let url = '/pages/package-pay/pages/submit-order/submit-order'
 						this.toSubmitOrder(orderItem, url)
 					},
 					errCallBack: (errMsg) => {
@@ -350,15 +340,10 @@ export default {
 		 */
 		toSubmitOrder(orderItem, url) {
 			uni.setStorageSync("bbcOrderItem", Object.assign({}, orderItem));
-			uni.navigateTo({
-				url,
-			});
-		},
-		// 跳转到欢拓直播地址
-		toLiveAddress() {
-			util.checkAuthInfo(() => {
-				uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
-			})
+			window.location.href = window.location.href.split("#")[0] + '#/pages/package-pay/pages/submit-order/submit-order'
+			// uni.navigateTo({
+			// 	url,
+			// });
 		},
 	}
 }
