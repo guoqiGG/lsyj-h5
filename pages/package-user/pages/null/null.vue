@@ -5,7 +5,7 @@
         </view>
         <u-button style="width:300rpx" type="primary" size='medium' shape="circle" @click='toLiveRoom()'
             :plain="true">返回直播间</u-button>
-        <u-button style="width:300rpx;margin-top:30rpx;" type="primary" size='medium' shape="circle" @click='toOrder()'
+        <u-button style="width:300rpx;margin-top:30rpx;" type="info" size='medium' shape="circle" @click='toOrder()'
             :plain="true">返回查看订单</u-button>
     </view>
 </template>
