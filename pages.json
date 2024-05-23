@@ -188,6 +188,14 @@
             "navigationBarBackgroundColor": "#FD594D ",
             "navigationBarTextStyle": "white"
           }
+        },
+        {
+          "path": "pages/null/null",
+          "style": {
+            "navigationBarTitleText": "空白页面",
+            "navigationBarBackgroundColor": "#FD594D ",
+            "navigationBarTextStyle": "white"
+          }
         }
       ]
     },

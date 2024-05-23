@@ -98,6 +98,7 @@ export default {
 			// 	},
 			// }
 			// http.request(params);
+			this.getGiftCardList()
 		})
 	},
 	methods: {

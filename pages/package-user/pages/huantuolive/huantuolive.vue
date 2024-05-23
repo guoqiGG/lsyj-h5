@@ -12,7 +12,7 @@
         </view>
         <iframe class="iframe" :src="urls" frameborder="0"
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
-        <view v-if="urls" class="send-beans">
+        <view v-if="urls && status == 1" class="send-beans">
             {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '青春豆已送' }}
         </view>
     </view>
@@ -30,7 +30,8 @@ export default {
             coureName: null,
             liveUrl: null,
             timer: null,
-            countDown: null
+            countDown: null,
+            status: 0,
         }
     },
     onLoad(options) {
@@ -161,15 +162,17 @@ export default {
                 url: `/voice/engine/dao/time?course_id=${this.coureId}&userId=${uni.getStorageSync('bbcUserInfo').id}`,
                 method: "GET",
                 callBack: (res) => {
-                    console.log(res)
-                    this.countDown = res
-                    let timer = setInterval(() => {
-                        if (this.countDown == 0) {
-                            clearInterval(timer)
-                            timer = null
-                        }
-                        this.countDown--
-                    }, 60000);
+                    this.status = res.status
+                    this.countDown = res.time
+                    if (res.status == 1) {
+                        let timer = setInterval(() => {
+                            if (this.countDown == 0) {
+                                clearInterval(timer)
+                                timer = null
+                            }
+                            this.countDown--
+                        }, 60000);
+                    }
                 }
             };
             http.request(params);

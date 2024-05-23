@@ -89,9 +89,9 @@
       "disableHostCheck": true,
       "proxy": {
         "/api": {
-          "target": "https://spsd.hnliyue.cn/youth",
+          // "target": "https://spsd.hnliyue.cn/youth",
           //   "target": "http://192.168.110.22:8072",
-          // "target": "http://192.168.0.3:8072",
+          "target": "http://192.168.0.3:8072",
           "changeOrigin": true,
           "secure": false,
           "pathRewrite": {
