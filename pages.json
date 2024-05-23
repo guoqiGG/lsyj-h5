@@ -192,7 +192,7 @@
         {
           "path": "pages/null/null",
           "style": {
-            "navigationBarTitleText": "空白页面",
+            "navigationBarTitleText": "支付成功",
             "navigationBarBackgroundColor": "#FD594D ",
             "navigationBarTextStyle": "white"
           }

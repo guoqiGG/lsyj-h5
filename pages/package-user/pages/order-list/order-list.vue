@@ -76,6 +76,15 @@
 				<EmptyAllTips v-if="isLoaded" :isEmpty="!orderLists.length" emptyTips="暂无订单信息" :isAll="isAll" />
 			</view>
 		</view>
+		<view class="liveRoom" v-if="showGoLiveRoom" @tap="toLiveAddress">
+			<view class="anime">
+				<view class="item"></view>
+				<view class="item"></view>
+				<view class="item"></view>
+				<view class="item"></view>
+			</view>
+			<text class="text">直播间</text>
+		</view>
 	</view>
 </template>
 
@@ -122,7 +131,7 @@ export default {
 				height: '2rpx',
 				background: '#025BFF'
 			},
-			
+			showGoLiveRoom: false
 		}
 	},
 	onLoad(option) {
@@ -142,12 +151,27 @@ export default {
 		}
 	},
 	onShow() {
-	
+		if (uni.getStorageSync('coureIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
 		this.loginToken = uni.getStorageSync("bbcToken")
 		this.userId = uni.getStorageSync("bbcUserInfo").id
 		this.getOrderLists()
 	},
 	methods: {
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				// uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+				window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url'))
+			})
+		},
 		// 跳转取订单详情
 		goOrderDetail(orderId) {
 			uni.navigateTo({
@@ -302,17 +326,77 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.go-live {
-	margin-top: 10rpx;
+.liveRoom {
+	position: fixed;
+	height: 80rpx;
+	width: 80rpx;
+	border-radius: 15rpx;
+	padding: 5rpx;
+	right: 5%;
+	bottom: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+	background: #FFF;
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, .12);
+
+	.anime {
+		height: 40rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+
+		.item {
+			width: 8rpx;
+			height: 40rpx;
+			background: #ff5470;
+			margin-left: 5rpx;
+			animation: loop 2s linear infinite 0s;
+
+			&:nth-child(2) {
+				height: 20rpx;
+				background: #00ebc7;
+				animation: loop 2s linear infinite 0.5s;
+			}
+
+			&:nth-child(3) {
+				height: 40rpx;
+				background: #fde24f;
+				animation: loop 2s linear infinite 1s;
+			}
+
+			&:nth-child(4) {
+				height: 20rpx;
+				background: #14C9C9;
+				animation: loop 2s linear infinite 1.5s;
+			}
+
+		}
+
+	}
+
+	.text {
+		font-size: 24rpx;
+		line-height: 40rpx;
+		font-weight: 400;
+	}
 }
 
-.go-live text {
-	margin-left: 30rpx;
-	font-size: 32rpx;
-	background-color: #005aff;
-	padding: 8rpx 15rpx;
-	color: #FFF;
-	border-radius: 10rpx;
+@keyframes loop {
+	0% {
+		height: 0rpx;
+	}
+
+	50% {
+		height: 40rpx;
+	}
+
+	100% {
+		height: 0rpx;
+	}
 }
 
 /deep/ .u-tabs__wrapper__nav__line {
