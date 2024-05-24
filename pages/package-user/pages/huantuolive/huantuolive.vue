@@ -25,6 +25,7 @@ const http = require("@/utils/http");
 // 引入wxjs
 import wxpay from "weixin-js-sdk";
 
+
 export default {
     data() {
         return {
@@ -37,6 +38,15 @@ export default {
             status: 0,
         }
     },
+    // mounted() {
+    //     let iframeWindow = this.$refs.myIframe.contentWindow
+    //     console.log(this.$refs.myIframe.contentWindow)
+    //     iframeWindow.ByteLiveJsBridge.invokeNative = (data) => {
+    //         if (data.eventKey === 11000) {
+    //             iframeWindow.commonPlayer.unRegisterPlugin('PageChangePlugin');
+    //         }
+    //     }
+    // },
     onLoad(options) {
         let options1 = options
         util.checkAuthInfo(() => {

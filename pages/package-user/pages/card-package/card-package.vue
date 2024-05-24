@@ -10,7 +10,9 @@
 		<view class="container" style="padding: 20rpx;">
 			<uni-swipe-action>
 				<block v-for="(item, index) in dataList" :key="index">
-					<uni-swipe-action-item :right-options="options" @click="onClick(item)">
+					<uni-swipe-action-item
+						style="margin-top: 20rpx;background: #fff;box-shadow: -3px 3px 6px 0px rgba(111, 111, 111, 0.2);"
+						:right-options="options" @click="onClick(item)">
 						<view class="item">
 							<view class="left">
 								<image src="../../static/icon_delivery.png" mode="scaleToFill" />
@@ -120,7 +122,7 @@ export default {
 				method: "POST",
 				data: {
 					sign: 'qcsd',
-					data: JSON.stringify({ id: item.giftId }),
+					data: JSON.stringify({ id: item.id }),
 				},
 				callBack: (res) => {
 					uni.showToast({
@@ -394,16 +396,14 @@ export default {
 
 .item {
 	position: relative;
-	box-sizing: border-box;
 	/* margin: 20rpx 30rpx 0rpx; */
-	margin-bottom: 20rpx;
-	background: #fff;
 	padding: 30rpx 20rpx;
 	border-radius: 5rpx 0rpx 0rpx 5rpx;
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	box-shadow: -3px 3px 6px 0px rgba(111, 111, 111, 0.2);
+
+	box-sizing: border-box;
 }
 
 .left {

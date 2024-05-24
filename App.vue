@@ -44,11 +44,11 @@ export default {
 		// 当前是否已显示登录失效弹窗
 		showLoginExpired: false,
 	},
-	mounted(){
-	    uni.setStorage({
-	        key: 'WxCodeUrl',
-	        data:location.href
-	    });
+	mounted() {
+		uni.setStorage({
+			key: 'WxCodeUrl',
+			data: location.href
+		});
 	},
 	methods: {
 		/**
@@ -91,4 +91,9 @@ export default {
 @import 'uni_modules/uview-ui/index.scss';
 /*每个页面公共css */
 @import "./app.css";
+
+.uni-tabbar .uni-tabbar__icon {
+	width: 50rpx !important;
+	height: 50rpx !important;
+}
 </style>
