@@ -35,25 +35,26 @@ export default {
         }
     },
     onLoad(options) {
+        let options1 = options
         util.checkAuthInfo(() => {
             if (uni.getStorageSync('bbcUserInfo').puid) {
                 this.getShareInfo()
             }
-            this.getdySign(options.url)
-            if (options.url) {
-                this.liveUrl = decodeURIComponent(options.url)
+            this.getdySign(options1.dy == 1 ? uni.getStorageSync('url') : options1.url)
+            if (options1.url || options1.dy) {
+                this.liveUrl = decodeURIComponent(options1.dy == 1 ? uni.getStorageSync('url') : options1.url)
             }
-            if (options.coureName) {
-                this.coureName = options.coureName
+            if (options1.coureName) {
+                this.coureName = options1.dy == 1 ? uni.getStorageSync('coureName') : options1.coureName
             }
-            if (options.coureId) {
-                this.coureId = options.coureId
-                uni.setStorageSync('coureId', options.coureId)
-                uni.setStorageSync('coureName', options.coureName)
-                uni.setStorageSync('url', options.url)
+            if (options1.coureId || options1.dy) {
+                this.coureId = options1.dy == 1 ? uni.getStorageSync('coureId') : options1.coureId
+                uni.setStorageSync('coureId', options1.dy == 1 ? uni.getStorageSync('coureId') : options1.coureId)
+                uni.setStorageSync('coureName', options1.dy == 1 ? uni.getStorageSync('coureName') : options1.coureName)
+                uni.setStorageSync('url', options1.dy == 1 ? uni.getStorageSync('url') : options1.url)
                 uni.setStorageSync('coureIdExpiredTime', new Date().getTime())
             }
-            if (options.userId) {
+            if (options1.userId) {
                 if (!uni.getStorageSync('bbcUserInfo').puid) {
                     http.request({
                         url: '/pub/leader/binding',
@@ -62,7 +63,7 @@ export default {
                             sign: 'qcsd',
                             data: JSON.stringify({
                                 loginToken: uni.getStorageSync('bbcToken'),
-                                parentId: options.userId
+                                parentId: options1.userId
                             })
                         },
                         callBack: (res) => {
@@ -86,8 +87,6 @@ export default {
                 uni.removeStorageSync('payInfo')
             }
             window.addEventListener("storage", function (e) {
-                let res = e.target.localStorage.payInfo
-                console.log(res)
                 if (uni.getStorageSync('payInfo').appId) {
                     wxpay.config({
                         debug: false,
@@ -164,14 +163,29 @@ export default {
                 callBack: (res) => {
                     this.status = res.status
                     this.countDown = res.time
-                    if (res.status == 1) {
-                        let timer = setInterval(() => {
-                            if (this.countDown == 0) {
-                                clearInterval(timer)
-                                timer = null
-                            }
-                            this.countDown--
-                        }, 60000);
+                    let startTime = new Date(res.startTime).getTime()
+                    let nowTime = new Date().getTime()
+                    if (nowTime <= startTime) { // 提前进入
+                        setTimeout(() => {
+                            this.status = 1
+                            let timer = setInterval(() => {
+                                if (this.countDown == 0) {
+                                    clearInterval(timer)
+                                    timer = null
+                                }
+                                this.countDown--
+                            }, 60000);
+                        }, startTime - nowTime);
+                    } else { // 直播开始时
+                        if (res.status == 1) {
+                            let timer = setInterval(() => {
+                                if (this.countDown == 0) {
+                                    clearInterval(timer)
+                                    timer = null
+                                }
+                                this.countDown--
+                            }, 60000);
+                        }
                     }
                 }
             };

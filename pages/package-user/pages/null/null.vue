@@ -65,9 +65,10 @@ export default {
         //     }, 1000);
         // },
         toLiveRoom: function () {
+            let url = window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') + '&dy=1'
             var mchData = {
                 action: 'jumpOut',
-                jumpOutUrl: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') //跳转的页面
+                jumpOutUrl: url //跳转的页面
             }
             var pData = JSON.stringify(mchData);
             parent.postMessage(pData, 'https://payapp.weixin.qq.com')

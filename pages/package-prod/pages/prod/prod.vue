@@ -1,6 +1,7 @@
 <template>
 	<view class="container">
-		<navigation />
+		<!-- <navigation /> -->
+		<view class="prod-detail-text">商品详情</view>
 		<view class="image-con">
 			<image class="image" :src="productDetail.thumbail" @error="handlePicError" />
 		</view>

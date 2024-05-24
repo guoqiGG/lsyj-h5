@@ -52,7 +52,17 @@
 
 
 		</view>
-
+		<view class="liveRoom" v-if="showGoLiveRoom" @tap="toLiveAddress">
+			<view class="anime">
+				<view class="items"></view>
+				<view class="items"></view>
+				<view class="items"></view>
+				<view class="items"></view>
+				<view class="items"></view>
+				<view class="items"></view>
+			</view>
+			<text class="text">点击回直播间</text>
+		</view>
 	</view>
 </template>
 <script>
@@ -75,36 +85,36 @@ export default {
 			pageSize: 10,
 			userId: 0,
 			current: 1, // 当前页
-			pages: 1 //总页数
+			pages: 1,//总页数
+			showGoLiveRoom: false
 		};
 	},
 	onShow: function () {
-		uni.setNavigationBarTitle({
-			title: "我的卡包",
-		});
+		if (uni.getStorageSync('coureIdExpiredTime')) {
+			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
+				this.showGoLiveRoom = false
+			} else {
+				this.showGoLiveRoom = true
+			}
+		} else {
+			this.showGoLiveRoom = false
+		}
 		util.checkAuthInfo(() => {
 			if (uni.getStorageSync('bbcUserInfo')) {
 				this.userId = uni.getStorageSync('bbcUserInfo').id
 			}
-			// const params = {
-			// 	url: "/pub/user/update/gift",
-			// 	method: "POST",
-			// 	data: JSON.stringify({
-			// 		userId: uni.getStorageSync('bbcUserInfo').id,
-			// 		openid: uni.getStorageSync('bbcUserInfo').openId
-			// 	}),
-			// 	callBack: (res) => {
-			// 		this.getGiftCardList()
-			// 	},
-			// }
-			// http.request(params);
 			this.getGiftCardList()
 		})
 	},
 	methods: {
+		// 跳转到欢拓直播地址
+		toLiveAddress() {
+			util.checkAuthInfo(() => {
+				// uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+				window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url'))
+			})
+		},
 		onClick(item) {
-			console.log(item)
-			// /pub/user/delete/gift post-json 入参id 列表的id  删除礼品券
 			const params = {
 				url: "/pub/user/delete/gift",
 				method: "POST",
@@ -249,8 +259,6 @@ export default {
 			});
 		}, 1000),
 		toBindLeader: util.debounce(function (id) {
-			console.log('/pages/package-user/pages/bind-user/bind-user?giftId=' + id)
-
 			uni.navigateTo({
 				url: '/pages/package-user/pages/bind-user/bind-user?giftId=' + id
 			})
@@ -269,6 +277,193 @@ export default {
 	}
 };
 </script>
-<style>
-@import "./card-package.css";
+
+<style lang="scss" scoped>
+.liveRoom {
+	position: fixed;
+	height: 120rpx;
+	width: 120rpx;
+	border-radius: 15rpx;
+	padding: 5rpx;
+	right: 5%;
+	bottom: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+	background: #fff;
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.12);
+	text-align: center;
+
+	.anime {
+		height: 40rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+
+		.items {
+			width: 8rpx;
+			height: 40rpx;
+			background: #ff5470;
+			margin-left: 5rpx;
+			animation: loop 2s linear infinite 0s;
+
+			&:nth-child(2) {
+				height: 20rpx;
+				background: #00ebc7;
+				animation: loop 2s linear infinite 0.5s;
+			}
+
+			&:nth-child(3) {
+				height: 40rpx;
+				background: #fde24f;
+				animation: loop 2s linear infinite 1s;
+			}
+
+			&:nth-child(4) {
+				height: 20rpx;
+				background: #14c9c9;
+				animation: loop 2s linear infinite 1.5s;
+			}
+
+			&:nth-child(5) {
+				height: 20rpx;
+				background: #00ebc7;
+				animation: loop 2s linear infinite 0.5s;
+			}
+
+			&:nth-child(6) {
+				height: 40rpx;
+				background: #fde24f;
+				animation: loop 2s linear infinite 1s;
+			}
+		}
+	}
+
+	.text {
+		font-size: 32rpx;
+		line-height: 40rpx;
+		font-weight: 400;
+		color: #dd524d;
+	}
+}
+
+@keyframes loop {
+	0% {
+		height: 0rpx;
+	}
+
+	50% {
+		height: 40rpx;
+	}
+
+	100% {
+		height: 0rpx;
+	}
+}
+
+.h-tabs {
+	border-bottom: 1px solid #f2f2f2;
+	display: flex;
+	justify-content: space-around;
+	font-size: 28rpx;
+	/*  position: fixed;
+	top: 0; */
+	z-index: 1000;
+	width: 100%;
+	background: #fff;
+}
+
+.h-tab {
+	height: 88rpx;
+	line-height: 88rpx;
+}
+
+.h-tab.on {
+	border-bottom: 3px solid #005aff;
+	font-weight: 600;
+	color: #005aff;
+}
+
+.container {
+	box-sizing: border-box;
+	/* padding-top: 88rpx; */
+}
+
+.item {
+	position: relative;
+	box-sizing: border-box;
+	/* margin: 20rpx 30rpx 0rpx; */
+	margin-bottom: 20rpx;
+	background: #fff;
+	padding: 30rpx 20rpx;
+	border-radius: 5rpx 0rpx 0rpx 5rpx;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	box-shadow: -3px 3px 6px 0px rgba(111, 111, 111, 0.2);
+}
+
+.left {
+	display: flex;
+	align-items: center;
+}
+
+.left image {
+	width: 130rpx;
+	height: 130rpx;
+	border-radius: 50%;
+	margin-top: 20rpx;
+}
+
+.right {
+	margin-left: 10rpx;
+}
+
+.right .coupon-name {
+	width: 340rpx;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 28rpx;
+	color: #000000;
+	font-weight: normal;
+	line-height: 24rpx;
+	margin-bottom: 30rpx;
+}
+
+.right .coupon-text {
+	font-size: 20rpx;
+	color: #979797;
+	margin-top: 10rpx;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 350rpx;
+}
+
+.use {
+	height: 210rpx;
+	width: 180rpx;
+	position: absolute;
+	background: #c53032;
+	color: #ffffff;
+	right: 0;
+	font-size: 36rpx;
+	/* border-radius: 7rpx; */
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	line-height: 200rpx;
+	text-align: center;
+}
+
+.used {
+	background: #979797;
+}
+
+:deep(.button-group--right) {
+	margin-bottom: 19rpx !important;
+}
 </style>

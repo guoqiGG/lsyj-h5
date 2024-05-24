@@ -1,7 +1,7 @@
 <template>
   <!-- 我的优惠券 -->
   <view class="container">
-    <navigation/>
+    <navigation />
     <view class="h-tabs">
       <view :class="'h-tab ' + (status == 0 ? 'on' : '')" data-status="0" @tap="changeTab">未使用</view>
       <view :class="'h-tab ' + (status == 1 ? 'on' : '')" data-status="1" @tap="changeTab">使用记录</view>
@@ -15,13 +15,25 @@
     </view>
 
     <!-- 空列表或加载全部提示 -->
-   <EmptyAllTips v-if="isLoaded" :isEmpty="!couponList.length || couponList == []" :emptyTips=" '暂无更多内容' "
+    <EmptyAllTips v-if="isLoaded" :isEmpty="!couponList.length || couponList == []" :emptyTips="'暂无更多内容'"
       :isAll="isAll" />
+    <view class="liveRoom" v-if="showGoLiveRoom" @tap="toLiveAddress">
+      <view class="anime">
+        <view class="items"></view>
+        <view class="items"></view>
+        <view class="items"></view>
+        <view class="items"></view>
+        <view class="items"></view>
+        <view class="items"></view>
+      </view>
+      <text class="text">点击回直播间</text>
+    </view>
   </view>
 </template>
 
 <script>
 const http = require('@/utils/http.js')
+const util = require("@/utils/util");
 import coupon from '@/components/coupon/index.vue'
 export default {
   components: {
@@ -37,7 +49,8 @@ export default {
       pageSize: 20,
       isLoaded: false,
       userId: 0,
-	  isAll:false,
+      isAll: false,
+      showGoLiveRoom: false
     }
   },
 
@@ -51,9 +64,15 @@ export default {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-	  uni.setNavigationBarTitle({
-	    title: '我的优惠券'
-	  })
+    if (uni.getStorageSync('coureIdExpiredTime')) {
+      if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
+        this.showGoLiveRoom = false
+      } else {
+        this.showGoLiveRoom = true
+      }
+    } else {
+      this.showGoLiveRoom = false
+    }
     if (uni.getStorageSync('bbcUserInfo')) {
       this.userId = uni.getStorageSync('bbcUserInfo').id
     }
@@ -86,6 +105,12 @@ export default {
    */
   onShareAppMessage: function () { },
   methods: {
+    // 跳转到欢拓直播地址
+    toLiveAddress() {
+      util.checkAuthInfo(() => {
+        window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url'))
+      })
+    },
     /**
      * 获取我的优惠券列表
      */
@@ -132,4 +157,88 @@ export default {
 </script>
 <style>
 @import "./coupon.css";
+</style>
+<style lang="scss" scoped>
+.liveRoom {
+	position: fixed;
+	height: 120rpx;
+	width: 120rpx;
+	border-radius: 15rpx;
+	padding: 5rpx;
+	right: 5%;
+	bottom: 30%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	z-index: 10;
+	background: #fff;
+	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.12);
+	text-align: center;
+	.anime {
+		height: 40rpx;
+		display: flex;
+		flex-direction: row;
+		align-items: flex-end;
+		justify-content: space-between;
+
+		.items {
+			width: 8rpx;
+			height: 40rpx;
+			background: #ff5470;
+			margin-left: 5rpx;
+			animation: loop 2s linear infinite 0s;
+
+			&:nth-child(2) {
+				height: 20rpx;
+				background: #00ebc7;
+				animation: loop 2s linear infinite 0.5s;
+			}
+
+			&:nth-child(3) {
+				height: 40rpx;
+				background: #fde24f;
+				animation: loop 2s linear infinite 1s;
+			}
+
+			&:nth-child(4) {
+				height: 20rpx;
+				background: #14c9c9;
+				animation: loop 2s linear infinite 1.5s;
+			}
+			&:nth-child(5) {
+				height: 20rpx;
+				background: #00ebc7;
+				animation: loop 2s linear infinite 0.5s;
+			}
+
+			&:nth-child(6) {
+				height: 40rpx;
+				background: #fde24f;
+				animation: loop 2s linear infinite 1s;
+			}
+		}
+	}
+
+	.text {
+		font-size: 32rpx;
+		line-height: 40rpx;
+		font-weight: 400;
+		color: #dd524d;
+	}
+}
+
+@keyframes loop {
+	0% {
+		height: 0rpx;
+	}
+
+	50% {
+		height: 40rpx;
+	}
+
+	100% {
+		height: 0rpx;
+	}
+}
 </style>
