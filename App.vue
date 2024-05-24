@@ -93,7 +93,11 @@ export default {
 @import "./app.css";
 
 .uni-tabbar .uni-tabbar__icon {
-	width: 60rpx !important;
-	height: 60rpx !important;
+	width: 50rpx !important;
+	height: 50rpx !important;
+}
+
+.uni-tabbar .uni-tabbar__label {
+	font-size: 28rpx !important;
 }
 </style>
