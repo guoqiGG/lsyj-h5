@@ -89,21 +89,21 @@ export default {
 	 * 生命周期函数--监听页面显示
 	 */
 	onShow: function () {
-		if (window.location.href.includes('code')) {
-			const code = this.getQueryParam(window.location.href, 'code')
-			const state = this.getQueryParam(window.location.href, 'state')
-			if (state == '123') {
-				this.getUserPublicAccountOpenIdByCode(code)
-			}
-			if (state == 'STATE') {
-				const url = new URL(window.location.href);
-				const params = url.searchParams;
-				const codes = params.getAll('code');
-				if (uni.getStorageSync('bbcUserInfo') && uni.getStorageSync('bbcToken')) {
-					this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, codes.length == 1 ? codes[0] : codes[1], uni.getStorageSync('bbcToken'))
-				}
-			}
-		}
+		// if (window.location.href.includes('code')) {
+		// 	const code = this.getQueryParam(window.location.href, 'code')
+		// 	const state = this.getQueryParam(window.location.href, 'state')
+		// 	if (state == '123') {
+		// 		this.getUserPublicAccountOpenIdByCode(code)
+		// 	}
+		// 	if (state == 'STATE') {
+		// 		const url = new URL(window.location.href);
+		// 		const params = url.searchParams;
+		// 		const codes = params.getAll('code');
+		// 		if (uni.getStorageSync('bbcUserInfo') && uni.getStorageSync('bbcToken')) {
+		// 			this.getUserPublicAccountOpenId(uni.getStorageSync('bbcUserInfo').id, codes.length == 1 ? codes[0] : codes[1], uni.getStorageSync('bbcToken'))
+		// 		}
+		// 	}
+		// }
 	},
 	methods: {
 		// 静默授权
@@ -130,7 +130,7 @@ export default {
 				callBack: (res) => {
 					this.appId = res.list[0].value
 					if (!window.location.href.includes('code') && !uni.getStorageSync('userManualExit')) {
-						this.jingMoAuth(this.appId)
+						// this.jingMoAuth(this.appId)
 					}
 				},
 			};

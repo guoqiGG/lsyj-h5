@@ -4,6 +4,16 @@ const util = require("@/utils/util.js");
 export default {
 	onLaunch: function () {
 		console.log('App Launch')
+		// 设置tabbar的高度
+		uni.setTabBarStyle({
+			height: 100, // 单位px
+			success: function () {
+				console.log('Tabbar height set successfully!');
+			},
+			fail: function (err) {
+				console.error('Failed to set tabbar height:', err);
+			}
+		})
 		// #ifndef H5
 		uni.getSystemInfo({
 			success: function (res) {
@@ -98,6 +108,17 @@ export default {
 }
 
 .uni-tabbar .uni-tabbar__label {
-	font-size: 28rpx !important;
+	font-size: 32rpx !important;
+}
+
+
+uni-tabbar {
+	.uni-tabbar {
+
+		.uni-tabbar__bd {
+			// tabBar 单项
+			height: 130rpx !important;
+		}
+	}
 }
 </style>
