@@ -395,7 +395,7 @@ export default {
 
 .send-beans text {
     display: block;
-    width: 60rpx;
+    width: 70rpx;
     height: 60rpx;
     color: #FFF;
     font-weight: 400;
