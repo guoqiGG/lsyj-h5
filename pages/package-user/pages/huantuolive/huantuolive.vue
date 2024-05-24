@@ -10,7 +10,7 @@
                 <text>个人中心</text>
             </view>
         </view>
-        <iframe ref="myIframe" id="iframe" class="iframe" :src="urls" frameborder="0"
+        <iframe ref="myIframe" id="iframe" class="iframe" :src="urls" frameborder="0" allowfullscreen='true'
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
         <view v-if="urls && status == 1" class="send-beans">
             <text>
@@ -24,7 +24,6 @@ const util = require("@/utils/util.js");
 const http = require("@/utils/http");
 // 引入wxjs
 import wxpay from "weixin-js-sdk";
-
 
 export default {
     data() {
