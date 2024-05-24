@@ -242,8 +242,8 @@ export default {
 	},
 
 	onShow() {
-		console.log(document.getElementsByTagName('iframe').length)
-		if (uni.getStorageSync('coureIdExpiredTime') && !document.getElementsByTagName('iframe').length) {
+
+		if (uni.getStorageSync('coureIdExpiredTime')) {
 			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
 				this.showGoLiveRoom = false
 			} else {
@@ -493,10 +493,10 @@ export default {
 						wx.checkJsApi({
 							jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
 							success: function (res) {
-								console.log('可以用');
+								// console.log('可以用');
 							},
 							fail: function (err) {
-								console.log('不可以用', err);
+								// console.log('不可以用', err);
 							},
 						});
 						wx.updateAppMessageShareData({
@@ -505,10 +505,10 @@ export default {
 							link: window.location.href.split("#")[0] + '#/pages/user/user',
 							imgUrl: res.img,
 							success: function () {
-								console.log('分享成功')
+								// console.log('分享成功')
 							},
 							fail: function (err) {
-								console.log('分享失败')
+								// console.log('分享失败')
 							},
 						})
 					});

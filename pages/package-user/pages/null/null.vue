@@ -3,10 +3,10 @@
         <view class="text">
             <u-icon name="checkbox-mark" color="#07c160" size="50"></u-icon>您的订单支付完成
         </view>
-        <u-button style="width:300rpx" type="primary" size='medium' shape="circle" @click='toLiveRoom()'
+        <u-button style="width:300rpx;font-size: 32rpx;" type="error" size='large' shape="circle" @click='toLiveRoom()'
             :plain="true">返回直播间</u-button>
-        <u-button style="width:300rpx;margin-top:30rpx;" type="info" size='medium' shape="circle" @click='toOrder()'
-            :plain="true">返回查看订单</u-button>
+        <u-button style="width:300rpx;margin-top:30rpx;font-size: 32rpx;" type="info" size='large' shape="circle"
+            @click='toOrder()' :plain="true">返回查看订单</u-button>
     </view>
 </template>
 <script>

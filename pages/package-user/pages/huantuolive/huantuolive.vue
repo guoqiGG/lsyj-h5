@@ -10,7 +10,7 @@
                 <text>个人中心</text>
             </view>
         </view>
-        <iframe class="iframe" :src="urls" frameborder="0"
+        <iframe ref="myIframe" id="iframe" class="iframe" :src="urls" frameborder="0"
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
         <view v-if="urls && status == 1" class="send-beans">
             <text>
@@ -24,6 +24,7 @@ const util = require("@/utils/util.js");
 const http = require("@/utils/http");
 // 引入wxjs
 import wxpay from "weixin-js-sdk";
+
 export default {
     data() {
         return {
@@ -129,8 +130,6 @@ export default {
                 }
             });
         }
-
-
     },
     onShow() {
         console.log('onShow')
@@ -277,10 +276,10 @@ export default {
                         wxpay.checkJsApi({
                             jsApiList: ['updateAppMessageShareData', 'updateTimelineShareData'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
                             success: function (res) {
-                                console.log('可以用');
+                                // console.log('可以用');
                             },
                             fail: function (err) {
-                                console.log('不可以用', err);
+                                // console.log('不可以用', err);
                             },
                         });
                         wxpay.updateAppMessageShareData({
@@ -289,10 +288,10 @@ export default {
                             link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&coureId=' + this.coureId + '&url=' + this.liveUrl,
                             imgUrl: res.img,
                             success: function () {
-                                console.log('分享成功')
+                                // console.log('分享成功')
                             },
                             fail: function (err) {
-                                console.log('分享失败', err)
+                                // console.log('分享失败', err)
                             },
                         })
                     });

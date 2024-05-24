@@ -252,7 +252,6 @@ export default {
 .order-detail {
 	width: 100vw;
 	overflow-x: hidden;
-	height: 100vh;
 	overflow: auto;
 	background: #f2f2f2;
 
