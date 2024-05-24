@@ -60,7 +60,7 @@ export default {
 <style scoped>
 /* 列表为空 */
 .empty {
-  text-align: cneter;
+  text-align: center;
   padding-top: 100rpx;
 }
 .empty-icon {

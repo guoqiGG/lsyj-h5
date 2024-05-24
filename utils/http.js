@@ -23,7 +23,7 @@ function request(params) {
   const BaseHost = "/api";
   uni.request({
     // url: (params.domain ? params.domain : config.domain) + params.url,
-    url:BaseHost + params.url,
+    url: BaseHost + params.url,
     // 接口请求地址
     data: params.data,
     header: {
@@ -101,23 +101,6 @@ function request(params) {
         }
         return;
       }
-
-      // 500 服务器出了点小差
-      // if (responseData.code === 500) {
-      //   console.error("============== 请求异常 ==============");
-      //   // console.log("接口: ", params.url);
-      //   console.log("异常信息: ", responseData);
-      //   console.error("============== 请求异常 ==============");
-      //   if (params.errCallBack) {
-      //     params.errCallBack(responseData);
-      //     return;
-      //   }
-      //   uni.showToast({
-      //     title: "服务器出了点小差~",
-      //     icon: "none",
-      //   });
-      // }
-
       // 500 用于直接显示提示用户的错误，内容由输入内容决定
       if (responseData.code === 500) {
         if (params.errCallBack) {
@@ -131,25 +114,11 @@ function request(params) {
         });
         return;
       }
-
-      // 其他异常
-      // if (responseData.code !== "00000") {
-      //   // console.log('params', params)
-
-      //   if (params.errCallBack) {
-      //     params.errCallBack(responseData);
-      //   } else {
-      //     // console.log(`接口: ${params.url}`);
-      //     // console.log(`返回信息： `, res);
-      //   }
-      // }
     },
     fail: (err) => {
-      console.log(err);
       // 隐藏loading加载，放在最前面，防止真机小程序showToast显示时间太短问题
       hideLoad(globalData);
       if (err.errMsg == "request:fail abort") {
-        console.log("请求被取消啦~");
         return;
       }
       setTimeout(() => {
@@ -189,9 +158,7 @@ function upload(params) {
     responseType:
       params.responseType == undefined ? "json" : params.responseType,
     success: (res) => {
-      console.log(res, "upload===res");
       const responseData = res.data;
-      console.log(responseData, "responseData");
       if (res.statusCode === 200) {
         if (params.callBack) {
           params.callBack(responseData);

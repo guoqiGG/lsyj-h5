@@ -13,7 +13,9 @@
         <iframe class="iframe" :src="urls" frameborder="0"
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
         <view v-if="urls && status == 1" class="send-beans">
-            {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '青春豆已送' }}
+            <text>
+                {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '青春豆已送' }}
+            </text>
         </view>
     </view>
 </template>
@@ -246,11 +248,7 @@ export default {
                     let Sign = res.sign
                     let Nickname = encodeURIComponent(this.stringToBase64(this.utf8_encode(uni.getStorageSync('bbcUserInfo').name)))
                     let UserId = uni.getStorageSync('bbcUserInfo').id
-                    // let Timestamp = new Date().getTime()
-                    console.log(uni.getStorageSync('bbcUserInfo').name, UserId)
-                    // this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${Timestamp}&forceCheck=true`
                     this.urls = `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}&forceCheck=true`
-                    console.log(this.urls)
                 }
             };
             http.request(params);
@@ -378,6 +376,8 @@ export default {
 
 .send-beans {
     position: fixed;
+    width: 116rpx;
+    height: 92rpx;
     z-index: 2;
     top: 500rpx;
     right: 5%;
@@ -386,9 +386,21 @@ export default {
     font-weight: 400;
     border-radius: 8px;
     overflow: hidden;
-    background: #FFF;
     padding: 10rpx;
     text-align: center;
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, .12);
+    background: none;
+    background-image: url(/static/countdown.png);
+    background-size: cover;
+}
+
+.send-beans text {
+    display: block;
+    width: 60rpx;
+    height: 60rpx;
+    color: #FFF;
+    font-weight: 400;
+    font-size: 2.5vw;
+    color: #FFFFFF;
+    margin: 28rpx auto;
 }
 </style>

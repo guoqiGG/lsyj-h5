@@ -36,7 +36,7 @@ Page {
 .con .list .button {
   border-radius: 0rpx 12rpx 12rpx 0rpx;
   background: #ea3b26;
-  width: 222rpx;
+  width: calc(100% - 488rpx);
   height: 200rpx;
   line-height: 200rpx;
   color: #ffffff;
@@ -53,6 +53,6 @@ Page {
   font-size: 32rpx;
   background-color: #005aff;
   padding: 8rpx 15rpx;
-  color: #FFF;
+  color: #fff;
   border-radius: 10rpx;
 }

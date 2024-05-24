@@ -77,7 +77,7 @@ Page {
   display: block;
   float: right;
   margin-top: 20rpx;
-  width: 140rpx;
+  /* width: 140rpx; */
 }
 
 .go-live {

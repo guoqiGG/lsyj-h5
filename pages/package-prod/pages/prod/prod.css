@@ -1,7 +1,7 @@
 .prod-detail-text {
   font-size: 30rpx;
-  line-height: 44rpx;
-  background: #FFF;
+  line-height: 66rpx;
+  background: #fff;
   text-align: center;
 }
 .container {
@@ -135,8 +135,10 @@
   display: flex;
   align-items: center;
   padding: 10rpx 0rpx;
+  width: 100%;
+  justify-content: center;
 }
-.footer .con .left {
+/* .footer .con .left {
   margin-left: 44rpx;
 }
 .footer .con .left .text {
@@ -150,11 +152,10 @@
 .footer .con .left image {
   width: 50rpx;
   height: 50rpx;
-}
+} */
 .footer .con .right {
-  width: 532rpx;
   text-align: center;
-  margin-left: 46rpx;
+  /* margin-left: 46rpx; */
 }
 .footer .con .right .buy-now {
   width: 532rpx;
@@ -166,6 +167,7 @@
   opacity: 1;
   background: #f81a19;
   color: #fff;
+  margin: 0 auto;
 }
 
 /* 规格弹出层 */

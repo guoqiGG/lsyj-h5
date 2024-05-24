@@ -69,12 +69,9 @@ export default {
 					data: JSON.stringify(obj),
 				},
 				callBack: (res) => {
-					console.log(res, 'res')
 					this.isLoaded = true
 					this.revenueLists = this.pageNo == 1 ? res.list : this.revenueLists.concat(res.list)
 					this.pageSIize = res.total == 0 ? 1 : Math.ceil(res.total / this.pageSize)
-
-					console.log(this.revenueLists, 'this.revenueLists')
 				},
 			}
 			http.request(params);

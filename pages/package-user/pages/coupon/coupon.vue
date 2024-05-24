@@ -64,7 +64,7 @@ export default {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (uni.getStorageSync('coureIdExpiredTime')) {
+    if (uni.getStorageSync('coureIdExpiredTime')&&!document.getElementsByTagName('iframe').length) {
       if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
         this.showGoLiveRoom = false
       } else {
@@ -143,8 +143,6 @@ export default {
      *  标签切换事件
      */
     changeTab(e) {
-      // this.current = 1
-      console.log(e, 'eeeeeeeeeeeeeeeeeeee')
       this.status = e.currentTarget.dataset.status
       this.current = 1
       this.pages = 1

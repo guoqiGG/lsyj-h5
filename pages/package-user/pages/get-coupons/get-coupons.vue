@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<navigation />
+		<!-- <navigation /> -->
 		<view class="con">
 			<view class="list" v-if="couponInfo.name">
 				<view class="left-con">
@@ -49,17 +49,6 @@ export default {
 		// 	window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
 		// }
 	},
-	// js文件，广告事件监听 Page({ 
-	adLoad() {
-		console.log('视频广告 广告加载成功')
-	},
-	adError(err) {
-		console.error('视频广告 广告加载失败', err)
-	},
-	adClose() {
-		console.log('视频广告 广告关闭')
-	},
-	// }) 
 	methods: {
 		// 领取优惠券
 		receiveGift: util.debounce(function () {

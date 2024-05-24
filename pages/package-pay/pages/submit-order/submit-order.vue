@@ -289,7 +289,6 @@ export default {
 		},
 		close() {
 			this.show = false
-			// console.log('close');
 			this.checkList = []
 			this.checkboxValue1 = []
 		},
@@ -298,7 +297,6 @@ export default {
 		},
 		// 选中的优惠券
 		checkboxChange(n) {
-			console.log('选中的优惠券', n);
 		},
 		getCheckClick(e) {
 			let index = this.checkList.indexOf(e)
@@ -366,7 +364,6 @@ export default {
 				})
 				return
 			}
-			// console.log(this.checkList, 'this.checkList')
 			const params = {
 				url: '/pub/order/create',
 				method: 'POST',

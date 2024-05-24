@@ -163,7 +163,7 @@
 							this.animation[i](obj[i]);
 						}
 					} catch (e) {
-						console.error(`方法 ${i} 不存在`);
+						
 					}
 				}
 				this.animation.step(config);

@@ -242,7 +242,8 @@ export default {
 	},
 
 	onShow() {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
+		console.log(document.getElementsByTagName('iframe').length)
+		if (uni.getStorageSync('coureIdExpiredTime') && !document.getElementsByTagName('iframe').length) {
 			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
 				this.showGoLiveRoom = false
 			} else {
@@ -251,6 +252,7 @@ export default {
 		} else {
 			this.showGoLiveRoom = false
 		}
+
 
 		if (uni.getStorageSync("bbcToken")) {
 			this.isAuthInfo = true;
@@ -532,7 +534,9 @@ export default {
 	min-height: 100vh;
 	position: relative;
 	background: #f2f2f2;
+	padding-bottom: 150rpx;
 }
+
 .liveRoom {
 	position: fixed;
 	height: 120rpx;
@@ -549,6 +553,7 @@ export default {
 	background: #fff;
 	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.12);
 	text-align: center;
+
 	.anime {
 		height: 40rpx;
 		display: flex;
@@ -580,6 +585,7 @@ export default {
 				background: #14c9c9;
 				animation: loop 2s linear infinite 1.5s;
 			}
+
 			&:nth-child(5) {
 				height: 20rpx;
 				background: #00ebc7;

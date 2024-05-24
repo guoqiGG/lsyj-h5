@@ -90,7 +90,7 @@ export default {
 		};
 	},
 	onShow: function () {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
+		if (uni.getStorageSync('coureIdExpiredTime')&&!document.getElementsByTagName('iframe').length) {
 			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
 				this.showGoLiveRoom = false
 			} else {

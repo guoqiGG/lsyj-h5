@@ -109,7 +109,6 @@
 								e.allowEdit = false
 							});
 							list = that.current == 1 ? list : that.list.concat(list)
-							console.log(111, list)
 							that.pages = res.total == 0 ? 1 : Math.ceil(res.total / that.pageSize)
 							resolve({
 								data: list

@@ -88,7 +88,6 @@ export default {
 		navigationBar
 	},
 	onLoad: function (options) {
-		console.log(1)
 		util.checkAuthInfo(() => {
 			if (uni.getStorageSync('bbcUserInfo').puid) {
 				this.getShareInfo()

@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<navigation />
+		<!-- <navigation /> -->
 		<view class="con">
 			<view class="list" v-if="giftInfo.name">
 				<view class="left-con">
@@ -44,17 +44,6 @@ export default {
 			}
 		})
 	},
-	// js文件，广告事件监听 Page({ 
-	adLoad() {
-		console.log('视频广告 广告加载成功')
-	},
-	adError(err) {
-		console.error('视频广告 广告加载失败', err)
-	},
-	adClose() {
-		console.log('视频广告 广告关闭')
-	},
-	// }) 
 	methods: {
 		// 领取礼品卡
 		receiveGift: util.debounce(function () {
@@ -69,7 +58,6 @@ export default {
 				},
 				callBack: (res) => {
 					if (res === 0) {
-						console.log(this.giftInfo)
 						this.giftInfo.status = 1
 						uni.showToast({
 							title: '领取成功',

@@ -215,7 +215,6 @@ export default {
 			this.$refs.datetimePicker2.open();
 		},
 		confirm2(e) {
-			console.log(e)
 			this.endDate = dayjs(new Date(e.value)).format('YYYY-MM-DD')
 		},
 		// 查询今日销量
@@ -230,7 +229,6 @@ export default {
 					}),
 				},
 				callBack: (res) => {
-					console.log(res)
 					this.todayOrderNumber = res.orderNumber ? res.orderNumber : 0
 					this.todayAmount = res.amount ? res.amount : 0
 				},

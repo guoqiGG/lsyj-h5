@@ -150,7 +150,7 @@ export default {
 		}
 	},
 	onShow() {
-		if (uni.getStorageSync('coureIdExpiredTime')) {
+		if (uni.getStorageSync('coureIdExpiredTime')&&!document.getElementsByTagName('iframe').length) {
 			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
 				this.showGoLiveRoom = false
 			} else {
@@ -274,7 +274,6 @@ export default {
 			http.request(params)
 		},
 		handleTabClick(e) {
-			console.log(e)
 			this.currentTab = e.index;
 			this.pageNo = 1
 			this.orderLists = []
@@ -312,7 +311,6 @@ export default {
 		 * 页面上拉触底事件的处理函数
 		 */
 	onReachBottom() {
-		console.log(1)
 		if ((this.orderLists.length % this.pageSize == 0) && this.orderLists.length >= this.pageSize && this.isAll == false) {
 			this.pageNo = this.pageNo + 1
 			this.getOrderLists()

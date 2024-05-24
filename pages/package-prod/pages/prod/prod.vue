@@ -34,10 +34,10 @@
 
 		<view class="footer">
 			<view class="con">
-				<view class="left" @tap="toHomePage()">
+				<!-- <view class="left" @tap="toHomePage()">
 					<image src="/static/tabbar/uncheck-home.png" mode="scaleToFill" />
 					<view class="text">首页</view>
-				</view>
+				</view> -->
 				<view class="right">
 					<view class="buy-now" @tap="openSkuPopup()">立即购买</view>
 				</view>

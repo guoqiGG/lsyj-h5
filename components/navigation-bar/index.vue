@@ -44,7 +44,6 @@ export default {
   mounted() {
     // this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
     const pages = getCurrentPages()
-    console.log(pages.length)
     if (pages.length <= 1) {
       this.showHome = true
     } else {

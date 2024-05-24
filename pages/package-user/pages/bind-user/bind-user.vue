@@ -36,7 +36,6 @@ export default {
         }
     },
     onLoad: function (options) {
-        console.log(options)
         if (options.giftId) {
             this.giftId = options.giftId
             this.userInfo = uni.getStorageSync('bbcUserInfo')

@@ -79,12 +79,10 @@
 		
 		methods: {
 			onSubmitApplyWithdrawal(){
-				console.log(this.withdrawalNumber)
 				let obj = {
 				        userId: this.userId,
 						amount:this.withdrawalNumber
 				    }
-					console.log(obj,'obj====>')
 				    const params = {
 				        url: "/pub/leader/apply/withdrawal",
 				        method: "POST",
