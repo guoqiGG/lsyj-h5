@@ -241,8 +241,7 @@ export default {
 	},
 
 	onShow() {
-		console.log(111,window !== window.self)
-		if (uni.getStorageSync('coureIdExpiredTime')) {
+		if (uni.getStorageSync('coureIdExpiredTime') && window.parent === window) {
 			if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
 				this.showGoLiveRoom = false
 			} else {

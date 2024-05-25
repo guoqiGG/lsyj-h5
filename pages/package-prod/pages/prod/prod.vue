@@ -134,7 +134,6 @@ export default {
 		})
 	},
 	onShow() {
-		console.log(111, window !== window.self)
 		util.checkAuthInfo(() => {
 			this.getUserInfo()
 			this.skuShow = false
