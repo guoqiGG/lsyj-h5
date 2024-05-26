@@ -1,6 +1,6 @@
 <template>
 	<view class="order-list">
-		<navigation/>
+		<navigation />
 		<u-tabs :scrollable="true" :current="currentTab" :list="list1" @click="handleTabClick"></u-tabs>
 		<view class="order-list-content">
 			<view class="order-list-content-box" v-for="(item, index) in orderLists" :key="item.orderId">
@@ -35,7 +35,6 @@
 							<view class="price-amount">
 								{{ item.goodsCount }}件
 							</view>
-
 						</view>
 					</view>
 				</view>
@@ -192,7 +191,7 @@ export default {
 		margin-bottom: 26rpx;
 
 		.blue {
-			color: #FD594D ;
+			color: #FD594D;
 		}
 	}
 

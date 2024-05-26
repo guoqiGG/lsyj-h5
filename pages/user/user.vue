@@ -277,11 +277,11 @@ export default {
 		// 跳转到欢拓直播地址
 		toLiveAddress() {
 			util.checkAuthInfo(() => {
-				if(window.parent===window){
+				if (window.parent === window) {
 					uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
-				}else{
+				} else {
 					window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url'))
-				}	
+				}
 			})
 		},
 		// 获取订单消息数量
@@ -312,11 +312,13 @@ export default {
 		// 跳转订单列表
 		goOrderList(orderId) {
 			util.checkAuthInfo(() => {
-				// uni.navigateTo({
-				// 	url: '/pages/package-user/pages/order-list/order-list?id=' + orderId,
-				// })
-				window.location.href = window.location.href.split("#")[0] + '#/pages/package-user/pages/order-list/order-list?id=' + orderId
-
+				if (window.parent === window) {
+					uni.navigateTo({
+						url: '/pages/package-user/pages/order-list/order-list?id=' + orderId,
+					})
+				} else {
+					window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/order-list/order-list?id=' + orderId)
+				}
 			})
 		},
 		// 跳转我的卡包

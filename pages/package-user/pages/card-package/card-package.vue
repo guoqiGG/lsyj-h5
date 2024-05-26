@@ -8,11 +8,11 @@
 			</view>
 		</view>
 		<view class="container" style="padding: 20rpx;">
-			<uni-swipe-action>
+			<uni-swipe-action ref="swipeAction">
 				<block v-for="(item, index) in dataList" :key="index">
 					<uni-swipe-action-item
 						style="margin-top: 20rpx;background: #fff;box-shadow: -3px 3px 6px 0px rgba(111, 111, 111, 0.2);"
-						:right-options="options" @click="onClick(item)">
+						:right-options="options" @click="onClick(item, index)">
 						<view class="item">
 							<view class="left">
 								<image src="../../static/icon_delivery.png" mode="scaleToFill" />
@@ -88,7 +88,9 @@ export default {
 			userId: 0,
 			current: 1, // 当前页
 			pages: 1,//总页数
-			showGoLiveRoom: false
+			showGoLiveRoom: false,
+			moveIndex: -1,//用于记录滑动下标
+			indextol: ''
 		};
 	},
 	onShow: function () {
@@ -133,6 +135,7 @@ export default {
 						icon: 'none',
 						mask: true
 					})
+					this.$refs.swipeAction.closeAll()
 					this.getGiftCardList()
 				},
 			}

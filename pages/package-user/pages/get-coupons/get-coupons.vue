@@ -57,7 +57,6 @@ export default {
 				method: "POST",
 				data: JSON.stringify({ couponId: this.couponId, userId: uni.getStorageSync('bbcUserInfo').id }),
 				callBack: (res) => {
-
 					if (res === 1) {
 						this.couponInfo.status = 1
 						uni.showToast({
