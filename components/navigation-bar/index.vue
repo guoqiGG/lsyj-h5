@@ -1,5 +1,5 @@
 <template>
-  <view class=" bar-sticky" :style="{ background: navigationBarStyle.background }">
+  <view v-if="showNavigationBar" class=" bar-sticky" :style="{ background: navigationBarStyle.background }">
     <view class="content-wrap">
       <view class="status-line" :style="{
     height: lineHeight,
@@ -38,10 +38,12 @@ export default {
       isLeft: false,
       isWhiteBack: true,
       lineHeight: '',
-      showHome: false
+      showHome: false,
+      showNavigationBar: true
     }
   },
   mounted() {
+    this.showNavigationBar = window.parent === window
     // this.lineHeight = this.$system.ktxStatusHeight + 'rpx'
     const pages = getCurrentPages()
     if (pages.length <= 1) {

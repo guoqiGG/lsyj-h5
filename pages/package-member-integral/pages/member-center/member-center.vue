@@ -2,9 +2,6 @@
 <template>
     <view class="container">
         <navigation/>
-        <!-- <view class="gohome">
-            <image class="img" src="/static/home.png" @tap="goHome" /> <text @tap="goHome">返回首页</text>
-        </view> -->
         <view class="member-info-container">
             <view class="member-avatar">
                 <image style="width: 100%;height: 100%;margin: 0,0;" v-if="avatar" class="img" :src="avatar" mode="" />

@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <!-- <navigation /> -->
+    <navigation />
     <!-- 失败 -->
     <view v-if="sts == 0" class="pay-fail">
       <view class="img">

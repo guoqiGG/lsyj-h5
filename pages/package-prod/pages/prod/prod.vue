@@ -1,8 +1,8 @@
 <template>
 	<view class="container">
-		<!-- <navigation /> -->
-		<view class="prod-detail-text">商品详情</view>
-		<view class="image-con">
+		<navigation />
+		<view v-if="showText" class="prod-detail-text">商品详情</view>
+		<view :class="['image-con', (showText ? '' : 'image-conh')]">
 			<image class="image" :src="productDetail.thumbail" @error="handlePicError" />
 		</view>
 		<view class="prod-content" v-if="productDetail.name">
@@ -119,7 +119,8 @@ export default {
 			// totalSmallPrice: null,//总的小数
 			chechIndex: 0, //选中商品规格 默认第一个
 			orderType: 1, // 1-配送单，2-自提单   leaderType 0-有店 1-无店
-			showGoLiveRoom: false
+			showGoLiveRoom: false,
+			showText: false
 		}
 	},
 	onLoad(option) {
@@ -134,12 +135,10 @@ export default {
 		})
 	},
 	onShow() {
+		this.showText = window.parent !== window
 		util.checkAuthInfo(() => {
 			this.getUserInfo()
 			this.skuShow = false
-			// if (window.location.href.includes('ht=1')) {
-			// 	window.top.location = window.location.href.substring(0, (window.location.href.length - 5))
-			// }
 		})
 	},
 	methods: {
@@ -341,10 +340,15 @@ export default {
 		 */
 		toSubmitOrder(orderItem, url) {
 			uni.setStorageSync("bbcOrderItem", Object.assign({}, orderItem));
-			window.location.replace(window.location.href.split("#")[0] + '#/pages/package-pay/pages/submit-order/submit-order')
-			// uni.navigateTo({
-			// 	url,
-			// });
+			if (window.parent === window) {
+				uni.navigateTo({
+					url,
+				});
+			} else {
+				window.location.replace(window.location.href.split("#")[0] + '#/pages/package-pay/pages/submit-order/submit-order')
+			}
+
+
 		},
 	}
 }

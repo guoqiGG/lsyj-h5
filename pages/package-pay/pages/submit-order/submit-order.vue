@@ -1,6 +1,6 @@
 <template>
 	<view class="submit-order">
-		<!-- <navigation /> -->
+		<navigation />
 		<view class="submit-order-index">
 			<view v-if="!express" class="submit-order-index-express">
 				<view class="submit-order-index-express-title">

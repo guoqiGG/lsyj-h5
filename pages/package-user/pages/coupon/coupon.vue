@@ -64,7 +64,7 @@ export default {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    if (uni.getStorageSync('coureIdExpiredTime')&& window.parent === window) {
+    if (uni.getStorageSync('coureIdExpiredTime') && window.parent === window) {
       if ((new Date().getTime() - 2 * 3600 * 1000) >= uni.getStorageSync('coureIdExpiredTime')) {
         this.showGoLiveRoom = false
       } else {
@@ -108,7 +108,11 @@ export default {
     // 跳转到欢拓直播地址
     toLiveAddress() {
       util.checkAuthInfo(() => {
-        window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url'))
+        if (window.parent === window) {
+          uni.navigateTo({ url: '/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url') })
+        } else {
+          window.location.replace(window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?coureId=' + uni.getStorageSync('coureId') + '&coureName=' + uni.getStorageSync('coureName') + '&url=' + uni.getStorageSync('url'))
+        }
       })
     },
     /**
@@ -158,85 +162,87 @@ export default {
 </style>
 <style lang="scss" scoped>
 .liveRoom {
-	position: fixed;
-	height: 120rpx;
-	width: 120rpx;
-	border-radius: 15rpx;
-	padding: 5rpx;
-	right: 5%;
-	bottom: 30%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	z-index: 10;
-	background: #fff;
-	box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.12);
-	text-align: center;
-	.anime {
-		height: 40rpx;
-		display: flex;
-		flex-direction: row;
-		align-items: flex-end;
-		justify-content: space-between;
+  position: fixed;
+  height: 120rpx;
+  width: 120rpx;
+  border-radius: 15rpx;
+  padding: 5rpx;
+  right: 5%;
+  bottom: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background: #fff;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.12);
+  text-align: center;
 
-		.items {
-			width: 8rpx;
-			height: 40rpx;
-			background: #ff5470;
-			margin-left: 5rpx;
-			animation: loop 2s linear infinite 0s;
+  .anime {
+    height: 40rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
 
-			&:nth-child(2) {
-				height: 20rpx;
-				background: #00ebc7;
-				animation: loop 2s linear infinite 0.5s;
-			}
+    .items {
+      width: 8rpx;
+      height: 40rpx;
+      background: #ff5470;
+      margin-left: 5rpx;
+      animation: loop 2s linear infinite 0s;
 
-			&:nth-child(3) {
-				height: 40rpx;
-				background: #fde24f;
-				animation: loop 2s linear infinite 1s;
-			}
+      &:nth-child(2) {
+        height: 20rpx;
+        background: #00ebc7;
+        animation: loop 2s linear infinite 0.5s;
+      }
 
-			&:nth-child(4) {
-				height: 20rpx;
-				background: #14c9c9;
-				animation: loop 2s linear infinite 1.5s;
-			}
-			&:nth-child(5) {
-				height: 20rpx;
-				background: #00ebc7;
-				animation: loop 2s linear infinite 0.5s;
-			}
+      &:nth-child(3) {
+        height: 40rpx;
+        background: #fde24f;
+        animation: loop 2s linear infinite 1s;
+      }
 
-			&:nth-child(6) {
-				height: 40rpx;
-				background: #fde24f;
-				animation: loop 2s linear infinite 1s;
-			}
-		}
-	}
+      &:nth-child(4) {
+        height: 20rpx;
+        background: #14c9c9;
+        animation: loop 2s linear infinite 1.5s;
+      }
 
-	.text {
-		font-size: 32rpx;
-		line-height: 40rpx;
-		font-weight: 400;
-		color: #dd524d;
-	}
+      &:nth-child(5) {
+        height: 20rpx;
+        background: #00ebc7;
+        animation: loop 2s linear infinite 0.5s;
+      }
+
+      &:nth-child(6) {
+        height: 40rpx;
+        background: #fde24f;
+        animation: loop 2s linear infinite 1s;
+      }
+    }
+  }
+
+  .text {
+    font-size: 32rpx;
+    line-height: 40rpx;
+    font-weight: 400;
+    color: #dd524d;
+  }
 }
 
 @keyframes loop {
-	0% {
-		height: 0rpx;
-	}
+  0% {
+    height: 0rpx;
+  }
 
-	50% {
-		height: 40rpx;
-	}
+  50% {
+    height: 40rpx;
+  }
 
-	100% {
-		height: 0rpx;
-	}
+  100% {
+    height: 0rpx;
+  }
 }
 </style>
