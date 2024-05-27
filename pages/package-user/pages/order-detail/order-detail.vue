@@ -4,8 +4,44 @@
 		<view class="order-detail-backgroundImg">
 			<image src="/pages/package-user/static/order-detail-bg.png" mode=""></image>
 		</view>
-		<!-- v-if="orderDetail.orderStatus!=5&&orderDetail.orderStatus!=1" -->
-		<view class="order-detail-status">
+
+		<view class="order-detail-status" v-if="orderDetail.refundStatus > 0 && orderDetail.isCanApplyRefund !== 1">
+			<view class="order-detail-status-content">
+				<view class="status-img-box">
+					<image v-if="orderDetail.refundStatus" class="status-img"
+						src="/pages/package-user/static/order-detail-status.png" mode=""></image>
+					<image v-else class="status-img" src="/pages/package-user/static/order-detail-status2.png" mode="">
+					</image>
+				</view>
+				<view class="status-text" :class="orderDetail.refundStatus > 0 ? 'isSelectColor' : ''">
+					申请退款
+				</view>
+			</view>
+			<view class="order-detail-status-content">
+				<view class="status-img-box">
+					<image v-if="orderDetail.refundStatus > 1" class="status-img"
+						src="/pages/package-user/static/order-detail-status.png" mode=""></image>
+					<image v-else class="status-img" src="/pages/package-user/static/order-detail-status2.png" mode="">
+					</image>
+				</view>
+				<view class="status-text" :class="orderDetail.refundStatus > 1 ? 'isSelectColor' : ''">
+					退款中
+				</view>
+			</view>
+			<view class="order-detail-status-content">
+				<view class="status-img-box">
+					<image v-if="orderDetail.refundStatus > 2" class="status-img"
+						src="/pages/package-user/static/order-detail-status.png" mode=""></image>
+					<image v-else class="status-img" src="/pages/package-user/static/order-detail-status2.png" mode="">
+					</image>
+				</view>
+				<view class="status-text" :class="orderDetail.refundStatus > 2 ? 'isSelectColor' : ''">
+					{{ orderDetail.refundStatus == 3 ? '退款失败' : '' }}
+					{{ orderDetail.refundStatus == 4 || orderDetail.refundStatus == 5 ? '退款成功' : '' }}
+				</view>
+			</view>
+		</view>
+		<view class="order-detail-status" v-else>
 			<view class="order-detail-status-content">
 				<view class="status-img-box">
 					<image v-if="orderDetail.orderStatus > 1 && orderDetail.orderStatus != 5" class="status-img"
@@ -43,6 +79,7 @@
 				</view>
 			</view>
 		</view>
+
 		<!-- 地址 -->
 		<view class="address">
 			<view class="icon">
@@ -154,16 +191,18 @@ export default {
 			orderId: null, //订单id
 			loginToken: null,
 			orderDetail: null,
+			showRefund: true,
 		}
 	},
 	onLoad(option) {
 		if (option.orderId) {
 			this.orderId = option.orderId
-			let bbcLoginResult = uni.getStorageSync("bbcLoginResult"); //用户信息
-			this.loginToken = bbcLoginResult.loginToken
+			this.loginToken = uni.getStorageSync('bbcToken')
 			this.getOrderDetail()
 		}
-
+		if (option.showRefund) {
+			this.showRefund = option.showRefund
+		}
 	},
 	onShow() {
 	},

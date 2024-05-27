@@ -266,7 +266,7 @@ export default {
                 method: "GET",
                 callBack: (res) => {
                     let Sign = res.sign
-                    let Nickname = encodeURIComponent(this.stringToBase64(this.utf8_encode(uni.getStorageSync('bbcUserInfo').name)))
+                    let Nickname = encodeURIComponent(this.stringToBase64(this.utf8_encode(res.vipName)))
                     let UserId = uni.getStorageSync('bbcUserInfo').id
                     this.urls = url.includes('?portrait=1') ? `${url}&Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}&forceCheck=true` : `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}&forceCheck=true`
                 }
