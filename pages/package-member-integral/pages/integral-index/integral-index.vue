@@ -1,10 +1,7 @@
 <template>
   <!-- 青春豆商城 -->
   <view class=" integral-index">
-    <navigation/>
-    <!-- <view class="gohome">
-      <image class="img" src="/static/home.png" @tap="goHome" /> <text @tap="goHome">返回首页</text>
-    </view> -->
+    <navigation />
     <view class="integral-msg">
       <view class="my-integral">
         <view class="number-box">
@@ -93,9 +90,6 @@ export default {
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    uni.setNavigationBarTitle({
-      title: '青春豆中心',
-    });
     this.getScore()
     this.getExchangeList()
   },
@@ -116,7 +110,7 @@ export default {
     popShow() {
       this.$refs.popup.open('center');
     },
-    close(){
+    close() {
       this.$refs.popup.close()
     },
     goHome() {

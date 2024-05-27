@@ -1,7 +1,7 @@
 <!-- 会员中心 -->
 <template>
     <view class="container">
-        <navigation/>
+        <navigation />
         <view class="member-info-container">
             <view class="member-avatar">
                 <image style="width: 100%;height: 100%;margin: 0,0;" v-if="avatar" class="img" :src="avatar" mode="" />
@@ -79,8 +79,8 @@ export default {
             score: null,
             watchRecordTotal: 0,
             userInfo: {},
-            avatar:null,
-            name:null,
+            avatar: null,
+            name: null,
         }
     },
     onShow() {

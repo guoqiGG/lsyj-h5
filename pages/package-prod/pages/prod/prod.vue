@@ -340,7 +340,7 @@ export default {
 		 */
 		toSubmitOrder(orderItem, url) {
 			uni.setStorageSync("bbcOrderItem", Object.assign({}, orderItem));
-			
+
 			if (window.parent === window) {
 				uni.navigateTo({
 					url,

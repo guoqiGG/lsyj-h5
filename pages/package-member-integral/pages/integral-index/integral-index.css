@@ -8,34 +8,14 @@ page {
   position: relative;
 }
 
-.integral-index .gohome {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  background: #005aff;
-  height: 80rpx;
-  line-height: 80rpx;
-}
-.integral-index .gohome .img {
-  margin-left: 20rpx;
-  width: 50rpx;
-  height: 50rpx;
-}
-.integral-index .gohome text {
-  font-size: 32rpx;
-  color: #ffffff;
-  margin-left: 10rpx;
-}
-
 .integral-index .integral-msg {
   width: 690rpx;
   height: 330rpx;
   position: relative;
-  margin: 20rpx auto 0;
-  background: linear-gradient(270deg, #b9d93a 0%, #46c645 100%);
-  /* background: linear-gradient(287deg, #B1D241 8%, #54C945 54%); */
-  border-radius: 25rpx;
-  box-shadow: 0rpx 10rpx 30rpx 0rpx rgba(29, 137, 0, 0.4);
+  margin: 40rpx auto 0;
+  background-image: url(/static/integral-msg.png);
+  background-size: cover;
+  border-radius: 20rpx;
 }
 .integral-index .integral-msg .image-bg .bg {
   width: 100%;
@@ -79,7 +59,7 @@ page {
   color: #ffffff;
 }
 .integral-list {
-  padding: 30rpx 30rpx;
+  padding: 30rpx 40rpx;
 }
 .member-tits .text {
   font-weight: 400;

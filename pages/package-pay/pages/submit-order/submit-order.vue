@@ -864,7 +864,7 @@ export default {
 					width: 100px !important;
 					height: 36px !important;
 					border-radius: 18px !important;
-					background: linear-gradient(270deg, #FC4D0E 0%, #F58927 100%) !important;
+					background: linear-gradient(270deg, #ea3b26 0%, #FD594D 100%) !important;
 					border: 0px solid transparent;
 				}
 

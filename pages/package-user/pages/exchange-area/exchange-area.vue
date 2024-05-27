@@ -5,12 +5,14 @@
 			<view class="list" v-if="giftInfo.name">
 				<view class="left-con">
 					<view class="name">{{ giftInfo.name }}</view>
-					<view class="time">发布时间：{{ giftInfo.createTime }}</view>
+					<view class="time">创建时间：{{ giftInfo.createTime }}</view>
 				</view>
+			</view>
+			<view class="receive">
 				<view class="button" v-if="giftInfo.status == 0" @click="receiveGift">
 					立即领取
 				</view>
-				<view class="button" v-else style="background-color: #979797;" @click="received">
+				<view class="button" v-else style="border: 2rpx solid #979797;color:#979797;" @click="received">
 					已领取
 				</view>
 			</view>

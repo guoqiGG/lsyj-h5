@@ -10,13 +10,15 @@
 				</view>
 				<view class="right-con">
 					<view class="name">{{ couponInfo.name }}</view>
-					<text class="button" v-if="couponInfo.status == 0" @click="receiveGift">
+				</view>
+			</view>
+			<view class="receive">
+				<text class="button" v-if="couponInfo.status == 0" @click="receiveGift">
 						立即领取
 					</text>
 					<text class="button" v-else style="border: 2rpx solid #979797;color:#979797;" @click="received">
 						已领取
 					</text>
-				</view>
 			</view>
 		</view>
 	</view>

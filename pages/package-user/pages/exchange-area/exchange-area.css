@@ -12,6 +12,7 @@ Page {
   box-shadow: 0rpx 8rpx 24rpx 0rpx rgba(141, 141, 141, 0.3);
   height: 200rpx;
   border-radius: 20rpx;
+  
 }
 .con .list .left-con {
   width: 488rpx;
@@ -33,26 +34,19 @@ Page {
   letter-spacing: 0.06em;
   color: #979797;
 }
-.con .list .button {
-  border-radius: 0rpx 12rpx 12rpx 0rpx;
-  background: #ea3b26;
-  width: calc(100% - 488rpx);
-  height: 200rpx;
-  line-height: 200rpx;
-  color: #ffffff;
+.receive {
+  display: flex;
+  margin-top: 100rpx;
+  justify-content: center;
+}
+.receive .button {
+  border-radius: 12rpx;
+  background: #fff;
+  border: 2rpx solid #ea3b26;
+  color: #ea3b26;
   text-align: center;
-  font-size: 32rpx;
+  padding: 10rpx 30rpx;
+  font-size: 48rpx;
   font-weight: normal;
   letter-spacing: 0.06em;
-}
-.go-live {
-  margin-top: 10rpx;
-}
-.go-live text {
-  margin-left: 30rpx;
-  font-size: 32rpx;
-  background-color: #005aff;
-  padding: 8rpx 15rpx;
-  color: #fff;
-  border-radius: 10rpx;
 }

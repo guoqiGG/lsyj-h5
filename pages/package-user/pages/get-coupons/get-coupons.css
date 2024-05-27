@@ -55,6 +55,8 @@ Page {
   width: calc(100% - 200rpx);
   box-sizing: border-box;
   height: 100%;
+  display: flex;
+  align-items: center;
 }
 .right-con .name {
   font-size: 40rpx;
@@ -63,31 +65,19 @@ Page {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-.right-con .button {
+.receive {
+  display: flex;
+  margin-top: 100rpx;
+  justify-content: center;
+}
+.receive .button {
   border-radius: 12rpx;
   background: #fff;
   border: 2rpx solid #ea3b26;
   color: #ea3b26;
   text-align: center;
-  padding: 10rpx;
-  font-size: 32rpx;
+  padding: 10rpx 30rpx;
+  font-size: 48rpx;
   font-weight: normal;
   letter-spacing: 0.06em;
-  display: block;
-  float: right;
-  margin-top: 20rpx;
-  /* width: 140rpx; */
-}
-
-.go-live {
-  margin-top: 10rpx;
-}
-.go-live text {
-  margin-left: 30rpx;
-  font-size: 32rpx;
-  background-color: #005aff;
-  padding: 8rpx 15rpx;
-  color: #fff;
-  border-radius: 10rpx;
 }
