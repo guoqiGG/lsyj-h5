@@ -416,14 +416,14 @@ export default {
 }
 
 .left image {
-	width: 130rpx;
-	height: 130rpx;
+	width: 112rpx;
+	height: 112rpx;
 	border-radius: 50%;
 	margin-top: 20rpx;
 }
 
 .right {
-	margin-left: 10rpx;
+	margin-left: 30rpx;
 }
 
 .right .coupon-name {
@@ -432,7 +432,7 @@ export default {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: 28rpx;
-	color: #000000;
+	color: #010101;
 	font-weight: normal;
 	line-height: 24rpx;
 	margin-bottom: 30rpx;

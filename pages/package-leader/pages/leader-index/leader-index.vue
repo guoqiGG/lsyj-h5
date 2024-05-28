@@ -356,7 +356,7 @@ export default {
 	padding-bottom: 20rpx;
 
 	.leader-index-cot {
-		background: linear-gradient(180deg, #FD594D  0%, #ffffff 100%);
+		background: linear-gradient(180deg, #FD594D 0%, #ffffff 100%);
 		padding: 30rpx;
 	}
 }
@@ -647,7 +647,7 @@ export default {
 		.search {
 			margin-left: 12rpx;
 			padding: 6rpx 12rpx;
-			background: #D93A3C;
+			background: #FD594D;
 			font-weight: 400;
 			font-size: 32rpx;
 			color: #FFFFFF;
