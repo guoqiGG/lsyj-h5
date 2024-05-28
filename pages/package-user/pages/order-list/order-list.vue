@@ -465,7 +465,7 @@ export default {
 		margin-bottom: 26rpx;
 
 		.blue {
-			color: #FD594D;
+			color: #025BFF;
 		}
 	}
 
