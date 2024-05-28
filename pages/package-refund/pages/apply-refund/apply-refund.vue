@@ -33,15 +33,15 @@
 			<u-cell title="退款金额" :value="orderDetail.totalAmount"></u-cell>
 		</u-cell-group>
 		<view class="u-form">
-			<u--form labelPosition="left">
-				<u-form-item labelWidth="208rpx" label="手机号码" borderBottom>
+			<u--form labelPosition="left" labelAlign="center">
+				<u-form-item labelWidth="180rpx" label="手机号码" borderBottom>
 					<input class="" placeholder="请输入手机号码" type="text" :value="orderDetail.userPhone" maxlength="11" />
 				</u-form-item>
-				<u-form-item labelWidth="208rpx" label="退款说明" borderBottom>
+				<u-form-item labelWidth="180rpx" label="退款说明" borderBottom>
 					<input class="" placeholder="必填最多50字" type="text" :value="remark" maxlength="50"
 						@input="onAddrInput" />
 				</u-form-item>
-				<u-form-item labelWidth="208rpx" label="退款凭证" borderBottom>
+				<u-form-item labelWidth="180rpx" label="退款凭证" borderBottom>
 					<u-upload :fileList="fileList1" @afterRead="afterRead" @delete="deletePic" name="1" multiple
 						:maxCount="10"></u-upload>
 				</u-form-item>
@@ -254,14 +254,14 @@ export default {
 }
 
 .u-form {
-	margin-top: 200rpx;
-	margin-left: 20rpx;
+	margin-top: 10rpx;
+	//margin-left: 20rpx;
 }
 
 .button-style {
 	width: 710rpx;
 	height: 92rpx;
-	background: #F81A19;
+	background: #FD594D;
 	font-size: 28rpx;
 	line-height: 92rpx;
 	color: #FFFFFF;
@@ -269,6 +269,5 @@ export default {
 	border-radius: 12rpx;
 	margin-left: 20rpx;
 	margin-top: 20rpx;
-
 }
 </style>

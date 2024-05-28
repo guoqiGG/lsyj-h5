@@ -5,7 +5,7 @@
     <view class="h-tabs">
       <view :class="'h-tab ' + (status == 0 ? 'on' : '')" data-status="0" @tap="changeTab">未使用</view>
       <view :class="'h-tab ' + (status == 1 ? 'on' : '')" data-status="1" @tap="changeTab">使用记录</view>
-      <view :class="'h-tab ' + (status == 2 ? 'on' : '')" data-status="2" @tap="changeTab">已过期</view>
+      <!-- <view :class="'h-tab ' + (status == 2 ? 'on' : '')" data-status="2" @tap="changeTab">已过期</view> -->
     </view>
     <view class="coupons">
       <block v-for="(item, index) in couponList" :key="index">

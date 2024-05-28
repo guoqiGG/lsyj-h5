@@ -1,8 +1,8 @@
 <template>
   <view class="container">
-    <navigation/>
+    <navigation />
     <!--input列表 -->
-    <view  class="input-box">
+    <view class="input-box">
       <view class="section">
         <text>收件人</text>
         <input placeholder="请输入收件人名字" type="text" maxlength="15" :value="name" @input="onReceiverInput" />
@@ -18,19 +18,19 @@
       </view>
       <view class="section">
         <text>默认地址</text>
-        <radio-group activeColor="#005AFF">
+        <radio-group activeColor="#FD594D">
           <label class="radio" data-default="1" @tap="onDefaultAddr">
-            <radio :checked="isDefault == 1" color="#005AFF" activeColor="#005AFF" />是
+            <radio :checked="isDefault == 1" color="#FD594D" activeColor="#FD594D" />是
           </label>
           <label style="margin-left: 10rpx;" class="radio" data-default="0" @tap="onDefaultAddr">
-            <radio :checked="isDefault == 0" color="#005AFF" activeColor="#005AFF"/>否
+            <radio :checked="isDefault == 0" color="#FD594D" activeColor="#FD594D" />否
           </label>
         </radio-group>
       </view>
     </view>
     <!-- end input列表 -->
     <!-- 功能按钮 -->
-    <view  class="btn-box">
+    <view class="btn-box">
       <view class="keep btn" @tap="onSaveAddr">
         <text>保存收货地址</text>
       </view>
@@ -195,7 +195,7 @@ export default {
           data: {
             sign: 'qcsd',
             data: JSON.stringify({
-              userId:this.userId,
+              userId: this.userId,
               id: this.id,
               name: name,
               tel: tel,

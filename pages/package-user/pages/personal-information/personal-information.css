@@ -47,11 +47,11 @@ page {
   -webkit-justify-content: space-between;
   align-items: center;
   -webkit-align-items: center;
-  color: #666666;
+  color: #cec1c1;
   width: 80%;
 }
 .txt-infor {
-  color: #979797;
+  color: #3342A5;
 }
 /* 头像 */
 .infor-right-wrap {
@@ -75,10 +75,11 @@ page {
   margin-top: 100rpx;
   width: 70%;
   padding: 20rpx 0;
-  font-size: 28rpx;
+  font-size: 32rpx;
   text-align: center;
   color: #fff;
-  background: #005aff;
+  background: #FD594D;
   letter-spacing: 2px;
   border-radius: 10rpx;
 }
+

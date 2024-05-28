@@ -1,8 +1,9 @@
 <template>
-	<view style="height: 100vh;background: #f2f2f2;">
+	<view style="min-height:100vh;background: #f2f2f2;">
 		<view class="order-list">
 			<navigation />
-			<u-tabs :scrollable="true" :current="currentTab" :list="list1" @click="handleTabClick"></u-tabs>
+			<u-tabs lineHeight="4" lineColor="#FD594D" :scrollable="true" :current="currentTab" :list="list1"
+				@click="handleTabClick"></u-tabs>
 			<view class="order-list-content">
 				<view class="order-list-content-box" v-for="(item, index) in orderLists" :key="item.orderId">
 					<view class="order-list-content-box-title">
@@ -51,25 +52,25 @@
 					</view>
 
 					<view class="order-list-content-box-btn">
-						<view class="cancelBtn" style="width: 120rpx;color: #D90024;border: 2rpx solid #D90024;"
+						<view class="cancelBtn" style="width: 120rpx;color: #FD594D;border: 2rpx solid #FD594D;"
 							@click="deleteOrder(item.orderId)" v-if="item.orderStatus !== 1">
 							删除
 						</view>
-						<view style="margin-left:20rpx;" class="cancelBtn" @click="cancelOrder(item.orderId)"
-							v-if="item.orderStatus === 1">
+						<view style="margin-left:20rpx;color: #FD594D;border: 2rpx solid #FD594D;" class="cancelBtn"
+							@click="cancelOrder(item.orderId)" v-if="item.orderStatus === 1">
 							取消订单
 						</view>
 
 						<view class="cancelBtn"
-							style="margin-left: 20rpx;width: 120rpx;color: #D90024;border: 2rpx solid #D90024;"
+							style="margin-left: 20rpx;width: 120rpx;background:#FD594D;color: #FFF;border: 2rpx solid #FD594D;"
 							v-if="item.orderStatus === 1" @click="payOrder(item.orderId)">
 							付款
 						</view>
 						<view class="cancelBtn" v-if="item.orderStatus === 3"
-						style="margin-left: 20rpx;width: 120rpx;color: #D90024;border: 2rpx solid #D90024;"
-						@click="receive(item.orderId)">
-						确认收货
-					</view>
+							style="margin-left: 20rpx;width: 120rpx;color: #FD594D;border: 2rpx solid #FD594D;"
+							@click="receive(item.orderId)">
+							确认收货
+						</view>
 					</view>
 				</view>
 				<!-- 空列表或加载全部提示 -->
@@ -128,11 +129,6 @@ export default {
 			loginToken: null,
 			status: null,
 			userId: null, //用户id
-			activeLineStyle: {
-				width: '56rpx',
-				height: '2rpx',
-				background: '#025BFF'
-			},
 			showGoLiveRoom: false
 		}
 	},
@@ -469,7 +465,7 @@ export default {
 		margin-bottom: 26rpx;
 
 		.blue {
-			color: #025BFF;
+			color: #FD594D;
 		}
 	}
 

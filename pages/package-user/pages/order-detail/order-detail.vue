@@ -307,7 +307,7 @@ export default {
 	.order-detail-status {
 		display: flex;
 		align-items: center;
-
+		background: #FFF;
 		.order-detail-status-content {
 			flex: 1;
 			height: 84rpx;

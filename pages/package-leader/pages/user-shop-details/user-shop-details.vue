@@ -1,5 +1,5 @@
 <template>
-	<view style="background: #f2f2f2;">
+	<view style="min-height:100vh;background: #f2f2f2;">
 		<view class="order-list">
 			<!-- 	<view class="search">
 			<u-icon top="22" class="search_icon" name="search" size="40"></u-icon>
@@ -7,7 +7,7 @@
 			<input type="text" class="input" v-model="keyword" placeholder="搜索订单" />
 			<button size="default" type="default" class="button" @click="searchBtn">搜索</button>
 		</view> -->
-			<u-tabs :scrollable="true" :current="currentTab" :list="list1" @click="handleTabClick"></u-tabs>
+			<u-tabs lineHeight="4" lineColor="#FD594D" :scrollable="true" :current="currentTab" :list="list1" @click="handleTabClick"></u-tabs>
 			<view class="order-list-content">
 				<view class="order-list-content-box" v-for="(item, index) in orderLists" :key="item.orderId">
 					<view class="order-list-content-box-title">

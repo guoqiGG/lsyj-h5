@@ -120,7 +120,7 @@
 			<view class="list-line" @click="goLiveroomList()">
 				<view class="list-line-lf">
 					<view class="list-line-lf-img">
-						<image src="/pages/package-leader/static/ls.png" mode=""></image>
+						<image src="/pages/package-leader/static/live.png" mode=""></image>
 					</view>
 					<view class="list-line-lf-text">
 						直播间列表
@@ -133,7 +133,7 @@
 			<view class="list-line" @click="userShopDetails()">
 				<view class="list-line-lf">
 					<view class="list-line-lf-img">
-						<image src="/pages/package-leader/static/friend.png" mode=""></image>
+						<image src="/pages/package-leader/static/user-shop.png" mode=""></image>
 					</view>
 					<view class="list-line-lf-text">
 						购物明细
@@ -419,7 +419,7 @@ export default {
 				width: 162rpx;
 				height: 54rpx;
 				border-radius: 27rpx;
-				background: #F91919;
+				background: #4083FF;
 				border: 0 solid transparent;
 				color: #FFFFFF;
 			}
@@ -440,8 +440,8 @@ export default {
 				height: 54rpx;
 				border-radius: 27rpx;
 				background: #FFFFFF;
-				border: 2rpx solid #C53032;
-				color: #C53032;
+				border: 2rpx solid #4083FF;
+				color: #4083FF;
 			}
 
 			/deep/ .u-button__text {

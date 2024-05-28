@@ -190,8 +190,6 @@ export default {
 						this.dataList = this.current == 1 ? res.list : this.dataList.concat(res.list)
 						this.pages = res.total == 0 ? 1 : Math.ceil(res.total / this.pageSize)
 					},
-
-
 				}
 				http.request(params);
 			}
@@ -390,9 +388,9 @@ export default {
 }
 
 .h-tab.on {
-	border-bottom: 3px solid #005aff;
+	border-bottom: 3px solid #FD594D;
 	font-weight: 600;
-	color: #005aff;
+	color: #FD594D;
 }
 
 .container {
@@ -454,7 +452,7 @@ export default {
 	height: 210rpx;
 	width: 180rpx;
 	position: absolute;
-	background: #c53032;
+	background: #FD594D;
 	color: #ffffff;
 	right: 0;
 	font-size: 36rpx;

@@ -4,7 +4,7 @@
 }
 .con {
   margin: 250rpx 100rpx 0;
-  background: linear-gradient(90deg, #ffeae0 0%, #fdd9dc 100%);
+  background: linear-gradient(180deg, #92b8ff 0%, #ffffff 100%);
   box-shadow: 0rpx 8rpx 24rpx 0rpx rgba(141, 141, 141, 0.3);
   border-radius: 5rpx;
   position: relative;
@@ -77,7 +77,7 @@
   display: block;
   width: 132rpx;
   height: 4rpx;
-  background: #eeeeee;
+  background: #97bcff;
 }
 .in-card-text .title {
   padding: 0 20rpx;

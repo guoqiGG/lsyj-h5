@@ -1,6 +1,6 @@
 <template>
   <view class="terms-container">
-    <navigation />
+    <!-- <navigation /> -->
     <!-- 服务条款/隐私协议 -->
     <view v-if="sts === 'serviceTerms'">
          欢迎您与经营者(详见定义条款) 共同签署本《平台服务协议》称本协议”并使用平台服务!   

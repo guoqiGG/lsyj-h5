@@ -1,6 +1,6 @@
 <template>
     <view class="container">
-        <navigation/>
+        <navigation />
         <view class="refund-top">
             <view class="refund-top-title"><text>退款成功</text></view>
             <view class="refund-top-time"><text>2024-03-03 10:57:50</text></view>
@@ -31,7 +31,7 @@
 </script>
 <style>
 .container {
-    
+
     min-height: 100vh;
 }
 
@@ -53,14 +53,15 @@
 .refund-top .refund-top-time {
     font-weight: 400;
     font-size: 28rpx;
-    color: #3D3D3D;
+    color: #3342A5;
     line-height: 48rpx;
     letter-spacing: 1px;
     text-align: left;
     font-style: normal;
     text-transform: none;
 }
-.null-bg{
+
+.null-bg {
     background: #F6F6F6;
     width: 100%;
     height: 20rpx;
@@ -142,10 +143,13 @@
     text-transform: none;
     margin-bottom: 10rpx;
 }
-.refund-bottom .text .symbol{
+
+.refund-bottom .text .symbol {
     font-size: 18rpx;
 }
-.refund-bottom .text .symbol,.refund-bottom .text .price{
+
+.refund-bottom .text .symbol,
+.refund-bottom .text .price {
     color: #C53032;
 }
 </style>

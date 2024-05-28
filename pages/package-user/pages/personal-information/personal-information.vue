@@ -36,13 +36,14 @@
 			<view class="cloumn-item" >
 				<view class="txt-wrap">昵称</view>
 				<view class="right-wrap">
-						 <u--input
+						 <u-input
 						 class="txt-infor"
 						    placeholder="请输入您的昵称"
 						    border="none"
+							color="#3342A5"
 						    v-model="nickName"
 						    @change="getNickNameInt"
-						  ></u--input>
+						  ></u-input>
 				</view>
 			</view>
 		</view>
