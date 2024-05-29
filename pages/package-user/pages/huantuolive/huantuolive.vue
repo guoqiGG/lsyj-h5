@@ -11,7 +11,7 @@
             </view>
         </view>
         <iframe ref="myIframe" id="iframe" class="iframe" :src="urls" frameborder="0" allowfullscreen='true'
-            allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;"></iframe>
+            allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;screen-wake-lock;"></iframe>
         <view v-if="urls && status == 1" class="send-beans">
             <text>
                 {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '青春豆已送' }}
@@ -40,6 +40,8 @@ export default {
         }
     },
     onLoad(options) {
+        this.noSleep()
+        console.log('onload')
         let options1 = options
         util.checkAuthInfo(() => {
             if (uni.getStorageSync('bbcUserInfo').puid) {
@@ -51,6 +53,9 @@ export default {
             }
             if (options1.coureName) {
                 this.coureName = options1.dy == 1 ? uni.getStorageSync('coureName') : options1.coureName
+                uni.setNavigationBarTitle({
+                    title: options1.dy == 1 ? uni.getStorageSync('coureName') : options1.coureName
+                })
             }
             if (options1.coureId || options1.dy) {
                 this.coureId = options1.dy == 1 ? uni.getStorageSync('coureId') : options1.coureId
@@ -146,11 +151,11 @@ export default {
             this.insertWatchTime()
         }, 60000);
         this.countdownSendingBeans()
-        this.noSleep()
     },
     methods: {
         //屏幕常亮
         noSleep() {
+            console.log(1)
             let noSleep = new this.$NoSleep();
             document.addEventListener('click',
                 function enableNoSleep() {
