@@ -12,7 +12,7 @@
         </view>
         <iframe ref="myIframe" id="iframe" class="iframe" :src="urls" frameborder="0" allowfullscreen='true'
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;screen-wake-lock;"></iframe>
-        <view v-if="urls && status == 1" class="send-beans">
+        <view v-if="urls && status == 1" :class="isPortrait ? 'portrait' : 'send-beans'">
             <text>
                 {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '青春豆已送' }}
             </text>
@@ -37,24 +37,22 @@ export default {
             timer3: null,
             countDown: null,
             status: 0,
+            isPortrait: false
         }
     },
     onLoad(options) {
         this.noSleep()
-        console.log('onload')
         let options1 = options
         util.checkAuthInfo(() => {
-            if (uni.getStorageSync('bbcUserInfo').puid) {
-                this.getShareInfo()
-            }
             this.getdySign(options1.dy == 1 ? uni.getStorageSync('url') : options1.url)
             if (options1.url || options1.dy) {
                 this.liveUrl = decodeURIComponent(options1.dy == 1 ? uni.getStorageSync('url') : options1.url)
+                this.isPortrait = decodeURIComponent(options1.dy == 1 ? uni.getStorageSync('url') : options1.url).includes('?portrait=1') ? true : false
             }
-            if (options1.coureName) {
-                this.coureName = options1.dy == 1 ? uni.getStorageSync('coureName') : options1.coureName
+            if (options1.coureName || options1.dy) {
+                this.coureName = decodeURIComponent(options1.dy == 1 ? uni.getStorageSync('coureName') : options1.coureName)
                 uni.setNavigationBarTitle({
-                    title: options1.dy == 1 ? uni.getStorageSync('coureName') : options1.coureName
+                    title: this.coureName
                 })
             }
             if (options1.coureId || options1.dy) {
@@ -89,6 +87,9 @@ export default {
                         }
                     })
                 }
+            }
+            if (uni.getStorageSync('bbcUserInfo').puid) {
+                this.getShareInfo()
             }
         })
 
@@ -155,7 +156,6 @@ export default {
     methods: {
         //屏幕常亮
         noSleep() {
-            console.log(1)
             let noSleep = new this.$NoSleep();
             document.addEventListener('click',
                 function enableNoSleep() {
@@ -308,10 +308,11 @@ export default {
                                 // console.log('不可以用', err);
                             },
                         });
+                        let coureName = encodeURIComponent(this.coureName)
                         wxpay.updateAppMessageShareData({
                             title: res.title,
                             desc: this.coureName,
-                            link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&coureId=' + this.coureId + '&url=' + this.liveUrl,
+                            link: window.location.href.split("#")[0] + '#/pages/package-user/pages/huantuolive/huantuolive?userId=' + res.userId + '&coureId=' + this.coureId + '&url=' + this.liveUrl + '&coureName=' + coureName,
                             imgUrl: res.img,
                             success: function () {
                                 // console.log('分享成功')
@@ -425,6 +426,33 @@ export default {
 }
 
 .send-beans text {
+    display: block;
+    width: 100rpx;
+    height: 60rpx;
+    font-weight: 400;
+    font-size: 28rpx;
+    color: #010101;
+    margin: 40rpx auto;
+}
+
+.portrait {
+    position: fixed;
+    width: 114rpx;
+    z-index: 2;
+    top: 90rpx;
+    left: 10rpx;
+    font-size: 24rpx;
+    font-weight: 400;
+    border-radius: 8px;
+    padding: 10rpx;
+    text-align: center;
+    background: none;
+    background-image: url(/static/countdown.png);
+    background-size: cover;
+    vertical-align: middle;
+}
+
+.portrait text {
     display: block;
     width: 100rpx;
     height: 60rpx;
