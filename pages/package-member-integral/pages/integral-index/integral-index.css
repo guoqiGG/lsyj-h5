@@ -13,7 +13,8 @@ page {
   height: 330rpx;
   position: relative;
   margin: 40rpx auto 0;
-  background-image: url(/static/integral-msg.png);
+  /* background-image: url(/static/integral-msg.png); */
+  background: linear-gradient(180deg, #54c945 0%, #b1d241 100%);
   background-size: cover;
   border-radius: 20rpx;
 }

@@ -53,7 +53,7 @@
 .refund-top .refund-top-time {
     font-weight: 400;
     font-size: 28rpx;
-    color: #3342A5;
+    color: #010101;
     line-height: 48rpx;
     letter-spacing: 1px;
     text-align: left;

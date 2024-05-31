@@ -2,7 +2,7 @@
 	<view style="min-height:100vh;background: #f2f2f2;">
 		<view class="order-list">
 			<navigation />
-			<u-tabs lineHeight="4" lineColor="#FD594D" :scrollable="true" :current="currentTab" :list="list1"
+			<u-tabs lineHeight="4" lineColor="#A691F4" :scrollable="true" :current="currentTab" :list="list1"
 				@click="handleTabClick"></u-tabs>
 			<view class="order-list-content">
 				<view class="order-list-content-box" v-for="(item, index) in orderLists" :key="item.orderId">
@@ -52,22 +52,22 @@
 					</view>
 
 					<view class="order-list-content-box-btn">
-						<view class="cancelBtn" style="width: 120rpx;color: #FD594D;border: 2rpx solid #FD594D;"
+						<!-- <view class="cancelBtn" style="width: 120rpx;color: #D90024;border: 2rpx solid #D90024;"
 							@click="deleteOrder(item.orderId)" v-if="item.orderStatus !== 1">
 							删除
-						</view>
-						<view style="margin-left:20rpx;color: #FD594D;border: 2rpx solid #FD594D;" class="cancelBtn"
+						</view> -->
+						<view style="margin-left:20rpx;color: #D90024;border: 2rpx solid #D90024;" class="cancelBtn"
 							@click="cancelOrder(item.orderId)" v-if="item.orderStatus === 1">
 							取消订单
 						</view>
 
 						<view class="cancelBtn"
-							style="margin-left: 20rpx;width: 120rpx;background:#FD594D;color: #FFF;border: 2rpx solid #FD594D;"
+							style="margin-left: 20rpx;width: 120rpx;color: #025BFF;border: 2rpx solid #025BFF;"
 							v-if="item.orderStatus === 1" @click="payOrder(item.orderId)">
 							付款
 						</view>
 						<view class="cancelBtn" v-if="item.orderStatus === 3"
-							style="margin-left: 20rpx;width: 120rpx;color: #FD594D;border: 2rpx solid #FD594D;"
+							style="margin-left: 20rpx;width: 120rpx;color: #A691F4;border: 2rpx solid #A691F4;"
 							@click="receive(item.orderId)">
 							确认收货
 						</view>

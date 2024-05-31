@@ -3,7 +3,7 @@
         <view class="top" v-if="urls">
             <view class="item">
                 <image class="image" src="/static/live-logo.png" />
-                <text>上品时代</text>
+                <text>邻舍云集</text>
             </view>
             <view class="item" @tap="goUserPage">
                 <image style="width: 40rpx;height:40rpx;" class="image" src="/static/live-user.png" />
@@ -12,6 +12,8 @@
         </view>
         <iframe ref="myIframe" id="iframe" class="iframe" :src="urls" frameborder="0" allowfullscreen='true'
             allow="geolocation; microphone; camera; midi; encrypted-media; autoplay;screen-wake-lock;"></iframe>
+        <view v-if="showCountdownEffect" :class="isPortrait ? 'countdown-effects-portrait' : 'countdown-effects'">
+        </view>
         <view v-if="urls && status == 1" :class="isPortrait ? 'portrait' : 'send-beans'">
             <text>
                 {{ countDown > 0 ? '倒计时' + countDown + '分钟' : '青春豆已送' }}
@@ -35,9 +37,11 @@ export default {
             timer: null,
             timer2: null,
             timer3: null,
+            timer4: null,
             countDown: null,
             status: 0,
-            isPortrait: false
+            isPortrait: false,
+            showCountdownEffect: false
         }
     },
     onLoad(options) {
@@ -141,13 +145,7 @@ export default {
     },
     onShow() {
         console.log('onShow')
-        clearInterval(this.timer)
-        this.timer = null
-        clearTimeout(this.timer2)
-        this.timer2 = null
-        clearInterval(this.timer3)
-        this.timer3 = null
-
+        this.clearTimer()
         this.timer = setInterval(() => {
             this.insertWatchTime()
         }, 60000);
@@ -178,39 +176,23 @@ export default {
                     this.countDown = res.time
                     let startTime = new Date(res.startTime).getTime()
                     let nowTime = new Date().getTime()
-                    if (res.status == 1) { // 进入时 直播开始 
-                        this.timer3 = setInterval(() => {   // 正常计时
-                            if (this.countDown == 0) {
-                                clearInterval(this.timer3)
-                                this.timer3 = null
+                    if (this.countDown > 0) {
+                        if (this.status == 1) { // 进入时 直播开始 
+                            this.timing()
+                        } else { // 进入时 直播未开始
+                            if (nowTime <= startTime) { // 提前进入 倒计时到直播开始时间就开始计时
+                                this.timer2 = setTimeout(() => {
+                                    this.status = 1
+                                    this.timing()
+                                }, startTime - nowTime);
                             }
-                            this.countDown--
-                        }, 60000);
-                    } else { // 进入时 直播未开始
-                        if (nowTime <= startTime) { // 提前进入 倒计时到直播开始时间就开始计时
-                            this.timer2 = setTimeout(() => {
-                                this.status = 1
-                                this.timer3 = setInterval(() => {
-                                    if (this.countDown == 0) {
-                                        clearInterval(this.timer3)
-                                        this.timer3 = null
-                                    }
-                                    this.countDown--
-                                }, 60000);
-                            }, startTime - nowTime);
-                        }
-                        else { // 晚开播  或者 直播已结束
-                            if (nowTime < (startTime + 2 * 60 * 60 * 1000)) {
-                                this.status = 1
-                                this.timer3 = setInterval(() => {
-                                    if (this.countDown == 0) {
-                                        clearInterval(this.timer3)
-                                        this.timer3 = null
-                                    }
-                                    this.countDown--
-                                }, 60000);
-                            } else {
-                                console.log('直播结束，不计时')
+                            else { // 晚开播  或者 直播已结束
+                                if (nowTime < (startTime + 2 * 60 * 60 * 1000)) {
+                                    this.status = 1
+                                    this.timing()
+                                } else {
+                                    console.log('直播结束，不计时')
+                                }
                             }
                         }
                     }
@@ -218,40 +200,21 @@ export default {
             };
             http.request(params);
         },
-        stringToBase64(str) {
-            let base64 = '';
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-            for (let i = 0; i < str.length; i += 3) {
-                const char1 = str.charCodeAt(i);
-                const char2 = str.charCodeAt(i + 1);
-                const char3 = str.charCodeAt(i + 2);
-
-                const enc1 = char1 >> 2;
-                const enc2 = ((char1 & 3) << 4) | (char2 >> 4);
-                const enc3 = ((char2 & 15) << 2) | (char3 >> 6);
-                const enc4 = char3 & 63;
-
-                base64 += characters.charAt(enc1) + characters.charAt(enc2) + characters.charAt(enc3) + characters.charAt(enc4);
-            }
-            return base64
-        },
-
-        utf8_encode(str) {
-            var output = '';
-            for (var n = 0; n < str.length; n++) {
-                var c = str.charCodeAt(n);
-                if (c < 128) {
-                    output += String.fromCharCode(c);
-                } else if ((c > 127) && (c < 2048)) {
-                    output += String.fromCharCode((c >> 6) | 192);
-                    output += String.fromCharCode((c & 63) | 128);
-                } else {
-                    output += String.fromCharCode((c >> 12) | 224);
-                    output += String.fromCharCode(((c >> 6) & 63) | 128);
-                    output += String.fromCharCode((c & 63) | 128);
+        // 计时 
+        timing() {
+            this.timer3 = setInterval(() => {
+                this.countDown--
+                if (this.countDown == 0) {
+                    this.showCountdownEffect = true
+                    this.timer4 = setTimeout(() => {
+                        this.showCountdownEffect = false
+                        clearTimeout(this.timer4)
+                        this.timer4 = null
+                    }, 10000)
+                    clearInterval(this.timer3)
+                    this.timer3 = null
                 }
-            }
-            return output;
+            }, 60000);
         },
         // 插入观看时间 
         insertWatchTime() {
@@ -271,7 +234,7 @@ export default {
                 method: "GET",
                 callBack: (res) => {
                     let Sign = res.sign
-                    let Nickname = encodeURIComponent(this.stringToBase64(this.utf8_encode(res.vipName)))
+                    let Nickname = encodeURIComponent(util.stringToBase64(util.utf8_encode(res.vipName)))
                     let UserId = uni.getStorageSync('bbcUserInfo').id
                     this.urls = url.includes('?portrait=1') ? `${url}&Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}&forceCheck=true` : `${url}?Sign=${Sign}&Nickname=${Nickname}&UserId=${UserId}&Timestamp=${res.timeStamp}&forceCheck=true`
                 }
@@ -338,24 +301,25 @@ export default {
         goHome() {
             uni.switchTab({ url: "/pages/index/index" });
         },
+        // 清除计时器
+        clearTimer() {
+            clearInterval(this.timer)
+            this.timer = null
+            clearTimeout(this.timer2)
+            this.timer2 = null
+            clearInterval(this.timer3)
+            this.timer3 = null
+            clearTimeout(this.timer4)
+            this.timer4 = null
+        }
     },
     onHide() {
         console.log('onHide')
-        clearInterval(this.timer)
-        this.timer = null
-        clearTimeout(this.timer2)
-        this.timer2 = null
-        clearInterval(this.timer3)
-        this.timer3 = null
+        this.clearTimer()
     },
     onUnload() {
         console.log('onUnload')
-        clearInterval(this.timer)
-        this.timer = null
-        clearTimeout(this.timer2)
-        this.timer2 = null
-        clearInterval(this.timer3)
-        this.timer3 = null
+        this.clearTimer()
     }
 
 }
@@ -406,6 +370,28 @@ export default {
 .iframe {
     width: 100%;
     height: calc(100% - 80rpx);
+}
+
+.countdown-effects {
+    position: fixed;
+    background-image: url(/static/countdown-effects.gif);
+    background-size: cover;
+    width: 400rpx;
+    height: 400rpx;
+    top: 150rpx;
+    right: -100rpx;
+    transform: rotate(-45deg);
+}
+
+.countdown-effects-portrait {
+    position: fixed;
+    background-image: url(/static/countdown-effects.gif);
+    background-size: cover;
+    width: 400rpx;
+    height: 400rpx;
+    top: 150rpx;
+    left: 50rpx;
+    transform: rotate(90deg);
 }
 
 .send-beans {

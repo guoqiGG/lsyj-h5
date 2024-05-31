@@ -24,7 +24,7 @@
 				<label class="statement-label" @tap.stop="handlePrivacyClick">
 					<checkbox class="check-box" :checked="isPrivacy === 1" />
 					<view style="color: #979797 ; margin-top: 4rpx;">
-						我已阅读并同意上品时代
+						我已阅读并同意邻舍云集
 						<text @tap.stop="toTermsOfService('serviceTerms')">《服务条款》</text>
 						<text style="color: #979797">和</text>
 						<text @tap.stop="toTermsOfService('servicePolicy')">《隐私协议》</text>
@@ -341,13 +341,13 @@ export default {
 </script>
 <style lang="scss">
 page {
-	background: #FFF3EF;
+	background: #EBE5FF;
 	height: 100%;
 	position: relative;
 }
 
 .con {
-	background: #FFF3EF;
+	background: #EBE5FF;
 }
 
 .login_bg {
@@ -397,7 +397,7 @@ page {
 		}
 
 		.color {
-			color: #FD594D;
+			color: #A691F4;
 		}
 	}
 }
@@ -408,8 +408,7 @@ page {
 	line-height: 88rpx;
 	margin: 0 auto;
 	text-align: center;
-	background-color: #FD594D;
-	border: 1rpx solid #FD594D;
+	border: 1rpx solid #A691F4;
 	color: #fff;
 	border-radius: 14rpx;
 	font-size: 32rpx;
@@ -418,12 +417,13 @@ page {
 	font-weight: normal;
 	letter-spacing: 0rpx;
 	opacity: 1;
-	box-shadow: 0rpx 8rpx 12rpx 0rpx #FFA099;
+	background: #A691F4;
+	box-shadow: 0rpx 8rpx 20rpx 0rpx #DED5FF;
 }
 
 .loginColor {
-	background-color: #FD594D;
-	border: 1rpx solid #FD594D;
+	background-color: #A691F4;
+	border: 1rpx solid #A691F4;
 }
 
 /* 条款声明 */

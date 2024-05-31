@@ -116,6 +116,48 @@ const checkPhoneNumber = (phoneNumber) => {
   var regexp = /^[1][0-9]{10}$/;
   return regexp.test(phoneNumber);
 };
+// 字符串转 base64
+const stringToBase64 = (str) => {
+  let base64 = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+  for (let i = 0; i < str.length; i += 3) {
+    const char1 = str.charCodeAt(i);
+    const char2 = str.charCodeAt(i + 1);
+    const char3 = str.charCodeAt(i + 2);
+
+    const enc1 = char1 >> 2;
+    const enc2 = ((char1 & 3) << 4) | (char2 >> 4);
+    const enc3 = ((char2 & 15) << 2) | (char3 >> 6);
+    const enc4 = char3 & 63;
+
+    base64 +=
+      characters.charAt(enc1) +
+      characters.charAt(enc2) +
+      characters.charAt(enc3) +
+      characters.charAt(enc4);
+  }
+  return base64;
+};
+
+// 字符串转 utf8
+const utf8_encode = (str) => {
+  var output = "";
+  for (var n = 0; n < str.length; n++) {
+    var c = str.charCodeAt(n);
+    if (c < 128) {
+      output += String.fromCharCode(c);
+    } else if (c > 127 && c < 2048) {
+      output += String.fromCharCode((c >> 6) | 192);
+      output += String.fromCharCode((c & 63) | 128);
+    } else {
+      output += String.fromCharCode((c >> 12) | 224);
+      output += String.fromCharCode(((c >> 6) & 63) | 128);
+      output += String.fromCharCode((c & 63) | 128);
+    }
+  }
+  return output;
+};
 
 export const util = {
   checkAuthInfo,
@@ -123,6 +165,8 @@ export const util = {
   toHomePage,
   debounce,
   checkPhoneNumber,
+  stringToBase64,
+  utf8_encode,
 };
 
 module.exports = util;

@@ -30,11 +30,11 @@ export default {
     return {
       custom: false,
       navigationBarStyle: {
-        background: '#FD594D ',
+        background: '#A691F4 ',
         fontColor: '#ffffff',
         iconColor: '#000000'
       },
-      title: '欢迎来到上品时代',
+      title: '欢迎来到邻舍云集',
       isLeft: false,
       isWhiteBack: true,
       lineHeight: '',

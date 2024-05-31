@@ -174,7 +174,7 @@
 		<view>
 			<u-popup :show="showAuth" :closeable="closeable" @close="closeShowAuthPopup">
 				<view class="con-container">
-					<view class="title"><text>上品时代 申请</text></view>
+					<view class="title"><text>邻舍云集 申请</text></view>
 					<view class="desc">
 						<view class="desc-big"><text>获取您的昵称、头像</text></view>
 						<view class="desc-small"><text>提供具有辨识度的用户中心界面</text></view>
@@ -638,7 +638,7 @@ export default {
 	width: 100vw;
 	height: 574rpx;
 	z-index: 3;
-	background: linear-gradient(180deg, #FD594D 0%, rgba(216, 216, 216, 0) 89%);
+	background: linear-gradient(180deg, #A691F4 0%, rgba(216, 216, 216, 0) 89%);
 }
 
 .user {
@@ -681,7 +681,7 @@ export default {
 			.user-name {
 				font-weight: 400;
 				font-size: 34rpx;
-				color: #FFFFFF;
+				color: #010101;
 				line-height: 48rpx;
 				text-align: left;
 				font-style: normal;
@@ -706,7 +706,7 @@ export default {
 			.user-name-type {
 				font-weight: 400;
 				font-size: 24rpx;
-				color: #FFFFFF;
+				color: #010101;
 				line-height: 48rpx;
 				text-align: left;
 				font-style: normal;
@@ -798,6 +798,7 @@ export default {
 		padding: 20rpx 0;
 
 		.receving-address-text {
+			width: calc(100% - 220rpx);
 			box-sizing: border-box;
 			padding-left: 28rpx;
 
@@ -813,8 +814,8 @@ export default {
 		}
 
 		.receving-address-pic {
-			width: 204rpx;
-			height: 212rpx;
+			width: 180rpx;
+			height: 180rpx;
 
 			image {
 				width: 100%;
@@ -849,10 +850,10 @@ export default {
 		}
 
 		.become-leader-pic {
-			padding-left: 28rpx;
+			padding-left: 62rpx;
 			box-sizing: border-box;
-			width: 328rpx;
-			height: 284rpx;
+			width: 250rpx;
+			height: 208rpx;
 
 			image {
 				width: 100%;
@@ -959,7 +960,7 @@ export default {
 	margin: 66rpx auto 0;
 	width: 364rpx;
 	height: 78rpx;
-	background: #FD594D;
+	background: #A691F4;
 	border-radius: 12rpx 12rpx 12rpx 12rpx;
 	font-weight: 400;
 	font-size: 28rpx;

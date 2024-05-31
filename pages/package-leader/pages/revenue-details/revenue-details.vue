@@ -6,7 +6,7 @@
 				<image class="bg_list" src="/static/login/revenue_bg.png" mode=""></image>
 				<view class="bg_list content">
 					<view class="top">
-						<text style="font-size: 36rpx;color: #101010;">{{ item.name }}</text>
+						<text style="font-size: 36rpx;color: #737EC2;">{{ item.name }}</text>
 						<text>{{ item.createTime }}</text>
 					</view>
 					<view class="middle">
@@ -16,7 +16,7 @@
 						<text>订单编号：{{ item.orderNumber }}</text>
 						<view class="">
 							<text style="font-size: 28rpx;color: #101010;">金额:</text>
-							<text style="font-size: 28rpx;color: #E27E1E;">+￥{{ item.amount }}</text>
+							<text style="font-size: 28rpx;color: #E27E1E;">￥{{ item.amount }}</text>
 						</view>
 					</view>
 				</view>

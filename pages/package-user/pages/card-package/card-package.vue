@@ -388,9 +388,9 @@ export default {
 }
 
 .h-tab.on {
-	border-bottom: 3px solid #FD594D;
+	border-bottom: 3px solid #A691F4;
 	font-weight: 600;
-	color: #FD594D;
+	color: #A691F4;
 }
 
 .container {
@@ -452,7 +452,7 @@ export default {
 	height: 210rpx;
 	width: 180rpx;
 	position: absolute;
-	background: #FD594D;
+	background: #A691F4;
 	color: #ffffff;
 	right: 0;
 	font-size: 36rpx;

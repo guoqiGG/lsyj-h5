@@ -18,12 +18,12 @@
       </view>
       <view class="section">
         <text>默认地址</text>
-        <radio-group activeColor="#FD594D">
+        <radio-group activeColor="#A691F4">
           <label class="radio" data-default="1" @tap="onDefaultAddr">
-            <radio :checked="isDefault == 1" color="#FD594D" activeColor="#FD594D" />是
+            <radio :checked="isDefault == 1" color="#A691F4" activeColor="#A691F4" />是
           </label>
           <label style="margin-left: 10rpx;" class="radio" data-default="0" @tap="onDefaultAddr">
-            <radio :checked="isDefault == 0" color="#FD594D" activeColor="#FD594D" />否
+            <radio :checked="isDefault == 0" color="#A691F4" activeColor="#A691F4" />否
           </label>
         </radio-group>
       </view>

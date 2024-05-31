@@ -492,7 +492,7 @@ export default {
 	position: relative;
 	padding-bottom: 168rpx;
 	overflow-y: scroll;
-	background: linear-gradient(180deg, #FD594D 0%, #F2F2F2 50%);
+	background: linear-gradient(180deg, #A691F4 0%, #F2F2F2 50%);
 
 	.submit-order-index {
 		box-sizing: border-box;
@@ -509,7 +509,7 @@ export default {
 				line-height: 66rpx;
 				background: #FFFFFF;
 				font-size: 32rpx;
-				color: #FD594D;
+				color: #A691F4;
 			}
 
 			.submit-order-index-express-content {
@@ -585,7 +585,7 @@ export default {
 				line-height: 66rpx;
 				background: #FFFFFF;
 				font-size: 32rpx;
-				color: #FD594D;
+				color: #A691F4;
 			}
 
 			.submit-order-index-not-express-content {
@@ -864,7 +864,7 @@ export default {
 					width: 100px !important;
 					height: 36px !important;
 					border-radius: 18px !important;
-					background: linear-gradient(270deg, #ea3b26 0%, #FD594D 100%) !important;
+					background: linear-gradient(270deg, #FC4D0E 0%, #F58927 100%) !important;
 					border: 0px solid transparent;
 				}
 
@@ -1012,8 +1012,8 @@ export default {
 			width: 670rpx !important;
 			height: 78rpx !important;
 			border-radius: 54rpx !important;
-
-			background: #FD594D !important;
+			border: none;
+			background: #A691F4 !important;
 		}
 	}
 }
